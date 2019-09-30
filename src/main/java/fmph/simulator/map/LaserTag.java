@@ -17,7 +17,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "relative_location",
     "external",
     "offset",
-    "optional"
+    "optional",
+    "disabled"
 })
 public class LaserTag {
 
@@ -33,6 +34,8 @@ public class LaserTag {
     private Double offset;
     @JsonProperty("optional")
     private Boolean optional;
+    @JsonProperty("disabled")
+    private Boolean disabled;    
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -75,7 +78,18 @@ public class LaserTag {
     public void setExternal(Boolean external) {
         this.external = external;
     }
+    
+    @JsonProperty("disabled")
+    public Boolean getDisabled() {
+        return disabled;
+    }
 
+    @JsonProperty("disabled")
+    public void setDisabled(Boolean disabled) {
+        this.disabled = disabled;
+    }
+
+    
     @JsonProperty("offset")
     public Double getOffset() {
         return offset;

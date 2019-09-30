@@ -20,9 +20,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class Attributes {
 
     @JsonProperty("rot_cx")
-    private Integer rotCx;
+    private Double rotCx;
     @JsonProperty("rot_cy")
-    private Integer rotCy;
+    private Double rotCy;
     @JsonProperty("rot_radius")
     private Double rotRadius;
     @JsonProperty("angle")
@@ -31,22 +31,22 @@ public class Attributes {
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("rot_cx")
-    public Integer getRotCx() {
+    public Double getRotCx() {
         return rotCx;
     }
 
     @JsonProperty("rot_cx")
-    public void setRotCx(Integer rotCx) {
+    public void setRotCx(Double rotCx) {
         this.rotCx = rotCx;
     }
 
     @JsonProperty("rot_cy")
-    public Integer getRotCy() {
+    public Double getRotCy() {
         return rotCy;
     }
 
     @JsonProperty("rot_cy")
-    public void setRotCy(Integer rotCy) {
+    public void setRotCy(Double rotCy) {
         this.rotCy = rotCy;
     }
 
