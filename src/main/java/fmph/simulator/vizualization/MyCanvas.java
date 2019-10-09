@@ -11,6 +11,7 @@ import fmph.simulator.map.LaserTag;
 import fmph.simulator.map.Segment;
 import fmph.simulator.map.SegmentShape;
 import fmph.simulator.vizualization.component.IdLocation;
+import fmph.simulator.vizualization.component.SegmentPose;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -24,7 +25,7 @@ import javafx.scene.text.Font;
 import javafx.scene.transform.Affine;
 
 public class MyCanvas extends Canvas{
-	int w=900;int h=900;	
+	int w=600;int h=500;	
 	
 	
 	
@@ -66,23 +67,48 @@ public class MyCanvas extends Canvas{
 		
 		double segmentCount = map.getMap().getSegments().size();
 		
+		
+		//paint Road
 		for(Segment segment : map.getMap().getSegments()) {
 			paintSegmentRoad(segment);
 		}
 		
+		//todo
 		for (int i = 0; i < segmentCount; i++)
 	        draw_segment_gap_road(map.getMap().getSegments().get(i),
 	        		map.getMap().getSegments().get((int) ((i + 1) % segmentCount)));
+
+		
+		for (int i = 0; i < segmentCount; i++)
+		        draw_segment_path(map.getMap().getSegments().get(i));
 		
 		 for (int i = 0; i < segmentCount; i++)
-		        draw_segment_path(map.getMap().getSegments().get(i));
-		 
-		 for (int i = 0; i < segmentCount; i++)
 		        draw_identifiers(map.getMap().getSegments().get(i));
-		 
+		 /*
+		 for (int i = 0; i < segmentCount; i++)
+		        draw_segment_label(map.getMap().getSegments().get(i));
+		  */
 		map.getMap();
 	}
 	
+	
+	public void draw_segment_label(Segment segment) {
+		double w = segment.getSegmentWidth()/2;
+		GraphicsContext gc = getGraphicsContext2D();
+		//return [pos[0], pos[1], gamma];
+		 SegmentPose pose = new SegmentPose(segment, segment.getLength() / 2);
+		 double pos[] = pose.getPos();
+		 double h1 = pose.getGamma();
+		 String shape = segment.getSegmentShape().getType();
+		 double h2 = h1;
+		 h2 -= Math.PI / 2;
+		  double[] pos1 = translate(pos, h2, w * 0.5);
+		    gc.translate(tx(pos1[0]), ty(pos1[1]));
+		    gc.fillText(segment.getSegmentId(), 0, 0);
+		    gc.translate(-tx(pos1[0]), -ty(pos1[1]));
+		    gc.stroke();
+		 
+	}
 	
 	public void draw_identifiers(Segment segment) {
 		int i;
@@ -92,22 +118,26 @@ public class MyCanvas extends Canvas{
 
 	    for (i = 0; i < tags.size(); i++)
 	    {
-	        if (tags.get(i).getExternal()) continue;
+	        if (null != tags.get(i).getExternal() && tags.get(i).getExternal()) continue;
 	        
-	        if (tags.get(i).getDisabled()) continue;
+	        if (null != tags.get(i).getDisabled() && tags.get(i).getDisabled()) continue;
 	        
 	        
 	        //poss {pos, pos1, pos2, pos3, pos4, gamma};
 	        idloc.identifier_location(i, segment);
 	        double gamma = idloc.getGamma();
 
-	        ctx.beginPath();
-	        ctx.moveTo(tx(poss[1][0]), ty(poss[1][1]));
-	        ctx.lineTo(tx(poss[2][0]), ty(poss[2][1]));
-	        ctx.lineTo(tx(poss[3][0]), ty(poss[3][1]));
-	        ctx.lineTo(tx(poss[4][0]), ty(poss[4][1]));
-	        ctx.lineTo(tx(poss[1][0]), ty(poss[1][1]));
-	        index_of_pid = recognized_pids.indexOf(tags[i].unique_id);
+	        GraphicsContext gc = getGraphicsContext2D();
+	        gc.beginPath();  
+	        gc.setFill(Color.DARKRED);
+	        gc.moveTo(tx(idloc.getPos1()[0]), ty(idloc.getPos1()[1]));
+	        gc.lineTo(tx(idloc.getPos2()[0]), ty(idloc.getPos2()[1]));
+	        gc.lineTo(tx(idloc.getPos3()[0]), ty(idloc.getPos3()[1]));
+	        gc.lineTo(tx(idloc.getPos4()[0]), ty(idloc.getPos4()[1]));
+	        gc.lineTo(tx(idloc.getPos1()[0]), ty(idloc.getPos1()[1]));
+	      
+	        
+	        /*index_of_pid = recognized_pids.indexOf(tags[i].unique_id);
 	        if (index_of_pid >= 0)
 	        {
 	            if (index_of_pid == recognized_pids.length - 1)
@@ -119,25 +149,34 @@ public class MyCanvas extends Canvas{
 	            else ctx.fillStyle="#FF4040";
 	        } 
 	        else ctx.fillStyle="#FFFFFF";
-	        ctx.fill();
-	        ctx.stroke();
-
-	        ctx.fillStyle="#008F00";
-	        ctx.translate(tx(poss[0][0]), ty(poss[0][1]));
-	        ctx.rotate(gamma);
-	        ctx.fillText(tags[i].type, 0, 0); //4, -7);
-	        ctx.rotate(-gamma);
-	        ctx.translate(-tx(poss[0][0]), -ty(poss[0][1]));
-	        ctx.fillStyle="#FFFFFF";
+	        */
+	        gc.fill();
+	        gc.stroke();
+			
+	        //ctx.fillStyle="#008F00";
+	        
+	        gc.translate(tx(idloc.getPos()[0]), ty(idloc.getPos()[1]));
+	        gc.rotate(gamma);
+	        gc.setLineDashes(0);
+	        gc.setLineWidth(1);
+	        gc.strokeText(tags.get(i).getType(), 5, -7); //4, -7);
+	       
+	        gc.rotate(-gamma);
+	        gc.translate(-tx(idloc.getPos()[0]), -ty(idloc.getPos()[1]));
+	        //gc.stroke();
 	    }
 	}
 	public void draw_segment_path(Segment segment) {
 		
 		String shape = segment.getSegmentShape().getType();
 		GraphicsContext gc = getGraphicsContext2D();
+		gc.setLineDashes(10);
+		gc.setLineWidth(3);
+		gc.setStroke(Color.DARKGREY);
 		if(shape.compareTo("line") == 0 ) {
+			
 			gc.strokeLine(tx(segment.getStartPose().getX()), ty(segment.getStartPose().getY()),
-					tx(segment.getStartPose().getX()), ty(segment.getStartPose().getY()));
+					tx(segment.getEndPose().getX()), ty(segment.getEndPose().getY()));
 			
 		}
 	
@@ -163,6 +202,7 @@ public class MyCanvas extends Canvas{
 	}
 	
 	public void draw_segment_gap_road(Segment segment1,Segment segment2) {
+		//todo
 		if (Math.abs(segment1.getEndPose().getHeading() - segment2.getStartPose().getHeading()) > 0.1 / 180.0 * Math.PI)
 	    {
 	        boolean cw = turn_is_clockwise( segment1.getEndPose().getHeading(), segment2.getStartPose().getHeading());
@@ -206,7 +246,9 @@ public class MyCanvas extends Canvas{
 	
 	
 	public void paintSegmentRoad(Segment segment) {
+		
 		GraphicsContext gc = getGraphicsContext2D();
+		gc.setFill(Color.BLACK);
 		String shape = segment.getSegmentShape().getType();
 		double w = segment.getSegmentWidth() /2;
 		if(shape.compareTo("line") == 0 ) {
@@ -222,12 +264,16 @@ public class MyCanvas extends Canvas{
 			double[] posE =  {segment.getEndPose().getX(),segment.getEndPose().getY()};
 		    double[] pos2 = translate(posE, h1, w);
 		    double[] pos3 = translate(posE, h2, w);
-			gc.strokeLine(tx(pos1[0]), ty(pos1[1]),tx(pos2[0]), ty(pos2[1]));
-			gc.strokeLine(tx(pos2[0]), ty(pos2[1]),tx(pos3[0]), ty(pos3[1]));
-			gc.strokeLine(tx(pos3[0]), ty(pos3[1]),tx(pos4[0]), ty(pos4[1]));
-			gc.strokeLine(tx(pos4[0]), ty(pos4[1]),tx(pos1[0]), ty(pos1[1]));
-			System.out.println("abc " + tx(pos1[0]) +" "+ ty(pos1[1]) +" "+ tx(pos2[0])+" "+  ty(pos2[1]));
-		      
+		    gc.beginPath();
+		    gc.moveTo(tx(pos1[0]), ty(pos1[1]));
+	        gc.lineTo(tx(pos2[0]), ty(pos2[1]));
+	        gc.lineTo(tx(pos3[0]), ty(pos3[1]));
+	        gc.lineTo(tx(pos4[0]), ty(pos4[1]));
+	        gc.lineTo(tx(pos1[0]), ty(pos1[1]));
+	        //gc.fill();
+	        gc.stroke();
+	        
+		  
 	      
 	     
 		}  
@@ -240,7 +286,7 @@ public class MyCanvas extends Canvas{
 					td(segment.getSegmentShape().getAttributes().getRotRadius() + w),
 					td(segment.getSegmentShape().getAttributes().getRotRadius() + w),
 					Math.toDegrees(narc(segment.getStartPose().getHeading(), cw)),
-					 Math.toDegrees(segment.getSegmentShape().getAttributes().getAngle()));
+					 Math.toDegrees(segment.getSegmentShape().getAttributes().getAngle()));			
 			gc.stroke();
 			
 			gc.beginPath();
@@ -252,6 +298,7 @@ public class MyCanvas extends Canvas{
 					Math.toDegrees(segment.getSegmentShape().getAttributes().getAngle()));
 			
 			gc.stroke();
+			
 			gc.save();
 			
 		}  
