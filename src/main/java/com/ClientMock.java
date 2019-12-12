@@ -1,60 +1,66 @@
 package com;
 
+import java.net.*;
+import java.io.*;
 
-import java.net.*; 
-import java.io.*; 
-  
-public class ClientMock 
-{ 
-    // initialize socket and input output streams 
-    private Socket socket            = null; 
-    private DataInputStream  input   = null; 
-    private DataOutputStream out     = null; 
-  
-    // constructor to put ip address and port 
-    public ClientMock(String address, int port) 
-    { 
-    	
-    	   
-        InComeMessege m1 = new InComeMessege(100,200);
-        InComeMessege m2 = new InComeMessege(110,210);
-      
-        // establish a connection 
-        try
-        { 
-            socket = new Socket(address, port); 
-            System.out.println("Connected"); 
-           
-            // sends output to the socket 
-            out    = new DataOutputStream(socket.getOutputStream()); 
-            out.writeUTF(m1.serializable()); 
-            //out.writeUTF(m2.serializable()); 
-        } 
-        catch(UnknownHostException u) 
-        { 
-            System.out.println(u); 
-        } 
-        catch(IOException i) 
-        { 
-            i.printStackTrace();
-        } 
+public class ClientMock {
 
-  
-        
-        // close the connection 
-        try
-        { 
-            out.close(); 
-            socket.close(); 
-        } 
-        catch(IOException i) 
-        { 
-        	 i.printStackTrace();
-        } 
-    } 
-  
-    public static void main(String args[]) 
-    { 
-        ClientMock client = new ClientMock("127.0.0.1", 5006); 
-    } 
-} 
+	// initialize socket and input output streams
+	private Socket socket = null;
+	private DataInputStream input = null;
+	private DataOutputStream out = null;
+
+	// constructor to put ip address and port
+	public ClientMock(String address, int port) {
+
+		InComeMessege m1 = new InComeMessege(100, 200);
+
+		// establish a connection
+		try {
+			socket = new Socket(address, port);
+			System.out.println("Connected");
+
+			// sends output to the socket
+			out = new DataOutputStream(socket.getOutputStream());
+			//out.writeUTF(m2.serializable());
+			
+			
+			InputStreamReader isr = new InputStreamReader(System.in);
+	        BufferedReader br = new BufferedReader(isr);
+	        String line;
+	        System.out.println("Enter new wheelAngle carspeed");
+	        while (!(line = br.readLine()).trim().equals("")){
+	        	String[] readNumbers = line.split(" ");
+	        	if(readNumbers.length == 2) {
+
+					InComeMessege msg;
+					try {
+						msg = new InComeMessege(Double.parseDouble(readNumbers[0]), Double.parseDouble(readNumbers[1]));
+					}catch (NumberFormatException e){
+						msg = new InComeMessege("Wrong input from simulator");
+						System.out.println("Please add input in correct format");
+					}
+					out.writeUTF(msg.serializable());
+					System.out.println("Enter new wheelAngle carspeed");
+	        	}
+	        }
+	        
+			
+		} catch (UnknownHostException u) {
+			System.out.println(u);
+		} catch (IOException i) {
+			i.printStackTrace();
+		}
+
+		/*
+		 * close the connection try { //out.close(); //socket.close(); }
+		 * catch(IOException i) { i.printStackTrace(); }
+		 */
+	}
+
+
+
+	public static void main(String args[]) {
+		ClientMock client = new ClientMock("127.0.0.1", 8085);
+	}
+}

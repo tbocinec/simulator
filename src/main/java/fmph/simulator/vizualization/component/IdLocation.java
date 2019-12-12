@@ -22,13 +22,14 @@ public class IdLocation {
 	private double[] pos4;
     private double gamma;
 
+    Config config  = Config.GetConfig();
 
 	public IdLocation(Segment s) {
 		super();
 		shape = s.getSegmentShape().getType();
 		lntype = (shape.compareTo("line")==0);
 		arctype = (shape.compareTo("arc")==0);
-		double[] sposConstructor = { s.getStartPose().getY(), s.getStartPose().getY() };
+		double[] sposConstructor = { s.getStartPose().getX(), s.getStartPose().getY() };
 		spos = sposConstructor;
 		
 		h1 = s.getStartPose().getHeading();
@@ -48,7 +49,7 @@ public class IdLocation {
 	    
 	    if (lntype)
 	    {
-	        pos = MyCanvas.translate(spos, h1, loc);
+	        pos = Function.translate(spos, h1, loc);
 	        gamma = h1;
 	    }
 	    else if (arctype)
@@ -65,13 +66,13 @@ public class IdLocation {
 	            gamma = h1 - alpha;
 	            beta = gamma + Math.PI / 2;
 	        }
-	        pos = MyCanvas.translate(centre, beta, r);
+	        pos = Function.translate(centre, beta, r);
 	    }
-	    pos1 = MyCanvas.translate(pos, gamma - Math.PI / 2, MyCanvas.identifier_width  / 2);
-	    pos1 = MyCanvas.translate(pos1, gamma, - MyCanvas.identifier_length / 2);
-	    pos2 = MyCanvas.translate(pos1, gamma, MyCanvas.identifier_length);
-	    pos4 = MyCanvas.translate(pos1, gamma + Math.PI / 2, MyCanvas.identifier_width );
-	    pos3 = MyCanvas.translate(pos4, gamma, MyCanvas.identifier_length);
+	    pos1 = Function.translate(pos, gamma - Math.PI / 2, config.getIdentifier_width()  / 2);
+	    pos1 = Function.translate(pos1, gamma, - config.getIdentifier_length() / 2);
+	    pos2 = Function.translate(pos1, gamma, config.getIdentifier_length());
+	    pos4 = Function.translate(pos1, gamma + Math.PI / 2, config.getIdentifier_width());
+	    pos3 = Function.translate(pos4, gamma, config.getIdentifier_length());
 
 //	    return {pos, pos1, pos2, pos3, pos4, gamma};
 	}

@@ -1,52 +1,81 @@
 package fmph.simulator.vizualization;
 
+import app.Context;
+import com.Server;
+import com.sun.org.apache.xpath.internal.operations.Bool;
+import fmph.simulator.vizualization.component.Function;
+import fmph.simulator.vizualization.controlPanel.ControlPanel;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-public class Visualize extends Application implements Runnable {
+public class Visualize  {
+    MyCanvas plocha;
+    Boolean run = true;
+    Stage primaryStage;
+	Scene scene;
 
-	Thread Cavasthread;
-	MyCanvas plocha;
-	Boolean run = true;
-	public void run() {
-		while(run){				
-			run = false;
-			Platform.runLater(new Runnable() {			
-				public void run() {
-					// TODO Auto-generated method stub
-					plocha.paint();
-					
-					 
-				}
-			});			
-		
-		 try {
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		}
-		
+
+	public Visualize(final Stage primaryStage) {
+		//todo server change place
+		this.plocha = new MyCanvas();
+		this.primaryStage = primaryStage;
+
+		BorderPane bPane = new BorderPane();
+		bPane.setCenter(new Pane(plocha));
+		bPane.setRight(Context.getContext().getControlPanel());
+		bPane.setBottom(Context.getContext().getConsolePanel());
+
+		this.scene = new Scene(bPane);
+
+		bPane.setOnMouseClicked(event -> {
+			double x = event.getX();
+			double y = event.getY();
+			System.out.println("X,Y = ["+x+";"+y+"]  transform  ["+ Function.tx(x)+";"+Function.ty(y)+"]" );
+		});
+
+
+
+		Platform.runLater(new Runnable() {
+			public void run() {
+				primaryStage.setScene(scene);
+				primaryStage.setTitle("Simulate");
+				primaryStage.show();
+			}
+		});
 	}
 
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		plocha = new MyCanvas();	
-		Cavasthread = new Thread(this);
-		Cavasthread.start();	
-		Scene scene = new Scene(new Pane(plocha));	
-		primaryStage.setScene(scene);		
-		primaryStage.setTitle("Simulate");
-		primaryStage.show();
-		
-		
+
+
+
+    public void run() {
+        while (run) {
+
+			Context.getContext().getCarModel().run();
+        	plocha.paint();
+            try {
+                Thread.sleep(220);
+            } catch (InterruptedException e) {
+                e.printStackTrace(); //todo exception
+				System.out.println("chyba");
+                System.exit(1);
+            }
+        }
+
+    }
+
+
+
+    public void stop(){
+    	if(run == false){
+    		throw new RuntimeException("Visualization already stopped");
+		}
+    	run = false;
 	}
-	public static void main(String[] args) {
-		launch(args);
-	}
+
+
 
 }

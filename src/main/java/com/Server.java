@@ -1,65 +1,92 @@
 package com;
 
 //A Java program for a Server 
-import java.net.*; 
-import java.io.*; 
 
-public class Server 
-{ 
- //initialize socket and input stream 
- private Socket          socket   = null; 
- private ServerSocket    server   = null; 
- private DataInputStream in       =  null; 
+import fmph.simulator.vizualization.animate.idealCar.State;
+import sun.java2d.loops.GraphicsPrimitive;
 
- // constructor with port 
- public Server(int port) 
- { 
-     // starts server and waits for a connection 
-     try
-     { 
-         server = new ServerSocket(port); 
-         System.out.println("Server started"); 
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 
-         System.out.println("Waiting for a client ..."); 
+public class Server implements Runnable {
+    //state of simulator
+    State state = State.getState();
+    Thread thread;
+    //initialize socket and input stream
+    private Socket socket = null;
+    private ServerSocket server = null;
+    private DataInputStream in = null;
 
-         socket = server.accept(); 
-         System.out.println("Client accepted"); 
+    // constructor with port
+    public Server(int port) {
+        // starts server and waits for a connection
+        try {
+            server = new ServerSocket(port);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Eror with run Server,try another port");
+        }
+        System.out.println("Server started");
 
-         // takes input from the client socket 
-         in = new DataInputStream( 
-             new BufferedInputStream(socket.getInputStream())); 
 
-         String line = ""; 
+    }
 
-         // reads message from client until "Over" is sent 
-         while (!line.equals("Over")) 
-         { 
-             try
-             { 
-                 line = in.readUTF(); 
-                 System.out.println(line); 
+    public void start(){
+        thread = new Thread(this);
+        thread.start();
+    }
 
-             } 
-             catch(IOException i) 
-             { 
-            	 i.printStackTrace();
-             } 
-         } 
-         System.out.println("Closing connection"); 
 
-         // close connection 
-         socket.close(); 
-         in.close(); 
-     } 
-     catch(IOException i) 
-     { 
-         i.printStackTrace();      
-        
-     } 
- } 
+    public void run() {
+        acceptClinet();
+        readMeesageLoop();
+        stop();
 
- public static void main(String args[]) 
- { 
-     Server server = new Server(5006); 
- } 
-} 
+    }
+
+    public void stop() {
+        // close connection
+        try {
+            socket.close();
+            in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Thread.currentThread().interrupt(); // todo lok
+
+        }
+        System.out.println("Closing connection");
+    }
+
+    private void acceptClinet() {
+        System.out.println("Waiting for a client ...");
+        try {
+            socket = server.accept();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Client accepted");
+    }
+
+    private void readMeesageLoop() {
+        try {
+            in = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+        } catch (IOException e) {
+            e.printStackTrace(); //todo
+        }
+        String line = "";
+        while (!line.equals("Over")) {
+            try {
+                line = in.readUTF();
+                InComeMessege inm =  InComeMessege.deserializableNewMsg(line);
+                inm.save();
+            } catch (IOException e) {
+                e.printStackTrace(); //todo
+            }
+
+
+        }
+    }
+}
