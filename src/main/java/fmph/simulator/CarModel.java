@@ -1,7 +1,6 @@
 package fmph.simulator;
 
 import app.Context;
-import fmph.simulator.vizualization.component.Function;
 
 public class CarModel {
 	static final double 	BEAMWIDTH = 0.3; // sirka luca [m]
@@ -16,11 +15,11 @@ public class CarModel {
 
 	double carAngle = 90; //uhol natocenia celeho automobilu  [stupne, 0=sever]
 	double wheelAngle =-27; //uhol natocenia predneho kolesa voci 0 polohe  [stupne, 0=rovno]
-	double carSpeed = 1100; //aktualna rychlost  [m/s]
+	double carSpeed = 2.100; //aktualna rychlost  [m/s]
 	
 
 	double lastRun = -1;
-	double interval = 10;
+	double minimumTimeInterval = 30;
 
 
 	public void  run() {
@@ -29,33 +28,53 @@ public class CarModel {
 			return;
 		}
 		double actualTime = System.currentTimeMillis();
-		if(lastRun + interval < actualTime){
+		if(lastRun + minimumTimeInterval < actualTime){
 
-			double time = actualTime -lastRun;
-			//double Bx = posX+  (DISTANCEBETWEENAXLES * Math.sin(Math.toRadians(wheelAngle)));
-			//double By = posY - (DISTANCEBETWEENAXLES * Math.cos(Math.toRadians(wheelAngle)));
+            double time = actualTime -lastRun;
+		    double traveledDistance = (time	/1000) * carSpeed * 1000;
 
 
-			double Cx = posX - DISTANCEBETWEENAXLES * (Math.cos(Math.toRadians(wheelAngle+carAngle))/
-					Math.sin(Math.toRadians(wheelAngle)));
-			double Cy = posY - DISTANCEBETWEENAXLES * (Math.sin(Math.toRadians(wheelAngle+carAngle))/Math.sin(
-					Math.toRadians(wheelAngle)));
+            if(Math.abs(wheelAngle) <= 0.1){ //auto ide rovno
+                posX = posX +  (traveledDistance/100 * Math.sin(Math.toRadians(carAngle)));
+                posY = posY - (traveledDistance/100 * Math.cos(Math.toRadians(carAngle)));
 
-			//double R = Math.abs(DISTANCEBETWEENAXLES/Math.sin(Math.toRadians(wheelAngle)));
-			//double delta_fi = (interval * carSpeed)/DISTANCEBETWEENAXLES * Math.tan(wheelAngle);
-			double delta_fi = (( (time	/1000) * carSpeed)/DISTANCEBETWEENAXLES) * Math.tan(Math.toRadians(wheelAngle));
+            }else{
+                //double Bx = posX +  (DISTANCEBETWEENAXLES * Math.sin(Math.toRadians(wheelAngle)));
+                //double By = posY - (DISTANCEBETWEENAXLES * Math.cos(Math.toRadians(wheelAngle)));
+                double Cx = posX - DISTANCEBETWEENAXLES * (Math.cos(Math.toRadians(wheelAngle+carAngle))/
+                        Math.sin(Math.toRadians(wheelAngle)));
+                double Cy = posY - DISTANCEBETWEENAXLES * (Math.sin(Math.toRadians(wheelAngle+carAngle))/Math.sin(
+                        Math.toRadians(wheelAngle)));
+                //double R = Math.abs(DISTANCEBETWEENAXLES/Math.sin(Math.toRadians(wheelAngle)));
+                //double delta_fi = (interval * carSpeed)/DISTANCEBETWEENAXLES * Math.tan(wheelAngle);
+                double delta_fi = ((traveledDistance)/DISTANCEBETWEENAXLES) * Math.tan(Math.toRadians(wheelAngle));
+                carAngle = (carAngle + delta_fi)%360;
+                posX = Math.cos(Math.toRadians(delta_fi)) * (posX - Cx) + Math.sin(Math.toRadians(delta_fi)) * (posY - Cy) + Cx;
+                posY = Math.cos(Math.toRadians(delta_fi)) * (posY - Cy) - Math.sin(Math.toRadians(delta_fi)) * (posX -Cx) + Cy;
 
-			carAngle = (carAngle + delta_fi)%360;
-			posX = Math.cos(Math.toRadians(delta_fi)) * (posX - Cx) + Math.sin(Math.toRadians(delta_fi)) * (posY - Cy) + Cx;
-			posY = Math.cos(Math.toRadians(delta_fi)) * (posY - Cy) - Math.sin(Math.toRadians(delta_fi)) * (posX -Cx) + Cy;
+            }
 
-			System.out.println(posX + " " + posY);
+
 			Context.getContext().getControlPanel().changeText();
 			lastRun = actualTime;
 		}
 
 
 	}
+
+	public String checkIdentifier(){
+        double Ex = posX + DISTANCEBETWEENAXLEANDBEAM  * Math.sin(Math.toRadians(carAngle))
+                + BEAMWIDTH/2 * Math.cos(Math.toRadians(carAngle));
+        double Ey = posY + DISTANCEBETWEENAXLEANDBEAM  * Math.cos(Math.toRadians(carAngle))
+                + BEAMWIDTH/2 * Math.cos(Math.toRadians(carAngle));
+
+        double Fx = posX + DISTANCEBETWEENAXLEANDBEAM  * Math.sin(Math.toRadians(carAngle))
+                - BEAMWIDTH/2 * Math.cos(Math.toRadians(carAngle));
+        double Fy = posY + DISTANCEBETWEENAXLEANDBEAM  * Math.cos(Math.toRadians(carAngle))
+                 - BEAMWIDTH/2 * Math.cos(Math.toRadians(carAngle));
+
+        return  "1";
+    }
 	
 	public double getPosX() {
 		return posX;

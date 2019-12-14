@@ -15,6 +15,7 @@ public class Server implements Runnable {
     //state of simulator
     State state = State.getState();
     Thread thread;
+    Integer port;
     //initialize socket and input stream
     private Socket socket = null;
     private ServerSocket server = null;
@@ -22,6 +23,7 @@ public class Server implements Runnable {
 
     // constructor with port
     public Server(int port) {
+        this.port = port;
         // starts server and waits for a connection
         try {
             server = new ServerSocket(port);
@@ -30,8 +32,12 @@ public class Server implements Runnable {
             System.out.println("Eror with run Server,try another port");
         }
         System.out.println("Server started");
+    }
 
+    public void restart(){
+        stop();
 
+        start();
     }
 
     public void start(){
@@ -50,6 +56,7 @@ public class Server implements Runnable {
     public void stop() {
         // close connection
         try {
+            //server.close();
             socket.close();
             in.close();
         } catch (IOException e) {
@@ -83,7 +90,8 @@ public class Server implements Runnable {
                 InComeMessege inm =  InComeMessege.deserializableNewMsg(line);
                 inm.save();
             } catch (IOException e) {
-                e.printStackTrace(); //todo
+                restart();
+                return;
             }
 
 

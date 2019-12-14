@@ -38,17 +38,15 @@ public class RealCarBaseModel implements DrawableCar {
     @Override
     public void animateCar(GraphicsContext gc) {
 
-       // gc.translate(Function.tx(carModel.getPosX()), Function.ty(carModel.getPosY()));
+
        gc.translate(carModel.getPosX(), carModel.getPosY());
        gc.rotate(carModel.getCarAngle()  + 180);
 
         draw_car_shape(gc);
-        //draw_image(gc);
 
         gc.rotate(-carModel.getCarAngle() -180);
-
         gc.translate(-carModel.getPosX(), -carModel.getPosY());
-       // gc.translate(-Function.tx(carModel.getPosX()), -Function.ty(carModel.getPosY()));
+
     }
 
     private void draw_car_shape(GraphicsContext gc) {

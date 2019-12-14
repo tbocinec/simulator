@@ -1,10 +1,13 @@
 package fmph.simulator.vizualization;
 
 import fmph.simulator.Map;
+import fmph.simulator.map.LaserTag;
+import fmph.simulator.map.Segment;
 import fmph.simulator.vizualization.animate.DrawableCar;
 import fmph.simulator.vizualization.animate.idealCar.IdealCar;
 import fmph.simulator.vizualization.animate.idealCar.State;
 import fmph.simulator.vizualization.animate.realCar.RealCarBaseModel;
+import fmph.simulator.vizualization.component.Function;
 import fmph.simulator.vizualization.draw.IdentifiersDraw;
 import fmph.simulator.vizualization.draw.LabelDraw;
 import fmph.simulator.vizualization.draw.PathDraw;
@@ -33,6 +36,29 @@ public class MyCanvas extends Canvas{
 
 		idealCar = new IdealCar(map.getMap());
 		realCarModel = new RealCarBaseModel(map.getMap());
+
+
+		this.setOnMouseClicked(event -> {
+			double x = event.getX();
+			double y = event.getY();
+			System.out.println("X,Y = ["+x+";"+y+"]  transform  ["+ Function.tx(x)+";"+Function.ty(y)+"]" );
+
+			/*
+			for (Segment segment : map.getMap().getSegments()){
+				double startX = segment.getStartPose().getX();
+				double startY = segment.getStartPose().getY();
+
+				for(LaserTag laserTag : segment.getLaserTags()){
+					laserTag.ge
+				}
+
+			}
+
+		
+			 */
+
+
+		});
 		
 	}
 	public void paint(){

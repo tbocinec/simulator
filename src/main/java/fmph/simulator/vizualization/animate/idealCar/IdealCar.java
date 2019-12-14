@@ -35,7 +35,6 @@ public class IdealCar implements DrawableCar {
 	public void animateCar(GraphicsContext gc) {
 
 		SegmentPose pose = new SegmentPose(state.getAnim_seg(), state.getAnim_pos());
-		
 
 		gc.translate(Function.tx(pose.getPos()[0]), Function.ty(pose.getPos()[1]));
 		gc.rotate(Math.toDegrees(pose.getGamma() + Math.PI / 2));

@@ -31,11 +31,7 @@ public class Visualize  {
 
 		this.scene = new Scene(bPane);
 
-		bPane.setOnMouseClicked(event -> {
-			double x = event.getX();
-			double y = event.getY();
-			System.out.println("X,Y = ["+x+";"+y+"]  transform  ["+ Function.tx(x)+";"+Function.ty(y)+"]" );
-		});
+
 
 
 
@@ -57,7 +53,7 @@ public class Visualize  {
 			Context.getContext().getCarModel().run();
         	plocha.paint();
             try {
-                Thread.sleep(220);
+                Thread.sleep(60);
             } catch (InterruptedException e) {
                 e.printStackTrace(); //todo exception
 				System.out.println("chyba");

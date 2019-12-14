@@ -20,7 +20,6 @@ public class MainApp  extends Application implements Runnable {
     public void run() {
         Context context = Context.getContext();
         context.getServer().start();
-
         context.getVisualize();
         context.getVisualize().run();
     }
