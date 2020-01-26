@@ -39,6 +39,38 @@ public class LaserTag {
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
+    @JsonIgnore
+    private double x;
+    @JsonIgnore
+    private double y;
+    @JsonIgnore
+    private double gamma;
+
+
+    public double getGamma() {
+        return gamma;
+    }
+
+    public void setGamma(double gamma) {
+        this.gamma = gamma;
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+
     @JsonProperty("unique_id")
     public Integer getUniqueId() {
         return uniqueId;
@@ -119,5 +151,6 @@ public class LaserTag {
     public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
+
 
 }

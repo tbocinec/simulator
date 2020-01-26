@@ -1,5 +1,6 @@
 package fmph.simulator.vizualization;
 
+import app.Context;
 import fmph.simulator.Map;
 import fmph.simulator.map.LaserTag;
 import fmph.simulator.map.Segment;
@@ -22,6 +23,7 @@ public class MyCanvas extends Canvas{
 	GraphicsContext gc;
 	Map map;
 	State state = State.getState();
+
 	IdealCar idealCar;
 	DrawableCar realCarModel;
 	
@@ -29,8 +31,8 @@ public class MyCanvas extends Canvas{
 		setWidth(w);
 		setHeight(h);	
 		gc = getGraphicsContext2D();
-		map = new Map();
-		map.loadMap();
+		map = Context.getContext().getMap();
+
 		System.out.println(map.getMapName());
 		state.setAnim_seg(map.getMap().getSegments().get(0)); //default value
 
@@ -43,19 +45,21 @@ public class MyCanvas extends Canvas{
 			double y = event.getY();
 			System.out.println("X,Y = ["+x+";"+y+"]  transform  ["+ Function.tx(x)+";"+Function.ty(y)+"]" );
 
-			/*
-			for (Segment segment : map.getMap().getSegments()){
-				double startX = segment.getStartPose().getX();
-				double startY = segment.getStartPose().getY();
+			for (Segment segment : Context.getContext().getMap().getMap().getSegments()) {
+				int i = 1;
+				for (LaserTag laserTag : segment.getLaserTags()) {
+					i += 1;
+					double xl = laserTag.getX();
+					double yl = laserTag.getY();
+					double distance = Math.sqrt(Math.pow(x - xl, 2) + Math.pow(y - yl, 2));
 
-				for(LaserTag laserTag : segment.getLaserTags()){
-					laserTag.ge
+					if (Math.abs(distance) < 10) {
+						System.out.println("click on segment " +
+								segment.getSegmentId() + " laser= " + laserTag.getType() + " in distance-" + distance);
+					}
+
 				}
-
 			}
-
-		
-			 */
 
 
 		});

@@ -53,7 +53,7 @@ public class RealCarBaseModel implements DrawableCar {
         Paint preColor = gc.getFill();
         gc.setFill(Color.BLUE);
         gc.fillRect(-width/2,-height,width,height);
-        gc.strokeLine(-width/2,10,width/2,10);
+        gc.strokeLine(-width/2,CarModel.DISTANCEBETWEENAXLEANDBEAM,width/2,CarModel.DISTANCEBETWEENAXLEANDBEAM);
         gc.strokeOval(-1,-1,2,2);
         gc.setFill(preColor);
     }

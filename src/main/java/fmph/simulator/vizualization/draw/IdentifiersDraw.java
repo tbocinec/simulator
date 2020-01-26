@@ -68,8 +68,11 @@ public  void drawIDMark(IdLocation idloc) {
 }
 
 public void drawIDText(IdLocation idloc,Double gamma,String tag) {
-	 gc.translate(Function.tx(idloc.getPos()[0]), Function.ty(idloc.getPos()[1]));
-     gc.rotate(gamma);
+        //tuhol sa pocita le nraz
+     gamma = Math.toDegrees(gamma);
+    gc.translate(Function.tx(idloc.getPos()[0]), Function.ty(idloc.getPos()[1]));
+    gc.rotate(gamma);
+
      gc.setLineDashes(0);
      gc.setLineWidth(1);
      gc.strokeText(tag, 4, -7); //4, -7);

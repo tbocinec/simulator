@@ -3,6 +3,8 @@ package app;
 import com.Server;
 import fmph.simulator.CarModel;
 import fmph.simulator.Config;
+import fmph.simulator.Map;
+import fmph.simulator.map.LaserTag;
 import fmph.simulator.vizualization.Visualize;
 import fmph.simulator.vizualization.console.ConsolePanel;
 import fmph.simulator.vizualization.controlPanel.ControlPanel;
@@ -22,6 +24,32 @@ public class Context {
     ControlPanel controlPanel;
     ConsolePanel consolePanel;
     PropertiesConfiguration config = Config.getConfig();
+
+    LaserTag lastSeenlaserTag;
+
+
+    public LaserTag getLastSeenlaserTag() {
+        return lastSeenlaserTag;
+    }
+
+    public void setLastSeenlaserTag(LaserTag lastSeenlaserTag) {
+        this.lastSeenlaserTag = lastSeenlaserTag;
+    }
+
+
+    public Map getMap() {
+        if(map == null){
+            map = new Map();
+            map.loadMap();
+        }
+        return map;
+    }
+
+    public void setMap(Map map) {
+        this.map = map;
+    }
+
+    Map map;
 
     private Context() {
 

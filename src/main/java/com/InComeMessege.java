@@ -6,6 +6,9 @@ import fmph.simulator.vizualization.console.Message;
 import fmph.simulator.vizualization.console.MessageType;
 
 public class InComeMessege {
+
+	final String splitChat = ";";
+
 	double wheelAngle;
 	double carSpeed;
 

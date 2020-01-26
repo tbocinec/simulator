@@ -76,6 +76,7 @@ public class ConsolePanel extends ScrollPane {
       //  Region p = new Region();
        //S p.setPrefSize(Double.MAX_VALUE, 0.0);
         Platform.runLater( () -> box.getChildren().addAll(text));
+        Platform.runLater( () -> this.setVvalue(40));
     }
 
 }
