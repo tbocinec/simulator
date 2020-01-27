@@ -6,6 +6,7 @@ import com.Message;
 import fmph.simulator.map.LaserTag;
 import fmph.simulator.map.Segment;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class CarModel {
@@ -44,13 +45,11 @@ public class CarModel {
         double actualTime = System.currentTimeMillis();
         if (lastRun + minimumTimeInterval < actualTime) {
 
-
             double time = actualTime - lastRun;
             double traveledDistance = (time / 1000) * carSpeed * 1000;
 
-
             checkIdentifier();
-            if (Math.abs(wheelAngle) <= 0.1) { //auto ide rovno
+            if (Math.abs(wheelAngle) <= 1) { //auto ide rovno
                 posX = posX + (traveledDistance / 100 * Math.sin(Math.toRadians(carAngle)));
                 posY = posY - (traveledDistance / 100 * Math.cos(Math.toRadians(carAngle)));
 
@@ -145,8 +144,10 @@ public class CarModel {
                             }
                             Context.getContext().getConsolePanel().addMsg("Actual segmet : " + segment.getSegmentId() + " tagType " + laserTag.getType());
 							Context.getContext().setLastSeenlaserTag(laserTag);
+
                             Message msg = new Message();
-                            msg.setTime_stamp(System.currentTimeMillis());
+                            BigDecimal time = new BigDecimal(System.currentTimeMillis());
+                            msg.setTime_stamp(time.toPlainString());
                             msg.setTag_id(Integer.parseInt(laserTag.getType()));
                             msg.setTilt(carAngle-laserTag.getGamma());
                             msg.setCenter_x(distanceFromX);

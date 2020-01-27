@@ -19,7 +19,7 @@ public class Message {
 	double error;
 	double confidence;
 	double timeUsed;
-	double time_stamp;
+	String time_stamp;
 
 
 	public String  serialize(){
@@ -124,11 +124,11 @@ public class Message {
 		this.timeUsed = timeUsed;
 	}
 
-	public double getTime_stamp() {
+	public String getTime_stamp() {
 		return time_stamp;
 	}
 
-	public void setTime_stamp(double time_stamp) {
+	public void setTime_stamp(String time_stamp) {
 		this.time_stamp = time_stamp;
 	}
 }
