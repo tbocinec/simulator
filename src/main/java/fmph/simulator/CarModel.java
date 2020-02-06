@@ -10,14 +10,14 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class CarModel {
-    public static final double BEAMWIDTH = 15; // sirka luca [m] original 0.3
+    public static final double BEAMWIDTH = 12; // sirka luca [m] original 0.3
     public static final double DISTANCEBETWEENAXLES = 70;   //vzdialenost medzi prednou a zadnou napravou [m]
     public static final double DISTANCEBETWEENAXLEANDBEAM = 20;// vzdialenost medzi prednou napravou a lucom [m] real 0.3
 
     //todo rozsirit parameter a stav
 
 
-    double posX = 340; //car position in x axis front axle
+    double posX = 320; //car position in x axis front axle
     double posY = 420; //car position in y axis front axle
 
     //double posX = 350; //car position in x axis front axle
@@ -42,8 +42,15 @@ public class CarModel {
             return;
         }
 
+
         double actualTime = System.currentTimeMillis();
         if (lastRun + minimumTimeInterval < actualTime) {
+
+
+            if(carSpeed == 0){
+                lastRun = actualTime;
+                return;
+            }
 
             double time = actualTime - lastRun;
             double traveledDistance = (time / 1000) * carSpeed * 1000;
@@ -68,10 +75,9 @@ public class CarModel {
                 posY = Math.cos(Math.toRadians(delta_fi)) * (posY - Cy) - Math.sin(Math.toRadians(delta_fi)) * (posX - Cx) + Cy;
 
             }
-
-
-            //Context.getContext().getControlPanel().changeText();
             lastRun = actualTime;
+            Context.getContext().getControlPanel().changeText();
+
         }
 
 
@@ -107,9 +113,8 @@ public class CarModel {
         carAngle -= transoform;
 
 
-
         double svx = Fx - Ex;
-        double svy = Fy - Fy;
+        double svy = Fy - Ey;
 
         double A = svy;
         double B = -svx;
@@ -133,40 +138,29 @@ public class CarModel {
 
                     if (distanceFromX < BEAMWIDTH / 2) {
 
-                      if(lastSeenTag.contains( laserTag)){
-                                break;
-                            }
-                            else{
-                                lastSeenTag.add(laserTag);
-                                if(lastSeenTag.size() > 3){
-                                    lastSeenTag.remove(0);
-                                }
+                        if (lastSeenTag.contains(laserTag)) {
+                            break;
+                        } else {
+                            lastSeenTag.add(laserTag);
+                            if (lastSeenTag.size() > 4) { //todo
+                                lastSeenTag.remove(0);
                             }
                             Context.getContext().getConsolePanel().addMsg("Actual segmet : " + segment.getSegmentId() + " tagType " + laserTag.getType());
-							Context.getContext().setLastSeenlaserTag(laserTag);
+                            Context.getContext().setLastSeenlaserTag(laserTag);
 
                             Message msg = new Message();
                             BigDecimal time = new BigDecimal(System.currentTimeMillis());
                             msg.setTime_stamp(time.toPlainString());
                             msg.setTag_id(Integer.parseInt(laserTag.getType()));
-                            msg.setTilt(carAngle-laserTag.getGamma());
+                            msg.setTilt(carAngle - laserTag.getGamma());
                             msg.setCenter_x(distanceFromX);
 
                             Context.getContext().getServer().sendMsg(msg.serialize());
-
-
-
-                        //System.out.println(segment.getSegmentId() + " --- id= " + laserTag.getType() + "---" + distance);
-
+                        }
                     }
                 }
-
-
             }
-
         }
-
-
         return "1";
     }
 
