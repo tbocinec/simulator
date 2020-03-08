@@ -3,6 +3,8 @@ package com;
 //A Java program for a Server 
 
 import fmph.simulator.vizualization.animate.idealCar.State;
+import fmph.simulator.vizualization.console.Message;
+import fmph.simulator.vizualization.console.MessageType;
 import sun.java2d.loops.GraphicsPrimitive;
 
 import java.io.*;
@@ -30,9 +32,11 @@ public class Server implements Runnable {
             server = new ServerSocket(port);
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Eror with run Server,try another port");
+            new Message("Error with run Server,try another port", MessageType.ERROR);
+            System.out.println("Error with run Server,try another port");
         }
-        System.out.println("Server started");
+        System.out.println("Application server start at port : "+port);
+        new Message("Application server start at port : "+port, MessageType.INFO);
     }
 
     public void restart(){
@@ -63,18 +67,18 @@ public class Server implements Runnable {
             Thread.currentThread().interrupt(); // todo lok
 
         }
-        System.out.println("Closing connection");
+        new Message("Server: Close connection", MessageType.INFO);
     }
 
     private void acceptClinet() {
-        System.out.println("Waiting for a client ...");
+        new Message("Server: Waiting for connection car", MessageType.INFO);
         try {
             socket = server.accept();
             out = new DataOutputStream(socket.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("Client accepted");
+        new Message("Server: Client (car) was connecting", MessageType.INFO);
     }
 
     public void sendMsg(String msg){

@@ -12,6 +12,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class ConsolePanel extends ScrollPane {
@@ -19,12 +21,16 @@ public class ConsolePanel extends ScrollPane {
     TextFlow console;
     Button cleanButton;
     VBox  box;
+    SimpleDateFormat formatter;
 
     public ConsolePanel(){
         box = new VBox();
         this.setContent(box);
-        setMaxHeight(80);
-        setHeight(80);
+        setMaxHeight(250);
+        setHeight(250);
+
+        formatter= new SimpleDateFormat("HH:mm:ss ");
+
         console = new TextFlow();
         this.getChildren().add(console);
 
@@ -51,7 +57,7 @@ public class ConsolePanel extends ScrollPane {
 
     public void addMsg(String msg){
         final Text text = new Text(msg);
-        text.setFont(new Font(10));
+        text.setFont(new Font(14));
         text.setFill(Color.MEDIUMVIOLETRED);
         addText(text);
 
@@ -59,14 +65,14 @@ public class ConsolePanel extends ScrollPane {
 
     public void addWarning(String msg){
         Text text = new Text(msg);
-        text.setFont(new Font(12));
+        text.setFont(new Font(16));
         text.setFill(Color.YELLOW);
         addText(text);
     }
 
     public void addError(String msg){
         Text text = new Text(msg);
-        text.setFont(new Font(12));
+        text.setFont(new Font(16));
         text.setFill(Color.RED);
         addText(text);
 
@@ -75,6 +81,10 @@ public class ConsolePanel extends ScrollPane {
     public void addText(Text text){
       //  Region p = new Region();
        //S p.setPrefSize(Double.MAX_VALUE, 0.0);
+
+        Date date = new Date(System.currentTimeMillis());
+        String time = formatter.format(date);
+        text.setText(time+" "+text.getText());
         Platform.runLater( () -> box.getChildren().addAll(text));
         Platform.runLater( () -> this.setVvalue(40));
     }

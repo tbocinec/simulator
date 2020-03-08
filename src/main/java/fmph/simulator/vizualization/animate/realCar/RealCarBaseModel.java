@@ -4,8 +4,7 @@ import app.Context;
 import fmph.simulator.CarModel;
 import fmph.simulator.map.MapSchema;
 import fmph.simulator.vizualization.animate.DrawableCar;
-import fmph.simulator.vizualization.component.Config;
-import fmph.simulator.vizualization.component.Function;
+import fmph.simulator.vizualization.component.VisualizeConfig;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -18,7 +17,7 @@ import java.io.InputStream;
 
 public class RealCarBaseModel implements DrawableCar {
     CarModel carModel;
-    Config config = Config.GetConfig();
+    VisualizeConfig visualizeConfig = VisualizeConfig.GetConfig();
 
     double width = 40;
     double height = 65;

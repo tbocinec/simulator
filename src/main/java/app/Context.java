@@ -5,6 +5,7 @@ import fmph.simulator.CarModel;
 import fmph.simulator.Config;
 import fmph.simulator.Map;
 import fmph.simulator.map.LaserTag;
+import fmph.simulator.vizualization.MyCanvas;
 import fmph.simulator.vizualization.Visualize;
 import fmph.simulator.vizualization.console.ConsolePanel;
 import fmph.simulator.vizualization.controlPanel.ControlPanel;
@@ -12,6 +13,7 @@ import javafx.scene.Node;
 import javafx.stage.Stage;
 import org.apache.commons.configuration2.PropertiesConfiguration;
 
+//Singleton
 public class Context {
     private static Context context;
 
@@ -20,21 +22,16 @@ public class Context {
     Server server;
     CarModel carModel;
 
+    //StageAngPanel
+    MyCanvas canvas;
     Stage primaryStage;
     ControlPanel controlPanel;
     ConsolePanel consolePanel;
+
+    //Config
     PropertiesConfiguration config = Config.getConfig();
+    Map map;
 
-    LaserTag lastSeenlaserTag;
-
-
-    public LaserTag getLastSeenlaserTag() {
-        return lastSeenlaserTag;
-    }
-
-    public void setLastSeenlaserTag(LaserTag lastSeenlaserTag) {
-        this.lastSeenlaserTag = lastSeenlaserTag;
-    }
 
 
     public Map getMap() {
@@ -49,7 +46,7 @@ public class Context {
         this.map = map;
     }
 
-    Map map;
+
 
     private Context() {
 
@@ -119,5 +116,13 @@ public class Context {
             consolePanel = new ConsolePanel();
         }
         return  consolePanel;
+    }
+
+    public MyCanvas getCanvas() {
+        if(canvas == null){
+            canvas =  new MyCanvas();
+        }
+        return  canvas;
+
     }
 }

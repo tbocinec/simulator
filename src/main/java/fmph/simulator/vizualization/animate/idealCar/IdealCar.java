@@ -1,12 +1,11 @@
 package fmph.simulator.vizualization.animate.idealCar;
 
-import java.awt.image.BufferedImage;
 import java.io.*;
 
 import fmph.simulator.map.MapSchema;
 import fmph.simulator.map.Segment;
 import fmph.simulator.vizualization.animate.DrawableCar;
-import fmph.simulator.vizualization.component.Config;
+import fmph.simulator.vizualization.component.VisualizeConfig;
 import fmph.simulator.vizualization.component.Function;
 import fmph.simulator.vizualization.component.SegmentPose;
 import javafx.scene.canvas.GraphicsContext;
@@ -17,12 +16,12 @@ import javafx.scene.image.Image;
 public class IdealCar implements DrawableCar {
 
 	Boolean show_car = true;
-	Config config = Config.GetConfig();
+	VisualizeConfig visualizeConfig = VisualizeConfig.GetConfig();
 	State state = State.getState();
 
-	double width = config.getCar_image_width() * config.getCar_width_scale_factor();
-	double height = config.getCar_image_length() * config.getCar_length_scale_factor();
-	double offset = config.getCar_front_wheels_offset() * config.getCar_width_scale_factor();
+	double width = visualizeConfig.getCar_image_width() * visualizeConfig.getCar_width_scale_factor();
+	double height = visualizeConfig.getCar_image_length() * visualizeConfig.getCar_length_scale_factor();
+	double offset = visualizeConfig.getCar_front_wheels_offset() * visualizeConfig.getCar_width_scale_factor();
 
 	MapSchema mapSchema;
 
@@ -47,8 +46,8 @@ public class IdealCar implements DrawableCar {
 		gc.rotate(Math.toDegrees(-pose.getGamma() - Math.PI / 2));
 		gc.translate(-Function.tx(pose.getPos()[0]), -Function.ty(pose.getPos()[1]));
 
-		state.setAnim_pos(state.getAnim_pos() + config.getAnim_speed());
-		state.setAnim_tacho(state.getAnim_tacho() + config.getAnim_speed());
+		state.setAnim_pos(state.getAnim_pos() + visualizeConfig.getAnim_speed());
+		state.setAnim_tacho(state.getAnim_tacho() + visualizeConfig.getAnim_speed());
 
 		state.setTacho_counter(state.getTacho_counter() + 1);
 		if (state.getTacho_counter() == 25) {
@@ -101,7 +100,7 @@ public class IdealCar implements DrawableCar {
 
 		if (state.getNext_anim_seg().getSegmentShape().getType().compareTo("arc") == 0) {
 			double radius = state.getNext_anim_seg().getSegmentShape().getAttributes().getRotRadius();
-			state.setAnim_shorten_delta(radius * (1 - Math.cos(Math.asin(config.getCar_length() / 200.0 / radius))));
+			state.setAnim_shorten_delta(radius * (1 - Math.cos(Math.asin(visualizeConfig.getCar_length() / 200.0 / radius))));
 		} else {
 			state.setAnim_shorten_delta(0);
 		}
@@ -109,7 +108,7 @@ public class IdealCar implements DrawableCar {
 
 	private Image getImgCar() {
 		////gc.drawImage(getImgCar(), -offset, -height / 2);
-		File file = new File(config.getCar_img_url());
+		File file = new File(visualizeConfig.getCar_img_url());
 
 		InputStream targetStream = null;
 		try {

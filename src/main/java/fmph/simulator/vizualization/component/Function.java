@@ -7,7 +7,7 @@ import fmph.simulator.map.Segment;
 
 public class Function {
 	
-	public static Config config = Config.GetConfig();
+	public static VisualizeConfig visualizeConfig = VisualizeConfig.GetConfig();
 	
 	public static double[] translate(double[] pos, double alpha,double d)
 	{
@@ -56,17 +56,29 @@ public class Function {
 	public static double tx(double x)
 	{
 		
-	    return config.getMarginx() + (x - config.getMaprange()[0] + config.getTranslate_x()) * config.getQ();
+	    return visualizeConfig.getMarginx() + (x - visualizeConfig.getMaprange()[0] + visualizeConfig.getTranslate_x()) * visualizeConfig.getQ();
 	}
 
 	public static double  ty(double y)
 	{
-	    return config.getCh() - (config.getMarginy() + (y - config.getMaprange()[2] +  config.getTranslate_y()) * config.getQ());
+	    return visualizeConfig.getCh() - (visualizeConfig.getMarginy() + (y - visualizeConfig.getMaprange()[2] +  visualizeConfig.getTranslate_y()) * visualizeConfig.getQ());
 	}
-	
+
+	public static double txinv(double x)
+	{
+		return (x - visualizeConfig.getMarginx()) / visualizeConfig.getQ() + visualizeConfig.getMaprange()[0] - visualizeConfig.getTranslate_x();
+	}
+
+	public static double tyinv(double y)
+	{
+		return ((visualizeConfig.getCh() - y) - visualizeConfig.getMarginy()) / visualizeConfig.getQ() + visualizeConfig.getMaprange()[2] - visualizeConfig.getTranslate_y();
+	}
+
+
+
 	public static double td(double d)
 	{
-	    return d * config.getQ();
+	    return d * visualizeConfig.getQ();
 	}
 	
 	public static double narc(double alpha, boolean cw)

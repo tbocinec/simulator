@@ -13,7 +13,7 @@ public class ClientMock {
 	// constructor to put ip address and port
 	public ClientMock(String address, int port) {
 
-		InComeMessege m1 = new InComeMessege(100, 200);
+		InComeMessage m1 = new InComeMessage(100, 200);
 
 		// establish a connection
 		try {
@@ -33,11 +33,11 @@ public class ClientMock {
 	        	String[] readNumbers = line.split(" ");
 	        	if(readNumbers.length == 2) {
 
-					InComeMessege msg;
+					InComeMessage msg;
 					try {
-						msg = new InComeMessege(Double.parseDouble(readNumbers[0]), Double.parseDouble(readNumbers[1]));
+						msg = new InComeMessage(Double.parseDouble(readNumbers[0]), Double.parseDouble(readNumbers[1]));
 					}catch (NumberFormatException e){
-						msg = new InComeMessege("Wrong input from simulator");
+						msg = new InComeMessage("Wrong input from simulator");
 						System.out.println("Please add input in correct format");
 					}
 					out.writeUTF(msg.serializable());

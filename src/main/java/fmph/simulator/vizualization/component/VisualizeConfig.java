@@ -1,21 +1,26 @@
 package fmph.simulator.vizualization.component;
 
+import app.Context;
+
 import java.io.File;
 
-public class Config {
+public class VisualizeConfig {
 
-	double minimum_margin = 50; // [pixels]
+	double minimum_margin = 150; // [pixels]
 	public double identifier_width = 0.05; // [m]
 	public double identifier_length = 0.08; // [m]
 	double marginx = minimum_margin;
 	double marginy = minimum_margin;
+
+
+
 	double translate_x = 0;
 	double translate_y = 0;
 	double[] maprange = { -2.85, 2.85, -1.85, 1.85 };
-	double q = 100;
+	double q = 160;
 
-	double cw = 600;
-	double ch = 500;
+	double cw = 900;
+	double ch = 900;
 
 	double anim_speed = 0.1; //0.01;
 
@@ -30,17 +35,19 @@ public class Config {
 	double car_front_wheels_offset = 12;
 	String car_img_url = "target" + File.separator + "data" + File.separator + "red_car.png";
 
-	private Config() {
+	private VisualizeConfig() {
+	 //	cw =  Context.getContext().getCanvas().getWidth());
+	 //	ch =  Context.getContext().getCanvas().getHeight();
 
 	}
 
-	private static Config config;
+	private static VisualizeConfig visualizeConfig;
 
-	public static Config GetConfig() {
-		if (config == null) {
-			config = new Config();
+	public static VisualizeConfig GetConfig() {
+		if (visualizeConfig == null) {
+			visualizeConfig = new VisualizeConfig();
 		}
-		return config;
+		return visualizeConfig;
 	}
 
 	public double getCar_length() {

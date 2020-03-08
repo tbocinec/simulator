@@ -2,9 +2,8 @@
 
 import fmph.simulator.map.LaserTag;
 import fmph.simulator.map.Segment;
-import fmph.simulator.vizualization.MyCanvas;
 
-public class IdLocation {
+    public class IdLocation {
 	
 	
 	private String shape;
@@ -22,7 +21,7 @@ public class IdLocation {
 	private double[] pos4;
     private double gamma;
 
-    Config config  = Config.GetConfig();
+    VisualizeConfig visualizeConfig = VisualizeConfig.GetConfig();
 
 	public IdLocation(Segment s) {
 		super();
@@ -68,11 +67,11 @@ public class IdLocation {
 	        }
 	        pos = Function.translate(centre, beta, r);
 	    }
-	    pos1 = Function.translate(pos, gamma - Math.PI / 2, config.getIdentifier_width()  / 2);
-	    pos1 = Function.translate(pos1, gamma, - config.getIdentifier_length() / 2);
-	    pos2 = Function.translate(pos1, gamma, config.getIdentifier_length());
-	    pos4 = Function.translate(pos1, gamma + Math.PI / 2, config.getIdentifier_width());
-	    pos3 = Function.translate(pos4, gamma, config.getIdentifier_length());
+	    pos1 = Function.translate(pos, gamma - Math.PI / 2, visualizeConfig.getIdentifier_width()  / 2);
+	    pos1 = Function.translate(pos1, gamma, - visualizeConfig.getIdentifier_length() / 2);
+	    pos2 = Function.translate(pos1, gamma, visualizeConfig.getIdentifier_length());
+	    pos4 = Function.translate(pos1, gamma + Math.PI / 2, visualizeConfig.getIdentifier_width());
+	    pos3 = Function.translate(pos4, gamma, visualizeConfig.getIdentifier_length());
 
 //	    return {pos, pos1, pos2, pos3, pos4, gamma};
 	}

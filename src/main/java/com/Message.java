@@ -1,9 +1,5 @@
 package com;
 
-import app.Context;
-import fmph.simulator.CarModel;
-import fmph.simulator.vizualization.console.MessageType;
-
 public class Message {
 
 	final String splitChat = ";";

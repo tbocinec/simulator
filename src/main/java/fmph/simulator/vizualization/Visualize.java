@@ -20,19 +20,22 @@ public class Visualize  {
 
 
 	public Visualize(final Stage primaryStage) {
+
+		primaryStage.setMaximized(true);
 		//todo server change place
-		this.plocha = new MyCanvas();
+		this.plocha = Context.getContext().getCanvas();
 		this.primaryStage = primaryStage;
 
 		BorderPane bPane = new BorderPane();
 		bPane.setCenter(new Pane(plocha));
 		bPane.setRight(Context.getContext().getControlPanel());
 		bPane.setBottom(Context.getContext().getConsolePanel());
-
 		this.scene = new Scene(bPane);
 
 
 
+		primaryStage.widthProperty().addListener(evt -> plocha.resize(primaryStage));
+		primaryStage.heightProperty().addListener(evt -> plocha.resize(primaryStage));
 
 
 		Platform.runLater(new Runnable() {

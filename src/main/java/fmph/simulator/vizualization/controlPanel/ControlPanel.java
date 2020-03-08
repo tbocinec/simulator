@@ -42,15 +42,18 @@ public class ControlPanel extends FlowPane {
 
 
         Label carwheelAngleLabel = new Label("Car wheel angle : ");
-
         Button change = new Button("save");
-
+        Button resetButton = new Button("ResetCar");
         TextField carwheelAngleField = new TextField();
 
         this.getChildren().add(carwheelAngleLabel);
         this.getChildren().add(carwheelAngleField);
         this.getChildren().add(change);
+        this.getChildren().add(resetButton);
 
+        resetButton.setOnAction(event -> {
+            Context.getContext().getCarModel().initStartValue();
+        });
 
         change.setOnAction(event -> {
            Context.getContext().getCarModel().setWheelAngle(
@@ -59,7 +62,6 @@ public class ControlPanel extends FlowPane {
     }
 
     public void changeText() {
-
         Platform.runLater(new Runnable() {
             public void run() {
                 CarModel carmodel = Context.getContext().getCarModel();

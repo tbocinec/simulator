@@ -17,8 +17,6 @@ public class Message {
     static SimpleDateFormat formater = new SimpleDateFormat("HH:mm:ss");
 
 
-
-
     public Message(String msg, MessageType type, Timestamp timestamp) {
         this.msg = msg;
         this.type = type;
