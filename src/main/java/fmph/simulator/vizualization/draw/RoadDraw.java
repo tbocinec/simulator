@@ -30,7 +30,6 @@ public void paintSegmentRoad(Segment segment) {
 		String shape = segment.getSegmentShape().getType();
 		double w = segment.getSegmentWidth() /2;
 		if(shape.compareTo("line") == 0 ) {
-			//https://kempelen.dai.fmph.uniba.sk/ats/map.php
 			
 			double h1 = segment.getStartPose().getHeading() - Math.PI /2;
 			double h2 = segment.getStartPose().getHeading() + Math.PI /2;

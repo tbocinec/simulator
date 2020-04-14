@@ -1,7 +1,7 @@
 package fmph.simulator.vizualization.component;
 
 import fmph.simulator.map.Segment;
-import fmph.simulator.vizualization.MyCanvas;
+
 
 public class SegmentPose {
 	double gamma;

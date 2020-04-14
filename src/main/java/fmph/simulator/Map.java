@@ -18,7 +18,7 @@ import fmph.simulator.vizualization.component.IdLocation;
 public class Map {
 	
 	//static final String mapPath = "target/F1-114-oval-only.json";
-    static final String mapPath = "target/F1-114-current.json";
+    static final String mapPath = "target/F1-114-current.json"; //todo real loader
 	
 	private MapSchema map;
 	
@@ -53,8 +53,11 @@ public class Map {
 				idloc.identifier_location(i, segment);
 
 
-				tags.get(i).setX(Function.tx(idloc.getPos()[0]));
-				tags.get(i).setY(Function.ty(idloc.getPos()[1]));
+				//tags.get(i).setX(Function.tx(idloc.getPos()[0]));
+				//tags.get(i).setY(Function.ty(idloc.getPos()[1]));
+				tags.get(i).setX(idloc.getPos()[0]);
+				tags.get(i).setY(idloc.getPos()[1]);
+
 				tags.get(i).setGamma(Math.toDegrees(idloc.getGamma()));
 			}
 

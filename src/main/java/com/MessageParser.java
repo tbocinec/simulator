@@ -1,6 +1,7 @@
 package com;
 
-import app.Context;
+import app.context.Context;
+import app.context.ContextBuilder;
 
 public class MessageParser {
 
@@ -14,18 +15,20 @@ public class MessageParser {
     public void parseMsg(){
         if(msg.trim().startsWith("setdir")){
             String dir = msg.split("setdir")[1];
-            Context.getContext().getCarModel().setWhealAngle(Double.parseDouble(dir));
+            ContextBuilder.getContext().getCarModel().setWhealAngle(Double.parseDouble(dir));
+            ContextBuilder.getContext().getCarModel().applicateLastSpeed();
             return;
         };
         if(msg.trim().startsWith("stop")){
-            Context.getContext().getCarModel().setCarSpeed(0);
-            Context.getContext().getConsolePanel().addMsg("Car stop");
+            ContextBuilder.getContext().getCarModel().setCarSpeed(0);
+            ContextBuilder.getContext().getConsoleController().addMsg("Car stop");
             return;
         };
         if(msg.trim().startsWith("setpower")){
             String speed = msg.split("setpower")[1];
-            Context.getContext().getCarModel().setCarSpeed(Double.parseDouble(speed) * 0.1);
-            Context.getContext().getConsolePanel().addMsg("Set speed " + speed);
+            ContextBuilder.getContext().getCarModel().setCarSpeed(Double.parseDouble(speed) * 1.3);
+            ContextBuilder.getContext().getCarModel().setLastSpeed(Double.parseDouble(speed) * 1.3);
+            ContextBuilder.getContext().getConsoleController().addMsg("Set speed " + speed);
             return;
         };
         System.out.println("unrecognized  msg "+msg);

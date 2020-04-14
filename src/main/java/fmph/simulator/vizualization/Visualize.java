@@ -1,68 +1,69 @@
 package fmph.simulator.vizualization;
 
-import app.Context;
-import com.Server;
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import fmph.simulator.vizualization.component.Function;
-import fmph.simulator.vizualization.controlPanel.ControlPanel;
-import javafx.application.Application;
+import app.context.Context;
+import app.context.ContextBuilder;
+import fmph.simulator.vizualization.view.CanvasController;
 import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.net.URL;
+
 public class Visualize  {
-    MyCanvas plocha;
+    CanvasController plocha;
     Boolean run = true;
     Stage primaryStage;
 	Scene scene;
 
 
 	public Visualize(final Stage primaryStage) {
+		Parent root =null;
+		try {
+			URL urlToView = getClass().getResource("view/main.fxml");
+			root = FXMLLoader.load(urlToView);
+		} catch (IOException e) {
+			//todo stop app and log
+			e.printStackTrace();
+			System.exit(3);
+		}
 
-		primaryStage.setMaximized(true);
-		//todo server change place
-		this.plocha = Context.getContext().getCanvas();
+		ContextBuilder.getContext().setPrimaryStage(primaryStage);
 		this.primaryStage = primaryStage;
-
-		BorderPane bPane = new BorderPane();
-		bPane.setCenter(new Pane(plocha));
-		bPane.setRight(Context.getContext().getControlPanel());
-		bPane.setBottom(Context.getContext().getConsolePanel());
-		this.scene = new Scene(bPane);
-
-
-
-		primaryStage.widthProperty().addListener(evt -> plocha.resize(primaryStage));
-		primaryStage.heightProperty().addListener(evt -> plocha.resize(primaryStage));
-
+		this.scene = new Scene(root,1350,800);
 
 		Platform.runLater(new Runnable() {
 			public void run() {
 				primaryStage.setScene(scene);
-				primaryStage.setTitle("Simulate");
+				primaryStage.setTitle("ATS");
 				primaryStage.show();
+
 			}
 		});
 	}
 
 
 
-
+	//Visualize Thread
     public void run() {
-        while (run) {
+		this.plocha = ContextBuilder.getContext().getCanvasController();
+		plocha.initialize();
 
-			Context.getContext().getCarModel().run();
-        	plocha.paint();
-            try {
-                Thread.sleep(60);
-            } catch (InterruptedException e) {
-                e.printStackTrace(); //todo exception
-				System.out.println("chyba");
-                System.exit(1);
-            }
-        }
+		try {
+			Thread.sleep(200);
+			while (true) {
+				if (run) {
+					ContextBuilder.getContext().getCarModel().run();
+					plocha.paint();
+				}
+				Thread.sleep(60);
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 
     }
 
@@ -76,5 +77,7 @@ public class Visualize  {
 	}
 
 
-
+	public void pause() {
+		this.run = !this.run;
+	}
 }

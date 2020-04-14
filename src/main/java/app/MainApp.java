@@ -1,5 +1,7 @@
 package app;
 
+import app.context.ContextBuilder;
+import app.context.interfaces.Context;
 import fmph.simulator.vizualization.console.Message;
 import fmph.simulator.vizualization.console.MessageType;
 import javafx.application.Application;
@@ -20,13 +22,13 @@ public class MainApp  extends Application implements Runnable {
 
 
     public void start(Stage primaryStage) throws Exception {
-        Context context = Context.getContext();
-        context.setPrimaryStage(primaryStage);
+        ContextBuilder.getContext().setPrimaryStage(primaryStage);
         new Thread(this).start();
     }
 
     public void run() {
-        Context context = Context.getContext();
+        Context context = ContextBuilder.getContext();
+
         context.getServer().start();
         context.getVisualize();
         context.getVisualize().run();

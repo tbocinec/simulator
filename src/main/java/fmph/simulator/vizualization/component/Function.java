@@ -23,7 +23,6 @@ public class Function {
 	    for (int i = 0; i < ss.size(); i++)
 	        if (ss.get(i).getSegmentId().compareTo(segId)==0)
 	            return ss.get(i);
-	    System.out.println("nenasloSegment");
 	    throw new RuntimeException("Non exists segment");
 	   
 	}
@@ -88,5 +87,7 @@ public class Function {
 	    while (alpha > 2 * Math.PI) alpha -= 2 * Math.PI;
 	    return alpha;
 	}
+
+
 
 }

@@ -1,12 +1,10 @@
 package fmph.simulator.vizualization.component;
 
-import app.Context;
-
 import java.io.File;
 
 public class VisualizeConfig {
 
-	double minimum_margin = 150; // [pixels]
+	double minimum_margin = 50; //150 // [pixels]
 	public double identifier_width = 0.05; // [m]
 	public double identifier_length = 0.08; // [m]
 	double marginx = minimum_margin;
@@ -16,11 +14,11 @@ public class VisualizeConfig {
 
 	double translate_x = 0;
 	double translate_y = 0;
-	double[] maprange = { -2.85, 2.85, -1.85, 1.85 };
-	double q = 160;
+	double[] maprange = {-2.85, 2.85, -1.85, 1.85};
+	double q = 100;
 
-	double cw = 900;
-	double ch = 900;
+	double cw = 1500;
+	double ch = 1500;
 
 	double anim_speed = 0.1; //0.01;
 
@@ -36,8 +34,7 @@ public class VisualizeConfig {
 	String car_img_url = "target" + File.separator + "data" + File.separator + "red_car.png";
 
 	private VisualizeConfig() {
-	 //	cw =  Context.getContext().getCanvas().getWidth());
-	 //	ch =  Context.getContext().getCanvas().getHeight();
+
 
 	}
 
