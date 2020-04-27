@@ -32,6 +32,8 @@ public class Context implements app.context.interfaces.Context {
     RecognitionHistoryController recognitionHistoryController;
     Stage primaryStage;
     CarInfoController carInfoController;
+    MenuMapController menuMapController;
+    AppPanelController appPanelController;
 
 
     public CanvasController getCanvasController() {
@@ -85,10 +87,6 @@ public class Context implements app.context.interfaces.Context {
     }
 
 
-
-
-
-    //Geter and Setter
     public Visualize getVisualize() {
         if (visualize == null) {
             if(primaryStage == null){
@@ -122,15 +120,11 @@ public class Context implements app.context.interfaces.Context {
         this.primaryStage = primaryStage;
     }
 
-    @Override
     public CarModel getCarModel() {
         if(carModel == null){
             carModel = new CarModel();
         }
         return carModel;
-    }
-    public void setCarModel(CarModel carModel) {
-        this.carModel = carModel;
     }
 
     public CarInfoController getCarInfoController() {
@@ -151,6 +145,12 @@ public class Context implements app.context.interfaces.Context {
     }
 
     @Override
+    public void setMenuMapController(MenuMapController menuMapController) {
+        this.menuMapController = menuMapController;
+
+    }
+
+    @Override
     public void setRecognitionHistoryController(RecognitionHistoryController recognitionHistoryController) {
         this.recognitionHistoryController = recognitionHistoryController;
     }
@@ -165,6 +165,13 @@ public class Context implements app.context.interfaces.Context {
         this.mainController = mainController;
     }
 
+    public AppPanelController getAppPanelController() {
+        return appPanelController;
+    }
 
+    @Override
+    public void setAppPanelController(AppPanelController appPanelController) {
+        this.appPanelController = appPanelController;
+    }
 
 }

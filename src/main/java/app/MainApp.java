@@ -28,7 +28,6 @@ public class MainApp  extends Application implements Runnable {
 
     public void run() {
         Context context = ContextBuilder.getContext();
-
         context.getServer().start();
         context.getVisualize();
         context.getVisualize().run();

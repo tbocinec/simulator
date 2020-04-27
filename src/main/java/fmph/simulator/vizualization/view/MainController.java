@@ -3,6 +3,7 @@ package fmph.simulator.vizualization.view;
 import app.context.ContextBuilder;
 import app.context.interfaces.Contextable;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
@@ -49,6 +50,16 @@ public class MainController implements Contextable {
 
         });
         ContextBuilder.getContext().getCanvasController().resize();
+    }
+
+    @FXML
+    public void aboutPopup(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("ATS");
+        alert.setHeaderText("Automatic Transport System");
+        alert.setContentText("I have a great message for you!");
+
+        alert.showAndWait();
     }
 
 

@@ -23,6 +23,8 @@
 <?import javafx.scene.text.Font?>
 
 <?import fmph.simulator.vizualization.view.RecognitionHistoryController?>
+<?import fmph.simulator.vizualization.view.MenuMapController?>
+<?import fmph.simulator.vizualization.view.AppPanelController?>
 <VBox prefHeight="800.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fmph.simulator.vizualization.view.MainController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
@@ -31,7 +33,9 @@
           <items>
             <MenuItem mnemonicParsing="false" text="New" />
             <MenuItem mnemonicParsing="false" text="Open…" />
-            <Menu mnemonicParsing="false" text="Open Recent" />
+            <MenuMapController mnemonicParsing="false" text="Change map ">
+
+            </MenuMapController>
             <SeparatorMenuItem mnemonicParsing="false" />
             <MenuItem mnemonicParsing="false" text="Close" />
             <MenuItem mnemonicParsing="false" text="Save" />
@@ -91,7 +95,7 @@
         </Menu>
         <Menu mnemonicParsing="false" text="Help">
           <items>
-            <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
+            <MenuItem mnemonicParsing="false" text="About ATS" />
           </items>
         </Menu>
       </menus>
@@ -107,7 +111,7 @@
                 </TitledPane>
                 <TitledPane animated="false" text="App 2">
                   <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                    <AppPanelController minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                   </content>
                 </TitledPane>
                 <TitledPane animated="false" text="Recognized history">
@@ -115,6 +119,11 @@
                     <RecognitionHistoryController minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                   </content>
                 </TitledPane>
+                  <TitledPane animated="false" text="Connection info">
+                      <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                      </content>
+                  </TitledPane>
                   <TitledPane animated="false" text="Other 2">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />

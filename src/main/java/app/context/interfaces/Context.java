@@ -40,4 +40,8 @@ public interface Context {
 
     void setRecognitionHistoryController(RecognitionHistoryController controller);
     RecognitionHistoryController getRecognitionHistoryController();
+
+    void setMenuMapController(MenuMapController menuMapController);
+
+    void setAppPanelController(AppPanelController appPanelController);
 }

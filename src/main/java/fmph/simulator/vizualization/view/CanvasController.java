@@ -1,11 +1,11 @@
 package fmph.simulator.vizualization.view;
 
-import app.context.Context;
 import app.context.ContextBuilder;
 import app.context.interfaces.Contextable;
 import fmph.simulator.Map;
 import fmph.simulator.map.LaserTag;
 import fmph.simulator.map.Segment;
+import fmph.simulator.models.CarModel;
 import fmph.simulator.vizualization.animate.DrawableCar;
 import fmph.simulator.vizualization.animate.idealCar.IdealCar;
 import fmph.simulator.vizualization.animate.idealCar.State;
@@ -16,11 +16,9 @@ import fmph.simulator.vizualization.console.Message;
 import fmph.simulator.vizualization.console.MessageType;
 import fmph.simulator.vizualization.draw.*;
 import javafx.application.Platform;
-import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
 
 
@@ -61,10 +59,54 @@ public class CanvasController extends Canvas implements Contextable {
             showPosition(event);
         });
 
+        makeDrawableCar();
+
     }
 
 
 
+    Boolean drag = false;
+    Boolean dragTurn = false;
+
+    private void makeDrawableCar() {
+        this.setOnMousePressed(e-> {
+            if(e.isPrimaryButtonDown()) {
+                if (distanceFromCar(e.getX(), e.getY()) < 0.1) {
+                    drag = true;
+                }
+            }else{
+                dragTurn = true;
+            }
+        });
+
+
+        this.setOnMouseReleased(e-> {
+            drag=false;
+            dragTurn = false;
+        });
+
+
+        this.setOnMouseDragged(e->{
+            CarModel carmodel = context.getCarModel();
+            if(drag) {
+                carmodel.setPosX(Function.txinv(e.getX()));
+                carmodel.setPosY(Function.tyinv(e.getY()));
+            }
+            else if(dragTurn){
+                double d = distanceFromCar(e.getX(),e.getY());
+                carmodel.setCarAngle(carmodel.getCarAngle()+d*1.3);
+            }
+
+        });
+
+
+    }
+
+    private double distanceFromCar(double x, double y){
+        CarModel carmodel = context.getCarModel();
+        return Math.sqrt(  Math.pow(Function.txinv(x)-carmodel.getPosX(),2) + Math.pow(Function.tyinv(y)-carmodel.getPosY(),2));
+
+    }
 
 
     void resize() {
@@ -172,3 +214,5 @@ public class CanvasController extends Canvas implements Contextable {
 
     }
 }
+
+

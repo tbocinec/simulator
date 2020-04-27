@@ -3,6 +3,7 @@ package com;
 import java.net.*;
 import java.io.*;
 
+@Deprecated
 public class ClientMock {
 
 	// initialize socket and input output streams

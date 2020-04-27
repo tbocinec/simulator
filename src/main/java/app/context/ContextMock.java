@@ -101,4 +101,14 @@ public class ContextMock implements Context {
     public RecognitionHistoryController getRecognitionHistoryController() {
         return null;
     }
+
+    @Override
+    public void setMenuMapController(MenuMapController menuMapController) {
+
+    }
+
+    @Override
+    public void setAppPanelController(AppPanelController appPanelController) {
+
+    }
 }

@@ -13,8 +13,7 @@ import java.net.Socket;
 import java.nio.ByteBuffer;
 
 public class Server implements Runnable {
-    //state of simulator
-    State state = State.getState();
+
     Thread thread;
     Integer port;
     //initialize socket and input stream
@@ -130,8 +129,7 @@ public class Server implements Runnable {
         }
     }
 
-
-
+    //Function compatibilite with C library
     private static int byteToInt(byte [] b){
          return
                 (b[0]<< 0)&0x000000ff|

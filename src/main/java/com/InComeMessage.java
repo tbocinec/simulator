@@ -7,6 +7,7 @@ import fmph.simulator.vizualization.console.MessageType;
 
 import java.util.regex.PatternSyntaxException;
 
+@Deprecated
 public class InComeMessage {
 
 	final static String SPLIT_CHAR = ";";
