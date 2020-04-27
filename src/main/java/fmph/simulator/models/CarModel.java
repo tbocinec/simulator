@@ -1,9 +1,8 @@
 package fmph.simulator.models;
 
 
-import app.context.Context;
-import app.context.ContextBuilder;
-import com.Message;
+import fmph.simulator.app.context.ContextBuilder;
+import fmph.simulator.com.Message;
 import fmph.simulator.map.LaserTag;
 import fmph.simulator.map.Segment;
 import fmph.simulator.vizualization.component.Function;

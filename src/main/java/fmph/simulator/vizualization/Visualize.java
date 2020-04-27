@@ -1,13 +1,11 @@
 package fmph.simulator.vizualization;
 
-import app.context.Context;
-import app.context.ContextBuilder;
+import fmph.simulator.app.context.ContextBuilder;
 import fmph.simulator.vizualization.view.CanvasController;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;

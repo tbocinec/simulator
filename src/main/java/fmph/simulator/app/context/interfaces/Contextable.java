@@ -1,6 +1,6 @@
-package app.context.interfaces;
+package fmph.simulator.app.context.interfaces;
 
-import app.context.ContextBuilder;
+import fmph.simulator.app.context.ContextBuilder;
 
 public interface Contextable {
     Context context =  ContextBuilder.getContext();

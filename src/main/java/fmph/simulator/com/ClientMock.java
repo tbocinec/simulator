@@ -1,4 +1,4 @@
-package com;
+package fmph.simulator.com;
 
 import java.net.*;
 import java.io.*;

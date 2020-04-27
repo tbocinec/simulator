@@ -1,4 +1,4 @@
-package app.context.exceptions;
+package fmph.simulator.app.context.exceptions;
 
 public class ContextException extends RuntimeException {
 

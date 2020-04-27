@@ -1,16 +1,13 @@
-package com;
+package fmph.simulator.com;
 
 //A Java program for a Server 
 
-import fmph.simulator.vizualization.animate.idealCar.State;
 import fmph.simulator.vizualization.console.Message;
 import fmph.simulator.vizualization.console.MessageType;
-import sun.java2d.loops.GraphicsPrimitive;
 
 import java.io.*;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.nio.ByteBuffer;
+import java.net.*;
+import java.util.Enumeration;
 
 public class Server implements Runnable {
 
@@ -90,7 +87,7 @@ public class Server implements Runnable {
         byte[] bytesLength = intToBytes(utf8Bytes.length);
         try {
             if(out == null){
-                System.out.println("chyba");
+                System.out.println("chyba"); //todo
                 return;}
 
             out.write(bytesLength);
@@ -100,6 +97,29 @@ public class Server implements Runnable {
             throw new RuntimeException("Send message problem",e);
         }
 
+    }
+
+    public String getMyIp(){
+        String ip = null;
+        try {
+            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+            while (interfaces.hasMoreElements()) {
+                NetworkInterface iface = interfaces.nextElement();
+                // filters out 127.0.0.1 and inactive interfaces
+                if (iface.isLoopback() || !iface.isUp())
+                    continue;
+
+                Enumeration<InetAddress> addresses = iface.getInetAddresses();
+                while(addresses.hasMoreElements()) {
+                    InetAddress addr = addresses.nextElement();
+                    ip = addr.getHostAddress();
+                    System.out.println(iface.getDisplayName() + " " + ip);
+                }
+            }
+        } catch (SocketException e) {
+            throw new RuntimeException(e);
+        }
+        return ip;
     }
 
 

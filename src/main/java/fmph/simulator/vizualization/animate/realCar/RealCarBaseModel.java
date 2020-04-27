@@ -1,7 +1,6 @@
 package fmph.simulator.vizualization.animate.realCar;
 
-import app.context.Context;
-import app.context.ContextBuilder;
+import fmph.simulator.app.context.ContextBuilder;
 import fmph.simulator.models.CarModel;
 import fmph.simulator.map.MapSchema;
 import fmph.simulator.vizualization.animate.DrawableCar;

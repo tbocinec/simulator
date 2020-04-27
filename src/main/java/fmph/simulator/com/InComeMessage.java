@@ -1,6 +1,6 @@
-package com;
+package fmph.simulator.com;
 
-import app.context.ContextBuilder;
+import fmph.simulator.app.context.ContextBuilder;
 import fmph.simulator.models.CarModel;
 import fmph.simulator.vizualization.console.Message;
 import fmph.simulator.vizualization.console.MessageType;

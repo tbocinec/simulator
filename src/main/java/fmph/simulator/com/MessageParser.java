@@ -1,7 +1,6 @@
-package com;
+package fmph.simulator.com;
 
-import app.context.Context;
-import app.context.ContextBuilder;
+import fmph.simulator.app.context.ContextBuilder;
 
 public class MessageParser {
 

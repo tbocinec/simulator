@@ -1,7 +1,7 @@
 package fmph.simulator.vizualization.view;
 
-import app.context.ContextBuilder;
-import app.context.interfaces.Contextable;
+import fmph.simulator.app.context.ContextBuilder;
+import fmph.simulator.app.context.interfaces.Contextable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;

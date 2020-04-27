@@ -1,7 +1,7 @@
-package app.context;
+package fmph.simulator.app.context;
 
-import app.context.interfaces.Context;
-import com.Server;
+import fmph.simulator.app.context.interfaces.Context;
+import fmph.simulator.com.Server;
 import fmph.simulator.Map;
 import fmph.simulator.models.CarModel;
 import fmph.simulator.recognization.RecognitionHistory;
@@ -109,6 +109,16 @@ public class ContextMock implements Context {
 
     @Override
     public void setAppPanelController(AppPanelController appPanelController) {
+
+    }
+
+    @Override
+    public ConnectionInfoController getConnectionInfoController() {
+        return null;
+    }
+
+    @Override
+    public void setConnectionInfoController(ConnectionInfoController connectionInfoController) {
 
     }
 }

@@ -1,4 +1,4 @@
-package com;
+package fmph.simulator.com;
 
 public class Message {
 

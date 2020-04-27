@@ -1,9 +1,8 @@
 package fmph.simulator.vizualization.console;
 
 
-import app.context.Context;
-import app.context.ContextBuilder;
-import app.context.exceptions.ContextException;
+import fmph.simulator.app.context.ContextBuilder;
+import fmph.simulator.app.context.exceptions.ContextException;
 import fmph.simulator.vizualization.view.ConsoleController;
 
 

@@ -1,14 +1,18 @@
-package app.context.interfaces;
+package fmph.simulator.app.context.interfaces;
 
-import com.Server;
+import fmph.simulator.Config;
+import fmph.simulator.com.Server;
 import fmph.simulator.Map;
 import fmph.simulator.models.CarModel;
 import fmph.simulator.recognization.RecognitionHistory;
 import fmph.simulator.vizualization.Visualize;
 import fmph.simulator.vizualization.view.*;
 import javafx.stage.Stage;
+import org.apache.commons.configuration2.PropertiesConfiguration;
 
 public interface Context {
+
+    PropertiesConfiguration config = Config.getConfig();
 
     CanvasController getCanvasController();
     void setCanvasController(CanvasController canvasController);
@@ -44,4 +48,7 @@ public interface Context {
     void setMenuMapController(MenuMapController menuMapController);
 
     void setAppPanelController(AppPanelController appPanelController);
+
+    ConnectionInfoController getConnectionInfoController();
+    void setConnectionInfoController(ConnectionInfoController connectionInfoController);
 }

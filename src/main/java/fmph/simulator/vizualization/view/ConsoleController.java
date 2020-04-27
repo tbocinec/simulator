@@ -1,13 +1,11 @@
 package fmph.simulator.vizualization.view;
 
-import app.context.ContextBuilder;
-import app.context.interfaces.Contextable;
+import fmph.simulator.app.context.ContextBuilder;
+import fmph.simulator.app.context.interfaces.Contextable;
 import fmph.simulator.vizualization.console.Message;
 import javafx.application.Platform;
-import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;

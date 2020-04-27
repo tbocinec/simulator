@@ -1,4 +1,4 @@
-package app;
+package fmph.simulator.app;
 
 import fmph.simulator.vizualization.component.Function;
 

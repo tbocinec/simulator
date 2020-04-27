@@ -1,7 +1,7 @@
-package app.context;
+package fmph.simulator.app.context;
 
-import app.context.exceptions.ContextException;
-import com.Server;
+import fmph.simulator.app.context.exceptions.ContextException;
+import fmph.simulator.com.Server;
 import fmph.simulator.models.CarModel;
 import fmph.simulator.Config;
 import fmph.simulator.Map;
@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 import org.apache.commons.configuration2.PropertiesConfiguration;
 
 //Singleton
-public class Context implements app.context.interfaces.Context {
+public class Context implements fmph.simulator.app.context.interfaces.Context {
     private static Context context;
 
     //Component
@@ -34,6 +34,7 @@ public class Context implements app.context.interfaces.Context {
     CarInfoController carInfoController;
     MenuMapController menuMapController;
     AppPanelController appPanelController;
+    ConnectionInfoController connectionInfoController;
 
 
     public CanvasController getCanvasController() {
@@ -172,6 +173,16 @@ public class Context implements app.context.interfaces.Context {
     @Override
     public void setAppPanelController(AppPanelController appPanelController) {
         this.appPanelController = appPanelController;
+    }
+
+    @Override
+    public ConnectionInfoController getConnectionInfoController() {
+        return connectionInfoController;
+    }
+
+    @Override
+    public void setConnectionInfoController(ConnectionInfoController connectionInfoController) {
+        this.connectionInfoController = connectionInfoController;
     }
 
 }

@@ -1,7 +1,7 @@
 package fmph.simulator.vizualization.view;
 
-import app.context.ContextBuilder;
-import app.context.interfaces.Contextable;
+import fmph.simulator.app.context.ContextBuilder;
+import fmph.simulator.app.context.interfaces.Contextable;
 import fmph.simulator.Map;
 import fmph.simulator.map.LaserTag;
 import fmph.simulator.map.Segment;

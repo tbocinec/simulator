@@ -1,7 +1,7 @@
-package app;
+package fmph.simulator.app;
 
-import app.context.ContextBuilder;
-import app.context.interfaces.Context;
+import fmph.simulator.app.context.ContextBuilder;
+import fmph.simulator.app.context.interfaces.Context;
 import fmph.simulator.vizualization.console.Message;
 import fmph.simulator.vizualization.console.MessageType;
 import javafx.application.Application;

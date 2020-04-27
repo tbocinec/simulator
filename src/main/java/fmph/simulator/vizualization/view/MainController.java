@@ -1,16 +1,14 @@
 package fmph.simulator.vizualization.view;
 
-import app.context.ContextBuilder;
-import app.context.interfaces.Contextable;
+import fmph.simulator.app.context.ContextBuilder;
+import fmph.simulator.app.context.interfaces.Contextable;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import jdk.nashorn.internal.runtime.Context;
 
 public class MainController implements Contextable {
 

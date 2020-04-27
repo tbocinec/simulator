@@ -1,6 +1,6 @@
 package fmph.simulator.vizualization.view;
 
-import app.context.interfaces.Contextable;
+import fmph.simulator.app.context.interfaces.Contextable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;

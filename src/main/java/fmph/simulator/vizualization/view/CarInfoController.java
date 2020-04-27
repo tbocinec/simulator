@@ -1,14 +1,12 @@
 package fmph.simulator.vizualization.view;
 
-import app.context.Context;
-import app.context.ContextBuilder;
-import app.context.interfaces.Contextable;
+import fmph.simulator.app.context.ContextBuilder;
+import fmph.simulator.app.context.interfaces.Contextable;
 import fmph.simulator.models.CarModel;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
