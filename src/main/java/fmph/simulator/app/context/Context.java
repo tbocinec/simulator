@@ -36,6 +36,8 @@ public class Context implements fmph.simulator.app.context.interfaces.Context {
     AppPanelController appPanelController;
     ConnectionInfoController connectionInfoController;
 
+    MenuViewController menuViewController;
+
 
     public CanvasController getCanvasController() {
         if(canvasController == null){
@@ -183,6 +185,13 @@ public class Context implements fmph.simulator.app.context.interfaces.Context {
     @Override
     public void setConnectionInfoController(ConnectionInfoController connectionInfoController) {
         this.connectionInfoController = connectionInfoController;
+    }
+    public MenuViewController getMenuViewController() {
+        return menuViewController;
+    }
+
+    public void setMenuViewController(MenuViewController menuViewController) {
+        this.menuViewController = menuViewController;
     }
 
 }

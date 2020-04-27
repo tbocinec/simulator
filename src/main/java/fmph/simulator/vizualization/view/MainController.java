@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.VBox;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
 public class MainController implements Contextable {
@@ -50,13 +51,15 @@ public class MainController implements Contextable {
         ContextBuilder.getContext().getCanvasController().resize();
     }
 
-    @FXML
+
     public void aboutPopup(){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("ATS");
         alert.setHeaderText("Automatic Transport System");
-        alert.setContentText("I have a great message for you!");
-
+        WebView webView = new WebView();
+        webView.getEngine().loadContent(context.config.getString("ats.about"));
+        webView.setPrefSize(450, 200);
+        alert.getDialogPane().setContent(webView);
         alert.showAndWait();
     }
 

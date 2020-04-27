@@ -38,13 +38,12 @@ public void draw_segment_gap_road(Segment segment1,Segment segment2) {
         boolean cw = Function.turn_is_clockwise( segment1.getEndPose().getHeading(), segment2.getStartPose().getHeading());
 	
 		gc.beginPath();
-		
 		gc.arc(Function.tx(segment1.getEndPose().getX()),
 				Function.ty(segment1.getEndPose().getY()),
 				Function.td(Math.max(segment1.getSegmentWidth(), segment2.getSegmentWidth()) / 2),
 				Function.td(Math.max(segment1.getSegmentWidth(), segment2.getSegmentWidth()) / 2),
 				Math.toDegrees(Function.narc(segment1.getStartPose().getHeading(), cw)),
-				 Math.toDegrees(segment1.getSegmentShape().getAttributes().getAngle()));
+				Math.toDegrees(segment1.getSegmentShape().getAttributes().getAngle()));
 		gc.stroke();
 		
     }

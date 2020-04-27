@@ -20,11 +20,12 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import org.apache.commons.configuration2.PropertiesConfiguration;
 
 
 public class CanvasController extends Canvas implements Contextable {
 
-    int w= 800;int h=400;
+    int w= 800;int h=600;
     GraphicsContext gc;
     Map map;
     State state = State.getState();
@@ -200,12 +201,25 @@ public class CanvasController extends Canvas implements Contextable {
     }
 
     public void paintMap() {
-        new RoadDraw(gc,map.getMap()).paint();
-        new PathDraw(gc, map.getMap()).paint();
-        new IdentifiersDraw(gc, map.getMap()).paint();
-        new LabelDraw(gc, map.getMap()).paint();
-        new RoadGapDraw(gc,map.getMap()).paint();
-        new CenterDraw(gc,map.getMap()).paint();
+        PropertiesConfiguration config = context.config;
+        if(config.getBoolean("view.RoadDraw")) {
+            new RoadDraw(gc, map.getMap()).paint();
+        }
+        if(config.getBoolean("view.PathDraw")) {
+            new PathDraw(gc, map.getMap()).paint();
+        }
+        if(config.getBoolean("view.IdentifiersDraw")) {
+            new IdentifiersDraw(gc, map.getMap()).paint();
+        }
+        if(config.getBoolean("view.LabelDraw")) {
+            new LabelDraw(gc, map.getMap()).paint();
+        }
+        if(config.getBoolean("view.RoadGapDraw")) {
+            new RoadGapDraw(gc,map.getMap()).paint();
+        }
+        if(config.getBoolean("view.CenterDraw")) {
+            new CenterDraw(gc,map.getMap()).paint();
+        }
     }
 
     @Override

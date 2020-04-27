@@ -121,4 +121,14 @@ public class ContextMock implements Context {
     public void setConnectionInfoController(ConnectionInfoController connectionInfoController) {
 
     }
+
+    @Override
+    public MenuViewController getMenuViewController() {
+        return null;
+    }
+
+    @Override
+    public void setMenuViewController(MenuViewController menuViewController) {
+
+    }
 }

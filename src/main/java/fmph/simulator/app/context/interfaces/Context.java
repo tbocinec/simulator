@@ -51,4 +51,7 @@ public interface Context {
 
     ConnectionInfoController getConnectionInfoController();
     void setConnectionInfoController(ConnectionInfoController connectionInfoController);
+
+    MenuViewController getMenuViewController();
+    void setMenuViewController(MenuViewController menuViewController);
 }

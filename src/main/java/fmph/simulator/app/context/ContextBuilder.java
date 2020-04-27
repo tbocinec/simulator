@@ -10,8 +10,8 @@ public class ContextBuilder {
 
     static public Context getContext(){
         if(context == null){
-           //context = new fmph.simulator.app.context.Context();
-            context = new ContextMock();  //for moc and for SceneBuilder
+            context = new fmph.simulator.app.context.Context();
+            //context = new ContextMock();  //for moc and for SceneBuilder
         }
         return context;
     }
