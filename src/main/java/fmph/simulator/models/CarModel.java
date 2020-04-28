@@ -7,6 +7,7 @@ import fmph.simulator.map.LaserTag;
 import fmph.simulator.map.Segment;
 import fmph.simulator.vizualization.component.Function;
 import fmph.simulator.vizualization.console.MessageType;
+import org.apache.commons.configuration2.PropertiesConfiguration;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class CarModel {
     double minimumTimeInterval = 40;
     ArrayList<String> lastSeenTag = new ArrayList<>();
     private HashMap<Integer, Double> mapAngle;
+    private PropertiesConfiguration config;
 
 
     public CarModel() {
@@ -40,11 +42,12 @@ public class CarModel {
     }
 
     public void initStartValue() {
+        config = ContextBuilder.getContext().config;
         posX = ContextBuilder.getContext().getMap().getMap().getSegments().get(0).getStartPose().getX() - 0.185;
         posY = ContextBuilder.getContext().getMap().getMap().getSegments().get(0).getStartPose().getY();
-        carAngle = 90; //uhol natocenia celeho automobilu  [stupne, 0=sever]
-        wheelAngle = 0.6; //uhol natocenia predneho kolesa voci 0 polohe  [stupne, 0=rovno]
-        carSpeed = 1.2; //aktualna rychlost  [m/s]
+        carAngle = config.getDouble("car.initial.carAngle"); //uhol natocenia celeho automobilu  [stupne, 0=sever]
+        wheelAngle =config.getDouble("car.initial.wheelAngle"); //uhol natocenia predneho kolesa voci 0 polohe  [stupne, 0=rovno]
+        carSpeed = config.getDouble("car.initial.carSpeed"); //aktualna rychlost  [m/s]
         lastRun = -1;
 
     }
@@ -59,7 +62,7 @@ public class CarModel {
 
         if (lastRun + minimumTimeInterval < actualTime) {
             double time = actualTime - lastRun;
-            double traveledDistance = (time / 1000) * carSpeed;
+            double traveledDistance = (time / 1000) * carSpeed *  config.getDouble("app.timeShiftRate");
 
             carAngle += 180;
             if (Math.abs(wheelAngle) <= 0.5) { //auto ide rovno
@@ -141,7 +144,7 @@ public class CarModel {
                             BigDecimal time = new BigDecimal(System.currentTimeMillis());
                             new fmph.simulator.vizualization.console.Message("Recognized new tag with id " + laserTag.getType(), MessageType.INFO);
                             ContextBuilder.getContext().getRecognizationHistory().addTag(laserTag,segment,time);
-                            if (stepMode) {
+                            if (config.getBoolean("app.waitAfterRecognization"))  {
                                 carSpeed = 0;
                             }
                             sendRecognizedInfo(segment, laserTag, distanceFromX,time);

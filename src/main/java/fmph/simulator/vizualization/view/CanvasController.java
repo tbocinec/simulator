@@ -195,7 +195,9 @@ public class CanvasController extends Canvas implements Contextable {
     }
 
     public void paintCars() {
-        idealCar.animateCar(gc);
+        if(context.config.getBoolean("app.showIdealCar")) {
+            idealCar.animateCar(gc);
+        }
         realCarModel.animateCar(gc);
 
     }
