@@ -27,6 +27,11 @@
 					<descriptorRefs>
 						<descriptorRef>jar-with-dependencies</descriptorRef>
 					</descriptorRefs>
+					<archive>
+						<manifest>
+							<mainClass>fmph.simulator.app.MainApp</mainClass>
+						</manifest>
+					</archive>
 				</configuration>
 
 				<executions>
