@@ -12,7 +12,7 @@ import java.nio.file.Paths;
 import java.util.stream.Stream;
 
 public class MenuMapController extends Menu implements Contextable {
-    String PATH_TO_MAP  = "target/data/map";
+    String PATH_TO_MAP  = "data/map";
 
     public MenuMapController(){
         registryToContext();

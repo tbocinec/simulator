@@ -18,7 +18,7 @@ import fmph.simulator.vizualization.component.IdLocation;
 public class Map {
 	
 	//static final String mapPath = "target/F1-114-oval-only.json";
-    public static String mapPath = "target/data/map/F1-114-current.json";
+    public static String mapPath = "data/map/F1-114-current.json";
 
 	
 	private MapSchema map;
