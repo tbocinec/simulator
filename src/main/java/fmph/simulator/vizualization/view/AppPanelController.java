@@ -33,7 +33,7 @@ public class AppPanelController extends VBox implements Contextable {
             ContextBuilder.getContext().getCarModel().initStartValue();
         });
 
-        Label timeshiftLabel  = new Label("TimeShift rate");
+        Label timeshiftLabel  = new Label("SpeedCare rate");
         slideTimeShift = new Slider();
         slideTimeShift.setMin(0);
         slideTimeShift.setMax(18);

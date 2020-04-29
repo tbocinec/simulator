@@ -88,12 +88,12 @@ public class CanvasController extends Canvas implements Contextable {
         this.setOnMouseDragged(e->{
             CarModel carmodel = context.getCarModel();
             if(drag) {
-                carmodel.setPosX(Function.txinv(e.getX()));
-                carmodel.setPosY(Function.tyinv(e.getY()));
+                carmodel.getCarState().setPosX(Function.txinv(e.getX()));
+                carmodel.getCarState().setPosY(Function.tyinv(e.getY()));
             }
             else if(dragTurn){
                 double d = distanceFromCar(e.getX(),e.getY());
-                carmodel.setCarAngle(carmodel.getCarAngle()+d*1.3);
+                carmodel.getCarState().setCarAngle(carmodel.getCarState().getCarAngle()+d*1.3);
             }
 
         });
@@ -103,7 +103,7 @@ public class CanvasController extends Canvas implements Contextable {
 
     private double distanceFromCar(double x, double y){
         CarModel carmodel = context.getCarModel();
-        return Math.sqrt(  Math.pow(Function.txinv(x)-carmodel.getPosX(),2) + Math.pow(Function.tyinv(y)-carmodel.getPosY(),2));
+        return Math.sqrt(  Math.pow(Function.txinv(x)-carmodel.getCarState().getPosX(),2) + Math.pow(Function.tyinv(y)-carmodel.getCarState().getPosY(),2));
 
     }
 

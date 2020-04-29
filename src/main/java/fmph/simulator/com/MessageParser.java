@@ -19,13 +19,13 @@ public class MessageParser {
             return;
         };
         if(msg.trim().startsWith("stop")){
-            ContextBuilder.getContext().getCarModel().setCarSpeed(0);
+            ContextBuilder.getContext().getCarModel().getCarState().setCarSpeed(0);
             ContextBuilder.getContext().getConsoleController().addMsg("Car stop");
             return;
         };
         if(msg.trim().startsWith("setpower")){
             String speed = msg.split("setpower")[1];
-            ContextBuilder.getContext().getCarModel().setCarSpeed(Double.parseDouble(speed) * 1.3);
+            ContextBuilder.getContext().getCarModel().getCarState().setCarSpeed(Double.parseDouble(speed) * 1.3);
             ContextBuilder.getContext().getCarModel().setLastSpeed(Double.parseDouble(speed) * 1.3);
             ContextBuilder.getContext().getConsoleController().addMsg("Set speed " + speed);
             return;

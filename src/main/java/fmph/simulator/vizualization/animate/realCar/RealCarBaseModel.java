@@ -39,12 +39,12 @@ public class RealCarBaseModel implements DrawableCar {
     public void animateCar(GraphicsContext gc) {
 
         double transform = 180;//aby bol sever hore
-        gc.translate(Function.tx(carModel.getPosX()), Function.ty(carModel.getPosY()));
-        gc.rotate(-carModel.getCarAngle()  + transform);
+        gc.translate(Function.tx(carModel.getCarState().getPosX()), Function.ty(carModel.getCarState().getPosY()));
+        gc.rotate(-carModel.getCarState().getCarAngle()  + transform);
 
         draw_car_shape(gc);
-        gc.rotate(+carModel.getCarAngle() -transform);
-        gc.translate(- Function.tx(carModel.getPosX()), -Function.ty(carModel.getPosY()));
+        gc.rotate(+carModel.getCarState().getCarAngle() -transform);
+        gc.translate(- Function.tx(carModel.getCarState().getPosX()), -Function.ty(carModel.getCarState().getPosY()));
         gc.setFill(Color.PURPLE);
         gc.fillOval(Function.tx(carModel.Fx),Function.ty(carModel.Fy),5,5);
         gc.fillOval(Function.tx(carModel.Ex),Function.ty(carModel.Ey),5,5);

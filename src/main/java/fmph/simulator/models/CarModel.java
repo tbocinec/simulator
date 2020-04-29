@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class CarModel {
-    public static final boolean stepMode = true;
+
     public static final double BEAMWIDTH = 0.206; // sirka luca [m] original 0.3
     public static final double DISTANCEBETWEENAXLES = 0.26;//35.5;   //vzdialenost medzi prednou a zadnou napravou [m]
     public static final double DISTANCEBETWEENAXLEANDBEAM = 0.189; //20;// vzdialenost medzi prednou napravou a lucom [m] real 0.3
@@ -24,11 +24,10 @@ public class CarModel {
     //spodok luca
     public double Fx = 0;
     public double Fy = 0;
-    double posX; //car position in x axis front axle
-    double posY; //car position in y axis front axle
-    double carAngle; //uhol natocenia celeho automobilu  [stupne, 0=sever]
-    double wheelAngle; //uhol natocenia predneho kolesa voci 0 polohe  [stupne, 0=rovno] , todo checkovat max
-    double carSpeed; //aktualna rychlost  [m/s]  max speed  25km/h  = 6.9444m/s
+
+
+    CarState carState = new CarState();
+
     double lastSpeed;
     double lastRun = -1;
     double minimumTimeInterval = 40;
@@ -43,18 +42,18 @@ public class CarModel {
 
     public void initStartValue() {
         config = ContextBuilder.getContext().config;
-        posX = ContextBuilder.getContext().getMap().getMap().getSegments().get(0).getStartPose().getX() - 0.185;
-        posY = ContextBuilder.getContext().getMap().getMap().getSegments().get(0).getStartPose().getY();
-        carAngle = config.getDouble("car.initial.carAngle"); //uhol natocenia celeho automobilu  [stupne, 0=sever]
-        wheelAngle =config.getDouble("car.initial.wheelAngle"); //uhol natocenia predneho kolesa voci 0 polohe  [stupne, 0=rovno]
-        carSpeed = config.getDouble("car.initial.carSpeed"); //aktualna rychlost  [m/s]
+        carState.setPosX(ContextBuilder.getContext().getMap().getMap().getSegments().get(0).getStartPose().getX() - 0.185);
+        carState.setPosY(ContextBuilder.getContext().getMap().getMap().getSegments().get(0).getStartPose().getY());
+        carState.setCarAngle(config.getDouble("car.initial.carAngle")); //uhol natocenia celeho automobilu  [stupne, 0=sever]
+        carState.setWheelAngle(config.getDouble("car.initial.wheelAngle")); //uhol natocenia predneho kolesa voci 0 polohe  [stupne, 0=rovno]
+        carState.setCarSpeed(config.getDouble("car.initial.carSpeed")); //aktualna rychlost  [m/s]
         lastRun = -1;
 
     }
 
     public void movie(double runTime) {
 
-        if (lastRun == -1 || carSpeed == 0) {
+        if (lastRun == -1 || carState.getCarSpeed() == 0) {
             lastRun = runTime;
             return;
         }
@@ -64,31 +63,31 @@ public class CarModel {
 
         if (lastRun + minimumTimeInterval < actualTime) {
             double time = actualTime - lastRun;
-            double traveledDistance = (time / 1000) * carSpeed *  config.getDouble("app.timeShiftRate");
+            double traveledDistance = (time / 1000) * carState.getCarSpeed() *  config.getDouble("app.timeShiftRate");
 
-            carAngle += 180;
-            if (Math.abs(wheelAngle) <= 0.5) { //auto ide rovno
-                posX = posX + (traveledDistance / 100 * Math.sin(Math.toRadians(carAngle)));
-                posY = posY - (traveledDistance / 100 * Math.cos(Math.toRadians(carAngle)));
+            carState.setCarAngle(carState.getCarAngle()+180);
+            if (Math.abs(carState.getWheelAngle()) <= 0.5) { //auto ide rovno
+                carState.setPosX(carState.getPosX() + (traveledDistance / 100 * Math.sin(Math.toRadians(carState.getCarAngle()))));
+                carState.setPosY(carState.getPosY() - (traveledDistance / 100 * Math.cos(Math.toRadians(carState.getCarAngle()))));
 
             } else {
                 //double Bx = posX +  (DISTANCEBETWEENAXLES * Math.sin(Math.toRadians(wheelAngle)));
                 //double By = posY - (DISTANCEBETWEENAXLES * Math.cos(Math.toRadians(wheelAngle)));
-                double Cx = posX + DISTANCEBETWEENAXLES * (Math.cos(Math.toRadians(wheelAngle + carAngle)) /
-                        Math.sin(Math.toRadians(wheelAngle)));
-                double Cy = posY + DISTANCEBETWEENAXLES * (Math.sin(Math.toRadians(wheelAngle + carAngle)) / Math.sin(
-                        Math.toRadians(wheelAngle)));
+                double Cx = carState.getPosX() + DISTANCEBETWEENAXLES * (Math.cos(Math.toRadians(carState.getWheelAngle() + carState.getCarAngle())) /
+                        Math.sin(Math.toRadians(carState.getWheelAngle())));
+                double Cy =  carState.getPosY() + DISTANCEBETWEENAXLES * (Math.sin(Math.toRadians(carState.getWheelAngle() + carState.getCarAngle())) / Math.sin(
+                        Math.toRadians(carState.getWheelAngle())));
                 //double R = Math.abs(DISTANCEBETWEENAXLES/Math.sin(Math.toRadians(wheelAngle)));
                 //double delta_fi = (interval * carSpeed)/DISTANCEBETWEENAXLES * Math.tan(wheelAngle);
-                double delta_fi = ((traveledDistance) / DISTANCEBETWEENAXLES) * Math.tan(Math.toRadians(wheelAngle));
-                carAngle = (carAngle + delta_fi) % 360;
-                posX = Math.cos(Math.toRadians(delta_fi)) * (posX - Cx) - Math.sin(Math.toRadians(delta_fi)) * (posY - Cy) + Cx;
-                posY = Math.cos(Math.toRadians(delta_fi)) * (posY - Cy) + Math.sin(Math.toRadians(delta_fi)) * (posX - Cx) + Cy;
+                double delta_fi = ((traveledDistance) / DISTANCEBETWEENAXLES) * Math.tan(Math.toRadians(carState.getWheelAngle()));
+                carState.setCarAngle((carState.getCarAngle() + delta_fi) % 360);
+                carState.setPosX(Math.cos(Math.toRadians(delta_fi)) * (carState.getPosX() - Cx) - Math.sin(Math.toRadians(delta_fi)) * ( carState.getPosY() - Cy) + Cx);
+                carState.setPosY(Math.cos(Math.toRadians(delta_fi)) * ( carState.getPosY() - Cy) + Math.sin(Math.toRadians(delta_fi)) * (carState.getPosX() - Cx) + Cy);
             }
             lastRun = actualTime;
 
             checkIdentifier();
-            carAngle -= 180;
+            carState.setCarAngle(carState.getCarAngle()-180);
             ContextBuilder.getContext().getCarInfoController().changeText();
         }
 
@@ -102,13 +101,13 @@ public class CarModel {
         //double Ey = posY + DISTANCEBETWEENAXLEANDBEAM  * Math.cos(Math.toRadians(carAngle))
         //		+ BEAMWIDTH/2 * Math.sin(Math.toRadians(carAngle));
         //stred luca
-        Ex = posX + (DISTANCEBETWEENAXLEANDBEAM * Math.sin(Math.toRadians(carAngle)));
-        Ey = posY - (DISTANCEBETWEENAXLEANDBEAM * Math.cos(Math.toRadians(carAngle)));
+        Ex = carState.getPosX() + (DISTANCEBETWEENAXLEANDBEAM * Math.sin(Math.toRadians(carState.getCarAngle())));
+        Ey = carState.getPosY() - (DISTANCEBETWEENAXLEANDBEAM * Math.cos(Math.toRadians(carState.getCarAngle())));
         //spodok luca
-        Fx = posX + DISTANCEBETWEENAXLEANDBEAM * Math.sin(Math.toRadians(carAngle))
-                - BEAMWIDTH / 2 * Math.cos(Math.toRadians(carAngle));
-        Fy = posY - DISTANCEBETWEENAXLEANDBEAM * Math.cos(Math.toRadians(carAngle))
-                - BEAMWIDTH / 2 * Math.sin(Math.toRadians(carAngle));
+        Fx = carState.getPosX() + DISTANCEBETWEENAXLEANDBEAM * Math.sin(Math.toRadians(carState.getCarAngle()))
+                - BEAMWIDTH / 2 * Math.cos(Math.toRadians(carState.getCarAngle()));
+        Fy = carState.getPosY() - DISTANCEBETWEENAXLEANDBEAM * Math.cos(Math.toRadians(carState.getCarAngle()))
+                - BEAMWIDTH / 2 * Math.sin(Math.toRadians(carState.getCarAngle()));
 
 
         //Smerove vektory
@@ -147,7 +146,7 @@ public class CarModel {
                             new fmph.simulator.vizualization.console.Message("Recognized new tag with id " + laserTag.getType(), MessageType.INFO);
                             ContextBuilder.getContext().getRecognizationHistory().addTag(laserTag,segment,time);
                             if (config.getBoolean("app.waitAfterRecognization"))  {
-                                carSpeed = 0;
+                                carState.setCarSpeed(0);
                             }
                             sendRecognizedInfo(segment, laserTag, distanceFromX,time);
 
@@ -167,19 +166,16 @@ public class CarModel {
 
 
         Double alfa = Math.toRadians(laserTag.getGamma());
-        Double beta = Math.toRadians(carAngle - 180);
+        Double beta = Math.toRadians(carState.getCarAngle() - 180);
         double titl = Function.angle_difference(beta, alfa);
         msg.setTilt(Math.abs(titl));
-        //System.out.println("laserTag " + laserTag.getGamma() + " car angle + " + (carAngle - 180) + " rozdiel = " + titl);
         msg.setCenter_x(-distanceFromX);//tododis
-        //msg.setCenter_x(0);//tododis
-
         ContextBuilder.getContext().getServer().sendMsg(msg.serialize());
     }
 
     public void setWhealAngle(double signal) {
         double angle = signalToAngle(signal);
-        this.setWheelAngle(angle);
+        carState.setWheelAngle(angle);
         ContextBuilder.getContext().getConsoleController().addMsg("Car change dir to " + angle);
     }
 
@@ -223,7 +219,7 @@ public class CarModel {
     }
 
     public void applicateLastSpeed() {
-        setCarSpeed(getLastSpeed());
+        carState.setCarSpeed(getLastSpeed());
     }
 
     public double getLastSpeed() {
@@ -234,44 +230,14 @@ public class CarModel {
         this.lastSpeed = lastSpeed;
     }
 
-    public double getPosX() {
-        return posX;
+    public CarState getCarState() {
+        return carState;
     }
 
-    public void setPosX(double posX) {
-        this.posX = posX;
+    public void setCarState(CarState carState) {
+        this.carState = carState;
     }
 
-    public double getPosY() {
-        return posY;
-    }
 
-    public void setPosY(double posY) {
-        this.posY = posY;
-    }
-
-    public double getCarAngle() {
-        return carAngle;
-    }
-
-    public void setCarAngle(double carAngle) {
-        this.carAngle = carAngle;
-    }
-
-    public double getWheelAngle() {
-        return wheelAngle;
-    }
-
-    public void setWheelAngle(double wheelAngle) {
-        this.wheelAngle = wheelAngle;
-    }
-
-    public double getCarSpeed() {
-        return carSpeed;
-    }
-
-    public void setCarSpeed(double carSpeed) {
-        this.carSpeed = carSpeed;
-    }
 
 }

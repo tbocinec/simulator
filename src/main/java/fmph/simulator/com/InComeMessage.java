@@ -64,8 +64,8 @@ public class InComeMessage {
 			new Message(this.errorMsg,MessageType.ERROR);
 		} else {
 			CarModel car = ContextBuilder.getContext().getCarModel();
-			car.setWheelAngle(this.wheelAngle);
-			car.setCarSpeed(this.carSpeed);
+			car.getCarState().setWheelAngle(this.wheelAngle);
+			car.getCarState().setCarSpeed(this.carSpeed);
 			ContextBuilder.getContext().getCarInfoController().changeText();
 			//log
 			new Message("New Input from car {speed:" + this.carSpeed + ",wheelAngle:" + this.wheelAngle + " }", MessageType.INFO);
