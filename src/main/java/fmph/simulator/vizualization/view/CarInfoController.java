@@ -38,22 +38,6 @@ public class CarInfoController extends VBox implements Contextable {
         this.getChildren().add(carwheelAngle);
 
 
-
-
-        Label carwheelAngleLabel = new Label("Car wheel angle : ");
-        Button change = new Button("save");
-
-        TextField carwheelAngleField = new TextField();
-
-        this.getChildren().add(carwheelAngleLabel);
-        this.getChildren().add(carwheelAngleField);
-        this.getChildren().add(change);
-
-
-        change.setOnAction(event -> {
-            ContextBuilder.getContext().getCarModel().setWheelAngle(
-                   Double.parseDouble(carwheelAngleField.getText()));
-        });
     }
 
     public void changeText() {

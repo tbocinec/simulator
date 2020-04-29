@@ -52,13 +52,15 @@ public class CarModel {
 
     }
 
-    public void run() {
+    public void movie(double runTime) {
+
         if (lastRun == -1 || carSpeed == 0) {
-            lastRun = System.currentTimeMillis();
+            lastRun = runTime;
             return;
         }
 
-        double actualTime = System.currentTimeMillis();
+
+        double actualTime = runTime;
 
         if (lastRun + minimumTimeInterval < actualTime) {
             double time = actualTime - lastRun;
@@ -158,8 +160,6 @@ public class CarModel {
     }
 
     private void sendRecognizedInfo(Segment segment, LaserTag laserTag, double distanceFromX,BigDecimal time) {
-
-        ContextBuilder.getContext().getConsoleController().addMsg("Actual segmet : " + segment.getSegmentId() + " tagType " + laserTag.getType());
 
         Message msg = new Message();
         msg.setTime_stamp(time.toPlainString());

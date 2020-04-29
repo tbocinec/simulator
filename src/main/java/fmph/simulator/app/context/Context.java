@@ -1,5 +1,6 @@
 package fmph.simulator.app.context;
 
+import fmph.simulator.Running.RunManagement;
 import fmph.simulator.app.context.exceptions.ContextException;
 import fmph.simulator.com.Server;
 import fmph.simulator.models.CarModel;
@@ -20,6 +21,7 @@ public class Context implements fmph.simulator.app.context.interfaces.Context {
     Server server;
     CarModel carModel;
     RecognitionHistory recognitionHistory;
+    RunManagement runManagement;
 
     //Config
     PropertiesConfiguration config = Config.getConfig();
@@ -35,9 +37,9 @@ public class Context implements fmph.simulator.app.context.interfaces.Context {
     MenuMapController menuMapController;
     AppPanelController appPanelController;
     ConnectionInfoController connectionInfoController;
-
     MenuViewController menuViewController;
-
+    RunAppController runAppController;
+    TimeController timeController;
 
     public CanvasController getCanvasController() {
         if(canvasController == null){
@@ -192,6 +194,32 @@ public class Context implements fmph.simulator.app.context.interfaces.Context {
 
     public void setMenuViewController(MenuViewController menuViewController) {
         this.menuViewController = menuViewController;
+    }
+
+    public RunManagement getRunManagement() {
+        if(runManagement==null) {
+            runManagement = new RunManagement();
+        }
+        return runManagement;
+    }
+
+    public void setRunManagement(RunManagement runManagement) {
+        this.runManagement = runManagement;
+    }
+
+    public RunAppController getRunAppController() {
+        return runAppController;
+    }
+
+    public void setRunAppController(RunAppController runAppController) {
+        this.runAppController = runAppController;
+    }
+    public TimeController getTimeController() {
+        return timeController;
+    }
+
+    public void setTimeController(TimeController timeController) {
+        this.timeController = timeController;
     }
 
 }

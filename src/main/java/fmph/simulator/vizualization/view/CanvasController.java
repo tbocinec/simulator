@@ -43,9 +43,7 @@ public class CanvasController extends Canvas implements Contextable {
         gc = getGraphicsContext2D();
         map = ContextBuilder.getContext().getMap();
 
-
         state.setAnim_seg(map.getMap().getSegments().get(0)); //default value
-
         idealCar = new IdealCar(map.getMap());
         realCarModel = new RealCarBaseModel(map.getMap());
 

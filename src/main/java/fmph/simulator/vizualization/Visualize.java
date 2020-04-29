@@ -43,21 +43,23 @@ public class Visualize  {
 		});
 	}
 
-
-
 	//Visualize Thread
     public void run() {
 		this.plocha = ContextBuilder.getContext().getCanvasController();
 		plocha.initialize();
-
 		try {
 			Thread.sleep(200);
+			int c=0;
 			while (true) {
 				if (run) {
-					ContextBuilder.getContext().getCarModel().run();
+					ContextBuilder.getContext().getRunManagement().nextTick();
 					plocha.paint();
+					if(c % 10 ==0){
+						ContextBuilder.getContext().getRunManagement().nextSecondTick();
+					}
 				}
-				Thread.sleep(60);
+				c++;
+				Thread.sleep(100);
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();

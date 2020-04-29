@@ -2,6 +2,7 @@ package fmph.simulator.vizualization.view;
 
 import fmph.simulator.app.context.ContextBuilder;
 import fmph.simulator.app.context.interfaces.Contextable;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -69,7 +70,13 @@ public class MainController implements Contextable {
     }
 
     public void setRightStatusText(String msg){
-        rightStatus.setText(msg);
+        Platform.runLater(new Runnable(){
+            @Override
+            public void run() {
+                rightStatus.setText(msg);
+            }
+        });
+
     }
 
 

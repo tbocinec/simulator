@@ -1,6 +1,7 @@
 package fmph.simulator.app.context.interfaces;
 
 import fmph.simulator.Config;
+import fmph.simulator.Running.RunManagement;
 import fmph.simulator.com.Server;
 import fmph.simulator.Map;
 import fmph.simulator.models.CarModel;
@@ -54,4 +55,16 @@ public interface Context {
 
     MenuViewController getMenuViewController();
     void setMenuViewController(MenuViewController menuViewController);
+
+    RunManagement getRunManagement();
+
+    void setRunManagement(RunManagement runManagement);
+
+    RunAppController getRunAppController();
+
+    void setRunAppController(RunAppController runAppController);
+
+    TimeController getTimeController();
+
+    void setTimeController(TimeController timeController);
 }

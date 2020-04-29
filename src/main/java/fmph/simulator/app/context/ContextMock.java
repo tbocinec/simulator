@@ -1,5 +1,6 @@
 package fmph.simulator.app.context;
 
+import fmph.simulator.Running.RunManagement;
 import fmph.simulator.app.context.interfaces.Context;
 import fmph.simulator.com.Server;
 import fmph.simulator.Map;
@@ -129,6 +130,36 @@ public class ContextMock implements Context {
 
     @Override
     public void setMenuViewController(MenuViewController menuViewController) {
+
+    }
+
+    @Override
+    public RunManagement getRunManagement() {
+        return null;
+    }
+
+    @Override
+    public void setRunManagement(RunManagement runManagement) {
+
+    }
+
+    @Override
+    public RunAppController getRunAppController() {
+        return null;
+    }
+
+    @Override
+    public void setRunAppController(RunAppController runAppController) {
+
+    }
+
+    @Override
+    public TimeController getTimeController() {
+        return null;
+    }
+
+    @Override
+    public void setTimeController(TimeController timeController) {
 
     }
 }
