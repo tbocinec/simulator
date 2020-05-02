@@ -1,12 +1,12 @@
 package fmph.simulator.Running.Time;
 
-public class TimeManagement2 implements TimeManagement {
+public class TimeManagementSimple implements TimeManagement {
 
     private double actualTime;
     private double lastRealTime;
 
 
-    public TimeManagement2(){
+    public TimeManagementSimple(){
         actualTime = 0;
     }
     @Override

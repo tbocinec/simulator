@@ -1,7 +1,7 @@
 package fmph.simulator.Running;
 
 import fmph.simulator.Running.Time.TimeManagement;
-import fmph.simulator.Running.Time.TimeManagement2;
+import fmph.simulator.Running.Time.TimeManagementSimple;
 import fmph.simulator.app.context.ContextBuilder;
 import fmph.simulator.recognization.RecognitionHistory;
 
@@ -14,7 +14,7 @@ public class OneRun {
     private double previousTime = 0;
 
     public OneRun(){
-        timeManagement = new TimeManagement2();
+        timeManagement = new TimeManagementSimple();
     }
 
 
