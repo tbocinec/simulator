@@ -3,6 +3,8 @@ package fmph.simulator.vizualization.view;
 import fmph.simulator.app.context.ContextBuilder;
 import fmph.simulator.app.context.interfaces.Contextable;
 import fmph.simulator.vizualization.view.uxcomponent.MenuLabelComponent;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -13,6 +15,7 @@ import javafx.scene.layout.VBox;
 public class TimeController extends VBox implements Contextable {
 
     Slider timeSlider;
+    ChangeListener<Number> timeListener;
 
 
     public TimeController(){
@@ -22,38 +25,44 @@ public class TimeController extends VBox implements Contextable {
     }
 
     private void init(){
+        timeListener = new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                context.getRunManagement().changeToTime(newValue.doubleValue());
+            }
+        };
         timeSlider = new Slider();
         timeSlider.setMin(0);
         timeSlider.setMax(0);
         timeSlider.setValue(0);
         timeSlider.setShowTickLabels(true);
-
         timeSlider.setSnapToTicks(true);
 
-
-
-
+        //we need only onclicket property
+        timeSlider.valueProperty().addListener(timeListener);
         this.getChildren().addAll(timeSlider);
-
-
     }
 
-    public void setMaxTime(double milisec,boolean actual){
-        if(milisec > 50000 || milisec < 1){
+    private void setSliderValue(double val){
+        timeSlider.valueProperty().removeListener(timeListener);
+        timeSlider.setValue(val);
+        timeSlider.valueProperty().addListener(timeListener);
+    }
+
+    public void setMaxTime(double second,boolean actual){
+        if(second > 50000 || second < 1){
             return;
         }
-        double second = milisec /1000;
+
         timeSlider.setMax(second);
         timeSlider.setMajorTickUnit(second/10);
         timeSlider.setBlockIncrement(second/30);
         if(actual){
-            setActualTIme(milisec);
+            setActualTIme(second);
         }
     }
-    public void setActualTIme(double milisec){
-        double second = milisec /1000;
-
-        timeSlider.setValue(second);
+    public void setActualTIme(double second){
+        setSliderValue(second);
 
     }
 

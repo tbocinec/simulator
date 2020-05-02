@@ -12,6 +12,8 @@ public class OneRun {
     ChangeHistory changeHistory;
     RunState runState = RunState.readyToRun;
 
+    private double previousTime = 0;
+
     public OneRun(){
         timeManagment = new TimeManagment();
     }
@@ -19,7 +21,9 @@ public class OneRun {
 
     public void nextTick() {
         if(runState == RunState.run) {
-            ContextBuilder.getContext().getCarModel().movie(timeManagment.getRunTimeWithoutPause());
+            double actualTime = timeManagment.getRunTimeWithoutPause();
+            ContextBuilder.getContext().getCarModel().movie(actualTime,previousTime);
+            previousTime = actualTime;
         }
     }
 
@@ -33,8 +37,8 @@ public class OneRun {
         this.runState = runState;
     }
 
-    public double getRunTime(){
-        return timeManagment.getRunTimeWithoutPause();
+    public double getRunTimeSecond(){
+        return timeManagment.getRunTimeWithoutPause()/1000;
     }
 
     public RunState getRunState() {

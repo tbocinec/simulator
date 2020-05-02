@@ -22,9 +22,9 @@ public void paint() {
 }
 	
 	
-public void paintSegmentRoad(Segment segment) {	
-		
+public void paintSegmentRoad(Segment segment) {
 		gc.setFill(Color.BLACK);
+		gc.setStroke(Color.BLACK);
 		String shape = segment.getSegmentShape().getType();
 		double w = segment.getSegmentWidth() /2;
 		if(shape.compareTo("line") == 0 ) {

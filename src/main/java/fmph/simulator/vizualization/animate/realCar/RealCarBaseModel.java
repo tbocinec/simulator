@@ -10,6 +10,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import org.apache.commons.configuration2.PropertiesConfiguration;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -19,6 +20,7 @@ import java.io.InputStream;
 public class RealCarBaseModel implements DrawableCar {
     CarModel carModel;
     VisualizeConfig visualizeConfig = VisualizeConfig.GetConfig();
+    PropertiesConfiguration config = ContextBuilder.getContext().config;
 
     double width = 0.162;
     double height = 0.25;
@@ -27,32 +29,73 @@ public class RealCarBaseModel implements DrawableCar {
         carModel = ContextBuilder.getContext().getCarModel();
         double x = map.getSegments().get(0).getStartPose().getX();
         double y = map.getSegments().get(0).getStartPose().getY();
-
-
         // Context.getContext().getCarModel().setPosX(x);
         //Context.getContext().getCarModel().setPosY(y);
-
     }
 
 
     @Override
     public void animateCar(GraphicsContext gc) {
-
-        double transform = 180;//aby bol sever hore
         gc.translate(Function.tx(carModel.getCarState().getPosX()), Function.ty(carModel.getCarState().getPosY()));
-        gc.rotate(-carModel.getCarState().getCarAngle()  + transform);
-
+        gc.rotate(-carModel.getCarState().getCarAngle());
         draw_car_shape(gc);
-        gc.rotate(+carModel.getCarState().getCarAngle() -transform);
+        gc.rotate(+carModel.getCarState().getCarAngle());
         gc.translate(- Function.tx(carModel.getCarState().getPosX()), -Function.ty(carModel.getCarState().getPosY()));
-        gc.setFill(Color.PURPLE);
-        gc.fillOval(Function.tx(carModel.Fx),Function.ty(carModel.Fy),5,5);
-        gc.fillOval(Function.tx(carModel.Ex),Function.ty(carModel.Ey),5,5);
-        gc.setFill(Color.BLACK);
+
+        if(config.getBoolean("view.beamPoint")){
+            drawBeamPoint(gc);
+        }
+
+        if(config.getBoolean("view.carTrajectory")){
+            drawCarTrajectory(gc);
+        }
+        if(config.getBoolean("view.carBackPoint")){
+            drawCarBackPoint(gc);
+        }
         gc.stroke();
         gc.fill();
 
+    }
 
+    private void drawBeamPoint(GraphicsContext gc){
+        gc.setFill(Color.web(config.getString("color.car.beamPoint")));
+        gc.fillOval(Function.tx(carModel.Fx)-2,Function.ty(carModel.Fy)-2,4,4);
+        gc.fillOval(Function.tx(carModel.Ex)-2,Function.ty(carModel.Ey)-2,4,4);
+    }
+
+    private void drawCarBackPoint(GraphicsContext gc) {
+        gc.setFill(Color.web(config.getString("color.car.backPoint")));
+        double x = Function.tx(carModel.getCarState().getPosXBack());
+        double y = Function.ty(carModel.getCarState().getPosYBack());
+        gc.fillOval(x-3,y-3,3,3);
+    }
+
+
+
+    private void drawCarTrajectory(GraphicsContext gc) {
+        double centerX = carModel.getCx();
+        double centerY = carModel.getCy();
+        double radius_front_wheel = Function.td(carModel.getFront_wheel_radius());
+        double radius_back_wheel = Function.td(carModel.getBack_wheel_radius());
+
+        gc.setFill(Color.web(config.getString("color.car.center.radius")));
+
+        gc.fillOval(Function.tx(centerX)-4,
+                Function.ty(centerY)-4,
+                4,   4);
+
+        gc.setStroke(Color.web(config.getString("color.car.trajectory.front")));
+
+        gc.strokeOval(Function.tx(centerX)-radius_front_wheel,
+                Function.ty(centerY)-radius_front_wheel,
+                radius_front_wheel*2,
+                radius_front_wheel*2);
+
+        gc.setStroke(Color.web(config.getString("color.car.trajectory.back")));
+        gc.strokeOval(Function.tx(centerX)-radius_back_wheel,
+                Function.ty(centerY)-radius_back_wheel,
+                radius_back_wheel*2,
+                radius_back_wheel*2);
     }
 
     private void draw_car_shape(GraphicsContext gc) {
@@ -71,6 +114,7 @@ public class RealCarBaseModel implements DrawableCar {
         gc.setFill(preColor);
     }
 
+    //obsoleted
     private void draw_image(GraphicsContext gc) {
         InputStream is = null;
         try {

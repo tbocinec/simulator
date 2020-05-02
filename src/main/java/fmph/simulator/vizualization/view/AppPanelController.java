@@ -43,7 +43,7 @@ public class AppPanelController extends VBox implements Contextable {
         slideTimeShift.setMajorTickUnit(0.2);
         slideTimeShift.setBlockIncrement(0.6);
         slideTimeShift.valueProperty().addListener((observable, oldValue, newValue) -> {
-            context.config.setProperty("app.timeShiftRate",Double.parseDouble(newValue.toString()));
+            context.config.setProperty("app.carSpeedRate",Double.parseDouble(newValue.toString()));
 
         });
 
