@@ -35,7 +35,7 @@ public class CarModel {
     double back_wheel_radius = 0;
 
 
-    private CarState carState = new CarState(this);
+    private CarState carState = new CarState();
     private PropertiesConfiguration config;
 
 

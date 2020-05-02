@@ -23,9 +23,7 @@ public class HistoryElement implements Serializable {
     public HistoryElement(double timeRecognization, CarState carStateBefore,
                          Segment segment, LaserTag laserTag) {
         this.timeRecognization = timeRecognization;
-        this.timeReciveInfo = timeReciveInfo;
         this.carStateBefore = carStateBefore;
-        this.carStatAfter = carStatAfter;
         this.segment = segment;
         this.laserTag = laserTag;
     }

@@ -1,6 +1,6 @@
 package fmph.simulator.Running.Time;
 
-public class TimeManagment {
+public class TimeManagementWithPause implements TimeManagement {
 
     double startTime;
     double endTime;
@@ -8,18 +8,17 @@ public class TimeManagment {
 
     double pauseStart;
 
-    public TimeManagment(){
+    public TimeManagementWithPause(){
         startTime = 0;
         pauseTime = 0;
     }
-
+    @Override
     public void run(){
         if(startTime == 0){
             startTime = System.currentTimeMillis();
         }
-        System.out.println(pauseStart);
         if(pauseStart != 0){
-            pauseTime += (getRunTime() - pauseStart);
+            pauseTime += (getRunTimeWithPause() - pauseStart);
             pauseStart = 0;
         }
 
@@ -27,11 +26,11 @@ public class TimeManagment {
 
     }
 
-    private double getRunTime(){
+    private double getRunTimeWithPause(){
         return  System.currentTimeMillis() - startTime;
     }
-
-    public double getRunTimeWithoutPause(){
+    @Override
+    public double getRunTime(){
         if(pauseStart != 0){
             return pauseStart;
         }
@@ -39,6 +38,11 @@ public class TimeManagment {
     }
 
     public void startPause() {
-        pauseStart = getRunTime();
+        pauseStart = getRunTimeWithPause();
+    }
+
+    @Override
+    public void setTime(double time){
+        //todo
     }
 }

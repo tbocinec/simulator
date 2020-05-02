@@ -1,13 +1,12 @@
 package fmph.simulator.Running;
 
-import fmph.simulator.Running.Time.TimeManagment;
+import fmph.simulator.Running.Time.TimeManagement;
+import fmph.simulator.Running.Time.TimeManagement2;
 import fmph.simulator.app.context.ContextBuilder;
 import fmph.simulator.recognization.RecognitionHistory;
 
 public class OneRun {
-
-
-    TimeManagment timeManagment;
+    TimeManagement timeManagement;
     RecognitionHistory recognitionHistory;
     ChangeHistory changeHistory;
     RunState runState = RunState.readyToRun;
@@ -15,13 +14,20 @@ public class OneRun {
     private double previousTime = 0;
 
     public OneRun(){
-        timeManagment = new TimeManagment();
+        timeManagement = new TimeManagement2();
     }
 
 
+    boolean one = false;
     public void nextTick() {
+        if(one){
+            //only debug
+            System.out.println("pohzb");
+            ContextBuilder.getContext().getCarModel().movie(1500000,0);
+            one = false;
+        }
         if(runState == RunState.run) {
-            double actualTime = timeManagment.getRunTimeWithoutPause();
+            double actualTime = timeManagement.getRunTime();
             ContextBuilder.getContext().getCarModel().movie(actualTime,previousTime);
             previousTime = actualTime;
         }
@@ -29,20 +35,23 @@ public class OneRun {
 
     public void setRunState(RunState runState) {
         if(runState == RunState.stop) {
-            timeManagment.startPause();
+            timeManagement.startPause();
         }
         if(runState == RunState.run){
-            timeManagment.run();
+            timeManagement.run();
         }
         this.runState = runState;
     }
 
     public double getRunTimeSecond(){
-        return timeManagment.getRunTimeWithoutPause()/1000;
+        return timeManagement.getRunTime()/1000;
     }
 
     public RunState getRunState() {
         return runState;
     }
 
+    public void setTime(double time) {
+        this.timeManagement.setTime(time);
+    }
 }

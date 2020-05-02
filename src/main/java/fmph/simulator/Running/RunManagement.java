@@ -28,7 +28,6 @@ public class RunManagement {
 
     public void nextTick(){
         actualRun.nextTick();
-
     }
     public void nextSecondTick() {
         if(actualRun.getRunState() == RunState.run) {
@@ -49,14 +48,16 @@ public class RunManagement {
     public void changeToTime(double time) {
         actualRun.setRunState(RunState.stop);
         HistoryElement nearsTag = context.getRecognizationHistory().getNearst(time);
-        if(nearsTag == null){
+        if(nearsTag == null ){
             context.getCarModel().initStartValue();
-            context.getCarModel().movie(time,0);
+            context.getCarModel().movie(time*1000,0);
         }
         else{
             context.getCarModel().setCarState(nearsTag.getCarStateBefore());
-            context.getCarModel().movie(time,nearsTag.getTimeRecognization());
+            double d = time - nearsTag.getTimeRecognization() ;
+            context.getCarModel().movie(d*1000,nearsTag.getTimeRecognization()*1000);
         }
+        this.actualRun.setTime(time);
 
 
     }

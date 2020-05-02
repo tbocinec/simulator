@@ -1,6 +1,5 @@
 package fmph.simulator.models;
 
-import java.beans.Transient;
 import java.io.Serializable;
 
 public class CarState implements Serializable {
@@ -20,12 +19,6 @@ public class CarState implements Serializable {
 
     public void setPosYBack(double posYBack) {
         this.posYBack = posYBack;
-    }
-
-    transient CarModel parentModel;
-
-    public CarState(CarModel carModel) {
-        parentModel = carModel;
     }
 
     public double getPosX() {
@@ -58,7 +51,6 @@ public class CarState implements Serializable {
 
     public void setWheelAngle(double wheelAngle) {
         this.wheelAngle = wheelAngle;
-        parentModel.compute_wheel_radius();
     }
 
     public double getCarSpeed() {
@@ -75,5 +67,18 @@ public class CarState implements Serializable {
 
     public void setPosXBack(double posXBack) {
         this.posXBack = posXBack;
+    }
+
+    @Override
+    public String toString() {
+        return "CarState{" +
+                "posX=" + posX +
+                ", posY=" + posY +
+                ", carAngle=" + carAngle +
+                ", wheelAngle=" + wheelAngle +
+                ", carSpeed=" + carSpeed +
+                ", posXBack=" + posXBack +
+                ", posYBack=" + posYBack +
+                '}';
     }
 }

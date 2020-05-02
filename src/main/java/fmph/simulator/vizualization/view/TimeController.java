@@ -56,7 +56,7 @@ public class TimeController extends VBox implements Contextable {
 
         timeSlider.setMax(second);
         timeSlider.setMajorTickUnit(second/10);
-        timeSlider.setBlockIncrement(second/30);
+        timeSlider.setBlockIncrement(second/50);
         if(actual){
             setActualTIme(second);
         }
