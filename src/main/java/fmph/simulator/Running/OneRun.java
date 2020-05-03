@@ -8,7 +8,6 @@ import fmph.simulator.recognization.RecognitionHistory;
 public class OneRun {
     TimeManagement timeManagement;
     RecognitionHistory recognitionHistory;
-    ChangeHistory changeHistory;
     RunState runState = RunState.readyToRun;
 
     private double previousTime = 0;
@@ -18,14 +17,7 @@ public class OneRun {
     }
 
 
-    boolean one = false;
     public void nextTick() {
-        if(one){
-            //only debug
-            System.out.println("pohzb");
-            ContextBuilder.getContext().getCarModel().movie(1500000,0);
-            one = false;
-        }
         if(runState == RunState.run) {
             double actualTime = timeManagement.getRunTime();
             ContextBuilder.getContext().getCarModel().movie(actualTime,previousTime);
