@@ -1,6 +1,7 @@
 package fmph.simulator.models;
 
 
+import fmph.simulator.Running.RunState;
 import fmph.simulator.app.context.ContextBuilder;
 import fmph.simulator.com.Message;
 import fmph.simulator.map.LaserTag;
@@ -20,6 +21,7 @@ public class CarModel {
     public static final double BEAMWIDTH = 0.206; // sirka luca [m] original 0.3
     public static final double DISTANCEBETWEENAXLES = 0.206;//35.5;   //vzdialenost medzi prednou a zadnou napravou [m]
     public static final double DISTANCEBETWEENAXLEANDBEAM = 0.189; //20;// vzdialenost medzi prednou napravou a lucom [m] real 0.3
+
     //Body na luci
     public double Ex = 0;
     public double Ey = 0;
@@ -78,9 +80,10 @@ public class CarModel {
 
         if (lastRunTime + minimumTimeInterval < actualTime) {
             double timeTravel = actualTime - lastRunTime;
+            System.out.println("dlzka cestovania" +timeTravel);
             double traveledDistance = (timeTravel / 1000) * carState.getCarSpeed() *  config.getDouble("app.carSpeedRate");
 
-            carState.setCarAngle(carState.getCarAngle()+180);
+            //carState.setCarAngle(carState.getCarAngle()+180);
 
             if (Math.abs(carState.getWheelAngle()) <= 0.5) { //auto ide rovno
                 carState.setPosX(carState.getPosX() + (traveledDistance  * Math.sin(Math.toRadians(carState.getCarAngle()))));
@@ -114,7 +117,7 @@ public class CarModel {
             checkIdentifier();
             computeBackOfVehlice();
             compute_wheel_radius();//todo rm
-            carState.setCarAngle(carState.getCarAngle()-180);
+            //carState.setCarAngle(carState.getCarAngle()-180);
             ContextBuilder.getContext().getCarInfoController().changeText();
 
         }
@@ -129,7 +132,10 @@ public class CarModel {
                 Math.sin( Math.toRadians(carState.getWheelAngle())));
     }
 
-    public String checkIdentifier() {
+    public void checkIdentifier() {
+        if(ContextBuilder.getContext().getRunManagement().getActualRun().getRunState()!= RunState.run){
+            return;
+        }
         //vrch luca
         //double Ex = posX -  DISTANCEBETWEENAXLEANDBEAM * Math.sin(Math.toRadians(carAngle))
         //		+ BEAMWIDTH/2 * Math.cos(Math.toRadians(carAngle));sssssss
@@ -192,7 +198,7 @@ public class CarModel {
                 }
             }
         }
-        return "1";
+
     }
 
     private void sendRecognizedInfo(Segment segment, LaserTag laserTag, double distanceFromX,BigDecimal time) {
@@ -203,7 +209,7 @@ public class CarModel {
 
 
         Double alfa = Math.toRadians(laserTag.getGamma());
-        Double beta = Math.toRadians(carState.getCarAngle() - 180);
+        Double beta = Math.toRadians(carState.getCarAngle() ); //old -180
         double titl = Function.angle_difference(beta, alfa);
         msg.setTilt(Math.abs(titl));
         msg.setCenter_x(-distanceFromX);//tododis
@@ -286,7 +292,7 @@ public class CarModel {
     }
 
     public void setCarState(CarState carState) {
-        this.carState = carState;
+        this.carState = SerializationUtils.clone(carState);
     }
 
     public double getFront_wheel_radius() {

@@ -32,11 +32,11 @@ public class RecognitionHistory {
         if(history == null || history.size() == 0){
             return null;
         }
-        ListIterator<HistoryElement> it = history.listIterator(history.size());
+        ListIterator<HistoryElement> it = history.listIterator(0);
         HistoryElement nearst = null;
-        while (it.hasPrevious()){
-            HistoryElement he =  it.previous();
-            if(he.getTimeRecognization() < time ){  //todo change to receive time
+        while (it.hasNext()){
+            HistoryElement he =  it.next();
+            if(he.getTimeRecognization() > time ){  //todo change to receive time
                 break;
             }
             nearst =he;
