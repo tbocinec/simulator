@@ -53,12 +53,7 @@ public class RunManagement {
             context.getCarModel().movie(time*1000,0);
         }
         else{
-            System.out.println(  (nearsTag.getCarStateBefore() == context.getCarModel().getCarState())+"a dopice") ;
-
-
             context.getCarModel().setCarState(nearsTag.getCarStateBefore());
-            //double d = time  -  nearsTag.getTimeRecognization()  ;
-            //.out.println("set to tag: "+nearsTag.getLaserTag().getType() + " and movie " + d + " time = "+time + " lastTagTime"+nearsTag.getTimeRecognization());
             context.getCarModel().movie(time*1000,nearsTag.getTimeRecognization()*1000);
         }
         this.actualRun.setTime(time);
