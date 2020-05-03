@@ -1,15 +1,8 @@
 package fmph.simulator.recognization;
 
 import fmph.simulator.app.context.ContextBuilder;
-import fmph.simulator.map.LaserTag;
-import fmph.simulator.map.Segment;
-import fmph.simulator.models.CarState;
 import javafx.application.Platform;
 
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.ListIterator;
 

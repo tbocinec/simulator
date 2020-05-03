@@ -1,9 +1,9 @@
 package fmph.simulator.vizualization.component;
 
-import java.util.List;
-
 import fmph.simulator.map.MapSchema;
 import fmph.simulator.map.Segment;
+
+import java.util.List;
 
 public class Function {
 	

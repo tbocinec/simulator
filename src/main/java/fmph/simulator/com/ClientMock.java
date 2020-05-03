@@ -1,7 +1,8 @@
 package fmph.simulator.com;
 
-import java.net.*;
 import java.io.*;
+import java.net.Socket;
+import java.net.UnknownHostException;
 
 @Deprecated
 public class ClientMock {

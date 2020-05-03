@@ -5,7 +5,6 @@ import fmph.simulator.map.Segment;
 import fmph.simulator.models.CarState;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 

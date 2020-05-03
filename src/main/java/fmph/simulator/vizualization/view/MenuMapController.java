@@ -1,7 +1,7 @@
 package fmph.simulator.vizualization.view;
 
-import fmph.simulator.app.context.interfaces.Contextable;
 import fmph.simulator.Map;
+import fmph.simulator.app.context.interfaces.Contextable;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 

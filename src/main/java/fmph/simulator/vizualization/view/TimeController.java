@@ -1,15 +1,9 @@
 package fmph.simulator.vizualization.view;
 
-import fmph.simulator.app.context.ContextBuilder;
 import fmph.simulator.app.context.interfaces.Contextable;
-import fmph.simulator.vizualization.view.uxcomponent.MenuLabelComponent;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class TimeController extends VBox implements Contextable {

@@ -1,15 +1,15 @@
 package fmph.simulator.vizualization.animate.idealCar;
 
-import java.io.*;
-
 import fmph.simulator.map.MapSchema;
 import fmph.simulator.map.Segment;
 import fmph.simulator.vizualization.animate.DrawableCar;
-import fmph.simulator.vizualization.component.VisualizeConfig;
 import fmph.simulator.vizualization.component.Function;
 import fmph.simulator.vizualization.component.SegmentPose;
+import fmph.simulator.vizualization.component.VisualizeConfig;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+
+import java.io.*;
 
 
 

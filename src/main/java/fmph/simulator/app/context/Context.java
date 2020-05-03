@@ -1,11 +1,11 @@
 package fmph.simulator.app.context;
 
+import fmph.simulator.Config;
+import fmph.simulator.Map;
 import fmph.simulator.Running.RunManagement;
 import fmph.simulator.app.context.exceptions.ContextException;
 import fmph.simulator.com.Server;
 import fmph.simulator.models.CarModel;
-import fmph.simulator.Config;
-import fmph.simulator.Map;
 import fmph.simulator.recognization.RecognitionHistory;
 import fmph.simulator.vizualization.Visualize;
 import fmph.simulator.vizualization.view.*;

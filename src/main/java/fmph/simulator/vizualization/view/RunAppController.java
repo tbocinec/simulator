@@ -1,14 +1,9 @@
 package fmph.simulator.vizualization.view;
 
 import fmph.simulator.Running.RunState;
-import fmph.simulator.app.context.ContextBuilder;
 import fmph.simulator.app.context.interfaces.Contextable;
-import fmph.simulator.models.CarModel;
-import javafx.application.Platform;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 
 public class RunAppController extends HBox implements Contextable {
 

@@ -1,13 +1,10 @@
 package fmph.simulator.vizualization.draw;
 
-import fmph.simulator.map.LaserTag;
 import fmph.simulator.map.MapSchema;
 import fmph.simulator.map.Segment;
 import fmph.simulator.vizualization.component.Function;
-import fmph.simulator.vizualization.component.IdLocation;
 import fmph.simulator.vizualization.component.SegmentPose;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 
 public class LabelDraw extends AbstractDraw {
 	

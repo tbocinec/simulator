@@ -1,7 +1,8 @@
 package fmph.simulator.vizualization.view;
 
 import fmph.simulator.app.context.interfaces.Contextable;
-import javafx.scene.control.*;
+import javafx.scene.control.Menu;
+import javafx.scene.control.RadioMenuItem;
 
 public class MenuViewController extends Menu implements Contextable {
 

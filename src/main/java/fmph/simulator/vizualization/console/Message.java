@@ -5,7 +5,6 @@ import fmph.simulator.app.context.ContextBuilder;
 import fmph.simulator.app.context.exceptions.ContextException;
 import fmph.simulator.vizualization.view.ConsoleController;
 
-
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.LinkedList;
