@@ -21,9 +21,6 @@ public interface Context {
     ConsoleController getConsoleController();
     void setConsoleController(ConsoleController consoleController);
 
-    RecognitionHistory getRecognizationHistory();
-    void setRecognizationHistory(RecognitionHistory recognizationHistory);
-
     Map getMap();
 
     void setPrimaryStage(Stage primaryStage);

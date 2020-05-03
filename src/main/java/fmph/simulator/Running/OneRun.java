@@ -14,6 +14,7 @@ public class OneRun {
 
     public OneRun(){
         timeManagement = new TimeManagementSimple();
+        recognitionHistory = new RecognitionHistory();
     }
 
 
@@ -45,5 +46,13 @@ public class OneRun {
 
     public void setTime(double time) {
         this.timeManagement.setTime(time);
+    }
+
+    public RecognitionHistory getRecognitionHistory() {
+        return recognitionHistory;
+    }
+
+    public void setRecognitionHistory(RecognitionHistory recognitionHistory) {
+        this.recognitionHistory = recognitionHistory;
     }
 }

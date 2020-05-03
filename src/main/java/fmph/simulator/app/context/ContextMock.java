@@ -33,15 +33,6 @@ public class ContextMock implements Context {
 
     }
 
-    @Override
-    public RecognitionHistory getRecognizationHistory() {
-        return null;
-    }
-
-    @Override
-    public void setRecognizationHistory(RecognitionHistory recognizationHistory) {
-
-    }
 
     @Override
     public Map getMap() {

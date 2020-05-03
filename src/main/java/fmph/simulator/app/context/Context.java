@@ -20,7 +20,7 @@ public class Context implements fmph.simulator.app.context.interfaces.Context {
     Visualize visualize;
     Server server;
     CarModel carModel;
-    RecognitionHistory recognitionHistory;
+    //RecognitionHistory recognitionHistory;
     RunManagement runManagement;
 
     //Config
@@ -65,19 +65,7 @@ public class Context implements fmph.simulator.app.context.interfaces.Context {
         this.ConsoleController = consoleController;
     }
 
-    @Override
-    public RecognitionHistory getRecognizationHistory() {
-        if(this.recognitionHistory == null){
-            recognitionHistory = new RecognitionHistory();
-        }
-        return this.recognitionHistory;
-    }
 
-    @Override
-    public void setRecognizationHistory(RecognitionHistory recognitionHistory) {
-        this.recognitionHistory = recognitionHistory;
-
-    }
 
     public Map getMap() {
         if(map == null){

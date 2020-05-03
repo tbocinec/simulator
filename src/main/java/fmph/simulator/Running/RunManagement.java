@@ -47,7 +47,7 @@ public class RunManagement {
 
     public void changeToTime(double time) {
         actualRun.setRunState(RunState.stop);
-        HistoryElement nearsTag = context.getRecognizationHistory().getNearst(time);
+        HistoryElement nearsTag = context.getRunManagement().getActualRun().getRecognitionHistory().getNearst(time);
         if(nearsTag == null ){
             context.getCarModel().initStartValue();
             context.getCarModel().movie(time*1000,0);

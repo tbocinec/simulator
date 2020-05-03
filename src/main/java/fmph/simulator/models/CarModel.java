@@ -71,16 +71,12 @@ public class CarModel {
 
 
     synchronized  public void  movie(double runTime,double lastRunTime) {
-
         if (carState.getCarSpeed() == 0) {
             return;
         }
-        double actualTime = runTime;
 
-
-        if (lastRunTime + minimumTimeInterval < actualTime) {
-            double timeTravel = actualTime - lastRunTime;
-            System.out.println("dlzka cestovania" +timeTravel);
+        if (lastRunTime + minimumTimeInterval < runTime) {
+            double timeTravel = runTime - lastRunTime;
             double traveledDistance = (timeTravel / 1000) * carState.getCarSpeed() *  config.getDouble("app.carSpeedRate");
 
             //carState.setCarAngle(carState.getCarAngle()+180);
@@ -163,9 +159,6 @@ public class CarModel {
         for (Segment segment : ContextBuilder.getContext().getMap().getMap().getSegments()) {
             for (LaserTag laserTag : segment.getLaserTags()) {
 
-                //double x = Function.txinv(laserTag.getX());
-                //double y = Function.txinv(laserTag.getY());
-
 
                 double x = laserTag.getX();
                 double y = laserTag.getY();
@@ -187,7 +180,7 @@ public class CarModel {
                             BigDecimal time = new BigDecimal(rTime);
                             new fmph.simulator.vizualization.console.Message("Recognized new tag with id " + laserTag.getType(), MessageType.INFO);
                             lastRecognizationHistoryElement = new HistoryElement(rTime, SerializationUtils.clone(carState),segment,laserTag);
-                            ContextBuilder.getContext().getRecognizationHistory().addTag(lastRecognizationHistoryElement);
+                            ContextBuilder.getContext().getRunManagement().getActualRun().getRecognitionHistory().addTag(lastRecognizationHistoryElement);
                             if (config.getBoolean("app.waitAfterRecognization"))  {
                                 carState.setCarSpeed(0);
                             }
