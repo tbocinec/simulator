@@ -44,13 +44,15 @@ public class TimeController extends VBox implements Contextable {
     }
 
     public void setMaxTime(double second,boolean actual){
-        if(second > 50000 || second < 1){
+        if(second > 50000 ){
             return;
         }
 
         timeSlider.setMax(second);
-        timeSlider.setMajorTickUnit(second/10);
-        timeSlider.setBlockIncrement(second/50);
+        if(second > 0.5) {
+            timeSlider.setMajorTickUnit(second / 10);
+            timeSlider.setBlockIncrement(second / 50);
+        }
         if(actual){
             setActualTIme(second);
         }

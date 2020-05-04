@@ -64,4 +64,8 @@ public interface Context {
     TimeController getTimeController();
 
     void setTimeController(TimeController timeController);
+
+    RunHistoryController getRunHistoryController();
+
+    void setRunHistoryController(RunHistoryController runHistoryController);
 }

@@ -153,4 +153,14 @@ public class ContextMock implements Context {
     public void setTimeController(TimeController timeController) {
 
     }
+
+    @Override
+    public RunHistoryController getRunHistoryController() {
+        return null;
+    }
+
+    @Override
+    public void setRunHistoryController(RunHistoryController runHistoryController) {
+
+    }
 }

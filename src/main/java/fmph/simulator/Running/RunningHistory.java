@@ -1,5 +1,7 @@
 package fmph.simulator.Running;
 
+import fmph.simulator.app.context.ContextBuilder;
+
 import java.util.ArrayList;
 
 public class RunningHistory {
@@ -16,6 +18,7 @@ public class RunningHistory {
 
     public void addRun(OneRun run){
         runHistory.add(run);
+        ContextBuilder.getContext().getRunHistoryController().addElement(run.getCreateTime());
     }
 
     public OneRun getRun(double createdTime){
@@ -23,6 +26,13 @@ public class RunningHistory {
     }
 
     public OneRun getLast(){
-        return runHistory.get(runHistory.size());
+        if(runHistory.size() == 0){
+            return null;
+        }
+        return runHistory.get(runHistory.size()-1);
+    }
+
+    public OneRun findElement(Double elementCreatetTime) {
+        return runHistory.stream().filter(e -> e.getCreateTime()==elementCreatetTime).findFirst().get();
     }
 }

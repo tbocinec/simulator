@@ -3,6 +3,9 @@ package fmph.simulator.Running;
 import fmph.simulator.app.context.ContextBuilder;
 import fmph.simulator.app.context.interfaces.Context;
 import fmph.simulator.recognization.HistoryElement;
+import fmph.simulator.vizualization.console.Message;
+import fmph.simulator.vizualization.console.MessageType;
+import fmph.simulator.vizualization.popup.Warning;
 
 public class RunManagement {
 
@@ -16,11 +19,20 @@ public class RunManagement {
         context = ContextBuilder.getContext();
     }
     public void reset() {
+        if (actualRun.getRunState() == RunState.readyToRun){
+            Warning.newWarning("A simulation that has not been started cannot be reset","illegal operation","");
+            return;
+        }
         startNewRun();
         context.getCarModel().initStartValue();
+        context.getTimeController().setMaxTime(0,true);
     }
 
     public void finish() {
+        if (actualRun.getRunState() == RunState.readyToRun){
+            Warning.newWarning("Finish stat is allowed only after first run","illegal operation","");
+        }
+        actualRun.setRunState(RunState.finish);
         if(runningHistory.getLast() != actualRun){
             runningHistory.addRun(actualRun);
         }
@@ -31,7 +43,6 @@ public class RunManagement {
             reset();
         }
         if(actualRun.getRunState() == RunState.stop){
-            System.out.println("Run after stop " + actualRun.getRunTimeSecond());
             context.getRunManagement().getActualRun().getRecognitionHistory().removeNews(actualRun.getRunTimeSecond());
             context.getTimeController().setMaxTime(actualRun.getRunTimeSecond(),true);
         }
@@ -39,6 +50,14 @@ public class RunManagement {
     }
 
     public void pause() {
+        if (actualRun.getRunState() == RunState.stop){
+            Warning.newWarning("The simulation is currently stopped","illegal operation","");
+            return;
+        }
+        if (actualRun.getRunState() == RunState.readyToRun){
+            Warning.newWarning("A simulation that has not been started cannot be stopped","illegal operation","");
+            return;
+        }
         actualRun.setRunState(RunState.stop);
     }
 
@@ -82,4 +101,9 @@ public class RunManagement {
     }
 
 
+    public void getHistorytRun(Double elementCreatetTime) {
+        OneRun historyRun = runningHistory.findElement(elementCreatetTime);
+        this.actualRun = historyRun;
+        new Message("Open old historyRun", MessageType.INFO);
+    }
 }

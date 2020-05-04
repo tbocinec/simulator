@@ -6,7 +6,7 @@ import fmph.simulator.Running.RunManagement;
 import fmph.simulator.app.context.exceptions.ContextException;
 import fmph.simulator.com.Server;
 import fmph.simulator.models.CarModel;
-import fmph.simulator.recognization.RecognitionHistory;
+
 import fmph.simulator.vizualization.Visualize;
 import fmph.simulator.vizualization.view.*;
 import javafx.stage.Stage;
@@ -40,6 +40,7 @@ public class Context implements fmph.simulator.app.context.interfaces.Context {
     MenuViewController menuViewController;
     RunAppController runAppController;
     TimeController timeController;
+    RunHistoryController runHistoryController;
 
     public CanvasController getCanvasController() {
         if(canvasController == null){
@@ -208,6 +209,14 @@ public class Context implements fmph.simulator.app.context.interfaces.Context {
 
     public void setTimeController(TimeController timeController) {
         this.timeController = timeController;
+    }
+
+    public RunHistoryController getRunHistoryController() {
+        return runHistoryController;
+    }
+
+    public void setRunHistoryController(RunHistoryController runHistoryController) {
+        this.runHistoryController = runHistoryController;
     }
 
 }

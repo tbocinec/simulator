@@ -41,4 +41,5 @@ public class RecognitionHistory {
     public void removeNews(double runTimeSecond) {
         history =  history.stream().filter(e -> e.getTimeRecognization() > runTimeSecond).collect(Collectors.toCollection(LinkedList::new));
     }
-}
+
+    }
