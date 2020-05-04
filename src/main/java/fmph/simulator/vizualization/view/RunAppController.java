@@ -19,11 +19,11 @@ public class RunAppController extends HBox implements Contextable {
 
     public void init(){
         run = new Button("Run");
-        run.setOnMouseClicked(e -> context.getRunManagement().getActualRun().setRunState(RunState.run));
+        run.setOnMouseClicked(e -> context.getRunManagement().run());
         stop = new Button("Finish");
         stop.setOnMouseClicked(e -> context.getRunManagement().finish());
         pause = new Button("Pause");
-        pause.setOnMouseClicked(e -> context.getRunManagement().getActualRun().setRunState(RunState.stop));
+        pause.setOnMouseClicked(e -> context.getRunManagement().pause());
         reset = new Button("Reset");
         reset.setOnMouseClicked(e -> context.getRunManagement().reset());
 

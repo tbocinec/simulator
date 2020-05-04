@@ -5,6 +5,7 @@ import javafx.application.Platform;
 
 import java.util.LinkedList;
 import java.util.ListIterator;
+import java.util.stream.Collectors;
 
 public class RecognitionHistory {
 
@@ -37,4 +38,7 @@ public class RecognitionHistory {
         return nearst;
     }
 
+    public void removeNews(double runTimeSecond) {
+        history =  history.stream().filter(e -> e.getTimeRecognization() > runTimeSecond).collect(Collectors.toCollection(LinkedList::new));
+    }
 }

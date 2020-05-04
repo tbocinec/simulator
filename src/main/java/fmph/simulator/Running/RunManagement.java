@@ -8,9 +8,11 @@ public class RunManagement {
 
     OneRun actualRun;
     Context context;
+    RunningHistory runningHistory;
 
     public RunManagement(){
         startNewRun();
+        runningHistory = new RunningHistory();
         context = ContextBuilder.getContext();
     }
     public void reset() {
@@ -19,7 +21,25 @@ public class RunManagement {
     }
 
     public void finish() {
-        actualRun = new OneRun();
+        if(runningHistory.getLast() != actualRun){
+            runningHistory.addRun(actualRun);
+        }
+
+    }
+    public void run() {
+        if(actualRun.getRunState() == RunState.finish){
+            reset();
+        }
+        if(actualRun.getRunState() == RunState.stop){
+            System.out.println("Run after stop " + actualRun.getRunTimeSecond());
+            context.getRunManagement().getActualRun().getRecognitionHistory().removeNews(actualRun.getRunTimeSecond());
+            context.getTimeController().setMaxTime(actualRun.getRunTimeSecond(),true);
+        }
+        actualRun.setRunState(RunState.run);
+    }
+
+    public void pause() {
+        actualRun.setRunState(RunState.stop);
     }
 
     void startNewRun(){
@@ -56,8 +76,10 @@ public class RunManagement {
             context.getCarModel().setCarState(nearsTag.getCarStateBefore());
             context.getCarModel().movie(time*1000,nearsTag.getTimeRecognization()*1000);
         }
-        this.actualRun.setTime(time);
+        this.actualRun.setTime(time*1000);
 
 
     }
+
+
 }

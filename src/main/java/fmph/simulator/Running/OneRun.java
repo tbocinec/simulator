@@ -9,12 +9,14 @@ public class OneRun {
     TimeManagement timeManagement;
     RecognitionHistory recognitionHistory;
     RunState runState = RunState.readyToRun;
+    double createTime;
 
     private double previousTime = 0;
 
     public OneRun(){
         timeManagement = new TimeManagementSimple();
         recognitionHistory = new RecognitionHistory();
+        createTime = System.currentTimeMillis();
     }
 
 
@@ -55,4 +57,8 @@ public class OneRun {
     public void setRecognitionHistory(RecognitionHistory recognitionHistory) {
         this.recognitionHistory = recognitionHistory;
     }
+    public double getCreateTime() {
+        return createTime;
+    }
+
 }
