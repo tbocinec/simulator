@@ -3,6 +3,7 @@ package fmph.simulator.vizualization.animate.realCar;
 import fmph.simulator.app.context.ContextBuilder;
 import fmph.simulator.map.MapSchema;
 import fmph.simulator.models.CarModel;
+import fmph.simulator.models.CarState;
 import fmph.simulator.vizualization.animate.DrawableCar;
 import fmph.simulator.vizualization.component.Function;
 import fmph.simulator.vizualization.component.VisualizeConfig;
@@ -36,11 +37,12 @@ public class RealCarBaseModel implements DrawableCar {
 
     @Override
     public void animateCar(GraphicsContext gc) {
-        gc.translate(Function.tx(carModel.getCarState().getPosX()), Function.ty(carModel.getCarState().getPosY()));
-        gc.rotate(-carModel.getCarState().getCarAngle()+180);
+        CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
+        gc.translate(Function.tx(carState.getPosX()), Function.ty(carState.getPosY()));
+        gc.rotate(-carState.getCarAngle()+180);
         draw_car_shape(gc);
-        gc.rotate(+carModel.getCarState().getCarAngle()-180);
-        gc.translate(- Function.tx(carModel.getCarState().getPosX()), -Function.ty(carModel.getCarState().getPosY()));
+        gc.rotate(+carState.getCarAngle()-180);
+        gc.translate(- Function.tx(carState.getPosX()), -Function.ty(carState.getPosY()));
 
         if(config.getBoolean("view.beamPoint")){
             drawBeamPoint(gc);
@@ -64,9 +66,10 @@ public class RealCarBaseModel implements DrawableCar {
     }
 
     private void drawCarBackPoint(GraphicsContext gc) {
+        CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
         gc.setFill(Color.web(config.getString("color.car.backPoint")));
-        double x = Function.tx(carModel.getCarState().getPosXBack());
-        double y = Function.ty(carModel.getCarState().getPosYBack());
+        double x = Function.tx(carState.getPosXBack());
+        double y = Function.ty(carState.getPosYBack());
         gc.fillOval(x-3,y-3,3,3);
     }
 

@@ -3,12 +3,15 @@ package fmph.simulator.Running;
 import fmph.simulator.Running.Time.TimeManagement;
 import fmph.simulator.Running.Time.TimeManagementSimple;
 import fmph.simulator.app.context.ContextBuilder;
+import fmph.simulator.models.CarState;
 import fmph.simulator.recognization.RecognitionHistory;
+import org.apache.commons.lang3.SerializationUtils;
 
 public class OneRun {
     TimeManagement timeManagement;
     RecognitionHistory recognitionHistory;
     RunState runState = RunState.readyToRun;
+    private CarState carState;
     double createTime;
 
     private double previousTime = 0;
@@ -17,6 +20,7 @@ public class OneRun {
         timeManagement = new TimeManagementSimple();
         recognitionHistory = new RecognitionHistory();
         createTime = System.currentTimeMillis();
+        carState = new CarState();
     }
 
 
@@ -59,6 +63,14 @@ public class OneRun {
     }
     public double getCreateTime() {
         return createTime;
+    }
+
+    public CarState getCarState() {
+        return carState;
+    }
+
+    public void setCarState(CarState carState) {
+        this.carState = SerializationUtils.clone(carState);
     }
 
 }

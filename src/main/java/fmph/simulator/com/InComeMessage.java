@@ -2,6 +2,7 @@ package fmph.simulator.com;
 
 import fmph.simulator.app.context.ContextBuilder;
 import fmph.simulator.models.CarModel;
+import fmph.simulator.models.CarState;
 import fmph.simulator.vizualization.console.Message;
 import fmph.simulator.vizualization.console.MessageType;
 
@@ -63,9 +64,9 @@ public class InComeMessage {
 		if (this.errorMsg != null && this.errorMsg.length() > 0) {
 			new Message(this.errorMsg,MessageType.ERROR);
 		} else {
-			CarModel car = ContextBuilder.getContext().getCarModel();
-			car.getCarState().setWheelAngle(this.wheelAngle);
-			car.getCarState().setCarSpeed(this.carSpeed);
+			CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
+			carState.setWheelAngle(this.wheelAngle);
+			carState.setCarSpeed(this.carSpeed);
 			ContextBuilder.getContext().getCarInfoController().changeText();
 			//log
 			new Message("New Input from car {speed:" + this.carSpeed + ",wheelAngle:" + this.wheelAngle + " }", MessageType.INFO);

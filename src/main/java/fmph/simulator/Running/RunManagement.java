@@ -92,7 +92,7 @@ public class RunManagement {
             context.getCarModel().movie(time*1000,0);
         }
         else{
-            context.getCarModel().setCarState(nearsTag.getCarStateBefore());
+            actualRun.setCarState(nearsTag.getCarStateBefore());
             context.getCarModel().movie(time*1000,nearsTag.getTimeRecognization()*1000);
         }
         this.actualRun.setTime(time*1000);

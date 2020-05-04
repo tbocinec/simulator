@@ -6,6 +6,7 @@ import fmph.simulator.app.context.interfaces.Contextable;
 import fmph.simulator.map.LaserTag;
 import fmph.simulator.map.Segment;
 import fmph.simulator.models.CarModel;
+import fmph.simulator.models.CarState;
 import fmph.simulator.vizualization.animate.DrawableCar;
 import fmph.simulator.vizualization.animate.idealCar.IdealCar;
 import fmph.simulator.vizualization.animate.idealCar.State;
@@ -86,14 +87,14 @@ public class CanvasController extends Canvas implements Contextable {
 
 
         this.setOnMouseDragged(e->{
-            CarModel carmodel = context.getCarModel();
+            CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
             if(drag) {
-                carmodel.getCarState().setPosX(Function.txinv(e.getX()));
-                carmodel.getCarState().setPosY(Function.tyinv(e.getY()));
+                carState.setPosX(Function.txinv(e.getX()));
+                carState.setPosY(Function.tyinv(e.getY()));
             }
             else if(dragTurn){
                 double d = distanceFromCar(e.getX(),e.getY());
-                carmodel.getCarState().setCarAngle(carmodel.getCarState().getCarAngle()+d*1.3);
+                carState.setCarAngle(carState.getCarAngle()+d*1.3);
             }
 
         });
@@ -102,8 +103,8 @@ public class CanvasController extends Canvas implements Contextable {
     }
 
     private double distanceFromCar(double x, double y){
-        CarModel carmodel = context.getCarModel();
-        return Math.sqrt(  Math.pow(Function.txinv(x)-carmodel.getCarState().getPosX(),2) + Math.pow(Function.tyinv(y)-carmodel.getCarState().getPosY(),2));
+        CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
+        return Math.sqrt(  Math.pow(Function.txinv(x)-carState.getPosX(),2) + Math.pow(Function.tyinv(y)-carState.getPosY(),2));
 
     }
 

@@ -37,7 +37,7 @@ public class CarModel {
     double back_wheel_radius = 0;
 
 
-    private CarState carState = new CarState();
+
     private PropertiesConfiguration config;
 
 
@@ -57,6 +57,7 @@ public class CarModel {
 
     public void initStartValue() {
         config = ContextBuilder.getContext().config;
+        CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
         carState.setPosX(ContextBuilder.getContext().getMap().getMap().getSegments().get(0).getStartPose().getX() - 0.185);
         carState.setPosY(ContextBuilder.getContext().getMap().getMap().getSegments().get(0).getStartPose().getY());
         carState.setCarAngle(config.getDouble("car.initial.carAngle")); //uhol natocenia celeho automobilu  [stupne, 0=sever]
@@ -71,6 +72,7 @@ public class CarModel {
 
 
     synchronized  public void  movie(double runTime,double lastRunTime) {
+        CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
         if (carState.getCarSpeed() == 0) {
             return;
         }
@@ -122,6 +124,7 @@ public class CarModel {
     }
 
     private void computeCenterOfTurn() {
+        CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
         Cx =   carState.getPosX() - DISTANCEBETWEENAXLES * (Math.cos(Math.toRadians(carState.getWheelAngle() + carState.getCarAngle())) /
                 Math.sin(Math.toRadians(carState.getWheelAngle())));
         Cy =  carState.getPosY() - DISTANCEBETWEENAXLES * (Math.sin(Math.toRadians(carState.getWheelAngle() + carState.getCarAngle())) /
@@ -129,6 +132,7 @@ public class CarModel {
     }
 
     public void checkIdentifier() {
+        CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
         if(ContextBuilder.getContext().getRunManagement().getActualRun().getRunState()!= RunState.run){
             return;
         }
@@ -195,7 +199,7 @@ public class CarModel {
     }
 
     private void sendRecognizedInfo(Segment segment, LaserTag laserTag, double distanceFromX,BigDecimal time) {
-
+        CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
         Message msg = new Message();
         msg.setTime_stamp(time.toPlainString());
         msg.setTag_id(Integer.parseInt(laserTag.getType()));
@@ -210,6 +214,7 @@ public class CarModel {
     }
 
     public void setWhealAngle(double signal) {
+        CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
         double angle = signalToAngle(signal);
         carState.setWheelAngle(angle);
         if(lastRecognizationHistoryElement != null){
@@ -220,6 +225,7 @@ public class CarModel {
     }
 
     private void computeBackOfVehlice(){
+        CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
             carState.setPosXBack(carState.getPosX() + DISTANCEBETWEENAXLES * Math.sin(Math.toRadians(carState.getCarAngle())));
             carState.setPosYBack(carState.getPosY() - DISTANCEBETWEENAXLES * Math.cos(Math.toRadians(carState.getCarAngle())));
     }
@@ -264,12 +270,13 @@ public class CarModel {
     }
     
     protected void compute_wheel_radius(){
+        CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
         this.front_wheel_radius = Math.pow(Math.abs(DISTANCEBETWEENAXLES / Math.sin(Math.toRadians(carState.getWheelAngle()))),1);
         this.back_wheel_radius = Math.pow(Math.abs(DISTANCEBETWEENAXLES / Math.tan(Math.toRadians(carState.getWheelAngle()))),1);
     }
 
     public void applicateLastSpeed() {
-        carState.setCarSpeed(getLastSpeed());
+        ContextBuilder.getContext().getRunManagement().getActualRun().getCarState().setCarSpeed(getLastSpeed());
     }
 
     public double getLastSpeed() {
@@ -278,14 +285,6 @@ public class CarModel {
 
     public void setLastSpeed(double lastSpeed) {
         this.lastSpeed = lastSpeed;
-    }
-
-    public CarState getCarState() {
-        return carState;
-    }
-
-    public void setCarState(CarState carState) {
-        this.carState = SerializationUtils.clone(carState);
     }
 
     public double getFront_wheel_radius() {
