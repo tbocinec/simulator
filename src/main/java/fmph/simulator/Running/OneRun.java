@@ -7,7 +7,9 @@ import fmph.simulator.models.CarState;
 import fmph.simulator.recognization.RecognitionHistory;
 import org.apache.commons.lang3.SerializationUtils;
 
-public class OneRun {
+import java.io.Serializable;
+
+public class  OneRun implements Serializable {
     TimeManagement timeManagement;
     RecognitionHistory recognitionHistory;
     RunState runState = RunState.readyToRun;
@@ -33,7 +35,7 @@ public class OneRun {
     }
 
     public void setRunState(RunState runState) {
-        if(runState == RunState.stop) {
+        if(runState != RunState.run) {
             timeManagement.startPause();
         }
         if(runState == RunState.run){

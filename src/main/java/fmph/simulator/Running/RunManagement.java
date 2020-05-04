@@ -36,6 +36,10 @@ public class RunManagement {
         if(runningHistory.getLast() != actualRun){
             runningHistory.addRun(actualRun);
         }
+        else {
+           throw new RuntimeException("duplicit save Run");
+        }
+        new Message("Successfully save previous run",MessageType.INFO);
 
     }
     public void run() {
@@ -75,15 +79,6 @@ public class RunManagement {
         }
     }
 
-    public OneRun getActualRun() {
-        return actualRun;
-    }
-
-    public void setActualRun(OneRun actualRun) {
-        this.actualRun = actualRun;
-    }
-
-
     public void changeToTime(double time) {
         actualRun.setRunState(RunState.stop);
         HistoryElement nearsTag = context.getRunManagement().getActualRun().getRecognitionHistory().getNearst(time);
@@ -104,6 +99,19 @@ public class RunManagement {
     public void getHistorytRun(Double elementCreatetTime) {
         OneRun historyRun = runningHistory.findElement(elementCreatetTime);
         this.actualRun = historyRun;
+        context.getTimeController().setMaxTime(historyRun.getRunTimeSecond(),true);
         new Message("Open old historyRun", MessageType.INFO);
+        this.actualRun.setRunState(RunState.stop);
+    }
+
+    public RunningHistory getRunningHistory() {
+        return runningHistory;
+    }
+    public OneRun getActualRun() {
+        return actualRun;
+    }
+
+    public void setActualRun(OneRun actualRun) {
+        this.actualRun = actualRun;
     }
 }

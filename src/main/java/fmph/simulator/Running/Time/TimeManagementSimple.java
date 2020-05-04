@@ -1,5 +1,7 @@
 package fmph.simulator.Running.Time;
 
+import java.io.Serializable;
+
 public class TimeManagementSimple implements TimeManagement {
 
     private double actualTime;

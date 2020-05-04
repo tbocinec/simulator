@@ -1,6 +1,8 @@
 package fmph.simulator.Running.Time;
 
-public interface TimeManagement {
+import java.io.Serializable;
+
+public interface TimeManagement extends Serializable {
     void run();
     double getRunTime();
     void startPause();
