@@ -173,4 +173,14 @@ public class ContextMock implements Context {
     public void setNoiseController(NoiseController noiseController) {
 
     }
+
+    @Override
+    public ModelMenuController getModelMenuController() {
+        return null;
+    }
+
+    @Override
+    public void setModelMenuController(ModelMenuController modelMenuController) {
+
+    }
 }

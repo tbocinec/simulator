@@ -72,4 +72,8 @@ public interface Context {
     NoiseController getNoiseController();
 
     void setNoiseController(NoiseController noiseController);
+
+    ModelMenuController getModelMenuController();
+
+    void setModelMenuController(ModelMenuController modelMenuController);
 }

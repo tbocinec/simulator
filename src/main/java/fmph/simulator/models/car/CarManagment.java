@@ -25,4 +25,8 @@ public class CarManagment {
     public void setActual(int index) {
         this.actual = setCar.get(index);
     }
+
+    public List<Model> getSetCar() {
+        return setCar;
+    }
 }

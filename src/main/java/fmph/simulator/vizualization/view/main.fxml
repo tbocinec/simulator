@@ -26,6 +26,8 @@
             <Menu mnemonicParsing="false" text="Config">
                <items>
                   <MenuItem fx:id="configViewAll"  mnemonicParsing="false" text="View all properties" />
+                   <ModelMenuController mnemonicParsing="false" text="Change model ">
+                   </ModelMenuController>
                </items>
             </Menu>
             <MenuViewController mnemonicParsing="false" text="View" />

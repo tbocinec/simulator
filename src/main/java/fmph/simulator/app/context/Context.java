@@ -42,6 +42,7 @@ public class Context implements fmph.simulator.app.context.interfaces.Context {
     TimeController timeController;
     RunHistoryController runHistoryController;
     NoiseController noiseController;
+    ModelMenuController modelMenuController;
 
     public CanvasController getCanvasController() {
         if(canvasController == null){
@@ -226,5 +227,13 @@ public class Context implements fmph.simulator.app.context.interfaces.Context {
 
     public void setNoiseController(NoiseController noiseController) {
         this.noiseController = noiseController;
+    }
+
+    public ModelMenuController getModelMenuController() {
+        return modelMenuController;
+    }
+
+    public void setModelMenuController(ModelMenuController modelMenuController) {
+        this.modelMenuController = modelMenuController;
     }
 }

@@ -20,6 +20,7 @@ public class MenuMapController extends Menu implements Contextable {
     }
 
     private void loadMap(){
+        this.getItems().remove(0,this.getItems().size());
         Map map = context.getMap();
         try (Stream<Path> walk = Files.walk(Paths.get(PATH_TO_MAP))) {
 
