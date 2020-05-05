@@ -16,8 +16,8 @@ public class MainApp  extends Application implements Runnable {
     public static void main(String[] args) {
         try {
             launch(args);
-        }catch (RuntimeException e){
-            //todo log to App and Logger
+        }catch (Exception e){
+            e.printStackTrace();
             new Message(e.getMessage(), MessageType.ERROR);
         }
 

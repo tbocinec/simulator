@@ -6,6 +6,8 @@ import fmph.simulator.app.context.ContextBuilder;
 import fmph.simulator.com.Message;
 import fmph.simulator.map.LaserTag;
 import fmph.simulator.map.Segment;
+import fmph.simulator.models.car.CarManagment;
+import fmph.simulator.models.car.Model;
 import fmph.simulator.recognization.HistoryElement;
 import fmph.simulator.vizualization.component.Function;
 import fmph.simulator.vizualization.console.MessageType;
@@ -18,9 +20,7 @@ import java.util.HashMap;
 
 public class CarModel {
 
-    public static final double BEAMWIDTH = 0.206; // sirka luca [m] original 0.3
-    public static final double DISTANCEBETWEENAXLES = 0.206;//35.5;   //vzdialenost medzi prednou a zadnou napravou [m]
-    public static final double DISTANCEBETWEENAXLEANDBEAM = 0.189; //20;// vzdialenost medzi prednou napravou a lucom [m] real 0.3
+    CarManagment carManagment;
 
     //Body na luci
     public double Ex = 0;
@@ -52,6 +52,7 @@ public class CarModel {
 
 
     public CarModel() {
+        carManagment = new CarManagment();
         initStartValue();
     }
 
@@ -73,6 +74,7 @@ public class CarModel {
 
     synchronized  public void  movie(double runTime,double lastRunTime) {
         CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
+        Model model = carManagment.getActual();
         if (carState.getCarSpeed() == 0) {
             return;
         }
@@ -94,13 +96,13 @@ public class CarModel {
                 //double delta_fi = (interval * carSpeed)/DISTANCEBETWEENAXLES * Math.tan(wheelAngle);
 
                 computeCenterOfTurn();
-                double delta_fi = -((traveledDistance) / DISTANCEBETWEENAXLES) * Math.tan(Math.toRadians(carState.getWheelAngle()));
+                double delta_fi = -((traveledDistance) /  model.getDISTANCEBETWEENAXLES()) * Math.tan(Math.toRadians(carState.getWheelAngle()));
 
 
-                double pomA  =  DISTANCEBETWEENAXLES * (Math.cos(Math.toRadians(carState.getWheelAngle() + carState.getCarAngle())) /
+                double pomA  =  model.getDISTANCEBETWEENAXLES() * (Math.cos(Math.toRadians(carState.getWheelAngle() + carState.getCarAngle())) /
                         Math.sin(Math.toRadians(carState.getWheelAngle())));
 
-                double pomB =  DISTANCEBETWEENAXLES * (Math.sin(Math.toRadians(carState.getWheelAngle() + carState.getCarAngle())) /
+                double pomB =  model.getDISTANCEBETWEENAXLES() * (Math.sin(Math.toRadians(carState.getWheelAngle() + carState.getCarAngle())) /
                         Math.sin( Math.toRadians(carState.getWheelAngle())));
 
 
@@ -125,14 +127,18 @@ public class CarModel {
 
     private void computeCenterOfTurn() {
         CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
-        Cx =   carState.getPosX() - DISTANCEBETWEENAXLES * (Math.cos(Math.toRadians(carState.getWheelAngle() + carState.getCarAngle())) /
+        Model model = carManagment.getActual();
+
+        Cx =   carState.getPosX() - model.getDISTANCEBETWEENAXLES() * (Math.cos(Math.toRadians(carState.getWheelAngle() + carState.getCarAngle())) /
                 Math.sin(Math.toRadians(carState.getWheelAngle())));
-        Cy =  carState.getPosY() - DISTANCEBETWEENAXLES * (Math.sin(Math.toRadians(carState.getWheelAngle() + carState.getCarAngle())) /
+        Cy =  carState.getPosY() - model.getDISTANCEBETWEENAXLES() * (Math.sin(Math.toRadians(carState.getWheelAngle() + carState.getCarAngle())) /
                 Math.sin( Math.toRadians(carState.getWheelAngle())));
     }
 
     public void checkIdentifier() {
         CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
+        Model model = carManagment.getActual();
+
         if(ContextBuilder.getContext().getRunManagement().getActualRun().getRunState()!= RunState.run){
             return;
         }
@@ -142,13 +148,13 @@ public class CarModel {
         //double Ey = posY + DISTANCEBETWEENAXLEANDBEAM  * Math.cos(Math.toRadians(carAngle))
         //		+ BEAMWIDTH/2 * Math.sin(Math.toRadians(carAngle));
         //stred luca
-        Ex = carState.getPosX() - (DISTANCEBETWEENAXLEANDBEAM * Math.sin(Math.toRadians(carState.getCarAngle())));
-        Ey = carState.getPosY() + (DISTANCEBETWEENAXLEANDBEAM * Math.cos(Math.toRadians(carState.getCarAngle())));
+        Ex = carState.getPosX() - (model.getDISTANCEBETWEENAXLEANDBEAM() * Math.sin(Math.toRadians(carState.getCarAngle())));
+        Ey = carState.getPosY() + (model.getDISTANCEBETWEENAXLEANDBEAM() * Math.cos(Math.toRadians(carState.getCarAngle())));
         //spodok luca
-        Fx = carState.getPosX() - DISTANCEBETWEENAXLEANDBEAM * Math.sin(Math.toRadians(carState.getCarAngle()))
-                - BEAMWIDTH / 2 * Math.cos(Math.toRadians(carState.getCarAngle()));
-        Fy = carState.getPosY() + DISTANCEBETWEENAXLEANDBEAM * Math.cos(Math.toRadians(carState.getCarAngle()))
-                - BEAMWIDTH / 2 * Math.sin(Math.toRadians(carState.getCarAngle()));
+        Fx = carState.getPosX() - model.getDISTANCEBETWEENAXLEANDBEAM() * Math.sin(Math.toRadians(carState.getCarAngle()))
+                - model.getBEAMWIDTH() / 2 * Math.cos(Math.toRadians(carState.getCarAngle()));
+        Fy = carState.getPosY() + model.getDISTANCEBETWEENAXLEANDBEAM() * Math.cos(Math.toRadians(carState.getCarAngle()))
+                -  model.getBEAMWIDTH() / 2 * Math.sin(Math.toRadians(carState.getCarAngle()));
 
 
         //Smerove vektory
@@ -172,7 +178,7 @@ public class CarModel {
 
                 if (Math.abs(distance) < 0.006) {
                     double distanceFromX = Math.sqrt((Math.pow(x - Ex, 2) + Math.pow(y - Ey, 2)));
-                    if (Math.abs(distanceFromX) < BEAMWIDTH / 2) {
+                    if (Math.abs(distanceFromX) < model.getBEAMWIDTH() / 2) {
                         if (lastSeenTag.contains(laserTag.getType())) {
                             break;
                         } else {
@@ -226,8 +232,9 @@ public class CarModel {
 
     private void computeBackOfVehlice(){
         CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
-            carState.setPosXBack(carState.getPosX() + DISTANCEBETWEENAXLES * Math.sin(Math.toRadians(carState.getCarAngle())));
-            carState.setPosYBack(carState.getPosY() - DISTANCEBETWEENAXLES * Math.cos(Math.toRadians(carState.getCarAngle())));
+        Model model = carManagment.getActual();
+        carState.setPosXBack(carState.getPosX() + model.getDISTANCEBETWEENAXLES() * Math.sin(Math.toRadians(carState.getCarAngle())));
+        carState.setPosYBack(carState.getPosY() - model.getDISTANCEBETWEENAXLES() * Math.cos(Math.toRadians(carState.getCarAngle())));
     }
 
     public double signalToAngle(double signal) {
@@ -271,8 +278,9 @@ public class CarModel {
     
     protected void compute_wheel_radius(){
         CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
-        this.front_wheel_radius = Math.pow(Math.abs(DISTANCEBETWEENAXLES / Math.sin(Math.toRadians(carState.getWheelAngle()))),1);
-        this.back_wheel_radius = Math.pow(Math.abs(DISTANCEBETWEENAXLES / Math.tan(Math.toRadians(carState.getWheelAngle()))),1);
+        Model model = carManagment.getActual();
+        this.front_wheel_radius = Math.pow(Math.abs(model.getDISTANCEBETWEENAXLES() / Math.sin(Math.toRadians(carState.getWheelAngle()))),1);
+        this.back_wheel_radius = Math.pow(Math.abs(model.getDISTANCEBETWEENAXLES() / Math.tan(Math.toRadians(carState.getWheelAngle()))),1);
     }
 
     public void applicateLastSpeed() {
@@ -319,6 +327,7 @@ public class CarModel {
         Cy = cy;
     }
 
-
-
+    public CarManagment getCarManagment() {
+        return carManagment;
+    }
 }

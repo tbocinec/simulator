@@ -4,6 +4,7 @@ import fmph.simulator.app.context.ContextBuilder;
 import fmph.simulator.map.MapSchema;
 import fmph.simulator.models.CarModel;
 import fmph.simulator.models.CarState;
+import fmph.simulator.models.car.Model;
 import fmph.simulator.vizualization.animate.DrawableCar;
 import fmph.simulator.vizualization.component.Function;
 import fmph.simulator.vizualization.component.VisualizeConfig;
@@ -102,12 +103,13 @@ public class RealCarBaseModel implements DrawableCar {
     }
 
     private void draw_car_shape(GraphicsContext gc) {
+        Model model = ContextBuilder.getContext().getCarModel().getCarManagment().getActual();
         Paint preColor = gc.getFill();
         gc.setFill(Color.BLUE);
         Double widthT = Function.td(width);
         Double heightT = Function.td(height);
-        Double distanceBetweenAxelAndBeen = Function.td(CarModel.DISTANCEBETWEENAXLEANDBEAM);
-        Double withRay = Function.td(CarModel.BEAMWIDTH);
+        Double distanceBetweenAxelAndBeen = Function.td(model.getDISTANCEBETWEENAXLEANDBEAM());
+        Double withRay = Function.td(model.getBEAMWIDTH());
 
         gc.fillRect(-widthT/2,-heightT,widthT,heightT);
         gc.setFill(Color.RED);
