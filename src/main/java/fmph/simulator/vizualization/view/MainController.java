@@ -4,6 +4,7 @@ import fmph.simulator.Running.RunSaver;
 import fmph.simulator.app.MainApp;
 import fmph.simulator.app.context.ContextBuilder;
 import fmph.simulator.app.context.interfaces.Contextable;
+import fmph.simulator.vizualization.config.ConfigController;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -52,6 +53,9 @@ public class MainController implements Contextable {
     @FXML
     MenuItem close;
 
+    @FXML
+    MenuItem configViewAll;
+
 
     @FXML
     public void initialize(){
@@ -66,6 +70,8 @@ public class MainController implements Contextable {
         openHistory.setOnAction(e -> RunSaver.load());
         close.setOnAction(e -> MainApp.close(0));
         newApp.setOnAction(e -> MainApp.reset());
+
+        configViewAll.setOnAction(e -> ConfigController.createPopUp());
     }
 
 
