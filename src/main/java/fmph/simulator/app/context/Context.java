@@ -41,6 +41,7 @@ public class Context implements fmph.simulator.app.context.interfaces.Context {
     RunAppController runAppController;
     TimeController timeController;
     RunHistoryController runHistoryController;
+    NoiseController noiseController;
 
     public CanvasController getCanvasController() {
         if(canvasController == null){
@@ -219,4 +220,11 @@ public class Context implements fmph.simulator.app.context.interfaces.Context {
         this.runHistoryController = runHistoryController;
     }
 
+    public NoiseController getNoiseController() {
+        return noiseController;
+    }
+
+    public void setNoiseController(NoiseController noiseController) {
+        this.noiseController = noiseController;
+    }
 }

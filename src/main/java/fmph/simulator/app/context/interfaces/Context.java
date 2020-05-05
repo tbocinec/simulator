@@ -68,4 +68,8 @@ public interface Context {
     RunHistoryController getRunHistoryController();
 
     void setRunHistoryController(RunHistoryController runHistoryController);
+
+    NoiseController getNoiseController();
+
+    void setNoiseController(NoiseController noiseController);
 }

@@ -45,7 +45,7 @@
                    <CarInfoController minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                  </content>
                </TitledPane>
-               <TitledPane animated="false" text="App 2">
+               <TitledPane animated="false" text="App">
                  <content>
                    <AppPanelController minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                  </content>
@@ -67,7 +67,7 @@
                  </TitledPane>
                  <TitledPane animated="false" text="Noise config">
                     <content>
-                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                       <NoiseController minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                     </content>
                  </TitledPane>
 

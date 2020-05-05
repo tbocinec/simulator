@@ -163,4 +163,14 @@ public class ContextMock implements Context {
     public void setRunHistoryController(RunHistoryController runHistoryController) {
 
     }
+
+    @Override
+    public NoiseController getNoiseController() {
+        return null;
+    }
+
+    @Override
+    public void setNoiseController(NoiseController noiseController) {
+
+    }
 }
