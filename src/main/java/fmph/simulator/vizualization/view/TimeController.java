@@ -3,6 +3,7 @@ package fmph.simulator.vizualization.view;
 import fmph.simulator.app.context.interfaces.Contextable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.geometry.Insets;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.VBox;
 
@@ -13,7 +14,7 @@ public class TimeController extends VBox implements Contextable {
 
 
     public TimeController(){
-        this.setMinWidth(500);
+        this.setMinWidth(700);
         registryToContext();
         init();
     }
@@ -32,6 +33,7 @@ public class TimeController extends VBox implements Contextable {
         timeSlider.setShowTickLabels(true);
         timeSlider.setSnapToTicks(true);
 
+        timeSlider.paddingProperty().setValue(new Insets(7,15,3,15));
         //we need only onclicket property
         timeSlider.valueProperty().addListener(timeListener);
         this.getChildren().addAll(timeSlider);
