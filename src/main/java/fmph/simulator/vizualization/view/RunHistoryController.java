@@ -2,6 +2,7 @@ package fmph.simulator.vizualization.view;
 
 import fmph.simulator.app.context.interfaces.Contextable;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
@@ -21,10 +22,13 @@ public class RunHistoryController extends VBox implements Contextable {
 
     private void  init(){
         clearButton = new Button("Clear");
-        clearButton.setOnMouseClicked( e -> this.getChildren().remove(1,this.getChildren().size()));
+        clearButton.setOnMouseClicked(e-> removeAll());
         this.getChildren().add(clearButton);
     }
 
+    public void removeAll(){
+        this.getChildren().remove(1,this.getChildren().size());
+    }
 
 
     @Override
@@ -44,4 +48,6 @@ public class RunHistoryController extends VBox implements Contextable {
 
         this.getChildren().add(element);
     }
+
+
 }

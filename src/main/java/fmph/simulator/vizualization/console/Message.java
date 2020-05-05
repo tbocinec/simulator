@@ -49,6 +49,13 @@ public class Message {
         }
     }
 
+    public static void removeAll(){
+        messageQueue.clear();
+        messageHistory.removeAll();
+        ContextBuilder.getContext().getConsoleController().removeAllText();
+
+
+    }
 
     public  synchronized static Queue<Message> getMessageQueue() {
         return messageQueue;

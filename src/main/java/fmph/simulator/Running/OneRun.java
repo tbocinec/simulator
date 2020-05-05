@@ -1,5 +1,6 @@
 package fmph.simulator.Running;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import fmph.simulator.Running.Time.TimeManagement;
 import fmph.simulator.Running.Time.TimeManagementSimple;
 import fmph.simulator.app.context.ContextBuilder;
@@ -10,7 +11,8 @@ import org.apache.commons.lang3.SerializationUtils;
 import java.io.Serializable;
 
 public class  OneRun implements Serializable {
-    TimeManagement timeManagement;
+    ///problem with use TimeManagment interface because problem of seriali interface field
+    TimeManagementSimple timeManagement;
     RecognitionHistory recognitionHistory;
     RunState runState = RunState.readyToRun;
     private CarState carState;
@@ -44,6 +46,7 @@ public class  OneRun implements Serializable {
         this.runState = runState;
     }
 
+    @JsonIgnore
     public double getRunTimeSecond(){
         return timeManagement.getRunTime()/1000;
     }
@@ -71,8 +74,31 @@ public class  OneRun implements Serializable {
         return carState;
     }
 
+    public void setCarStateClone(CarState carState) {
+        this.carState = SerializationUtils.clone(carState);
+    }
+
     public void setCarState(CarState carState) {
         this.carState = SerializationUtils.clone(carState);
     }
 
+    public TimeManagementSimple getTimeManagement() {
+        return timeManagement;
+    }
+
+    public void setTimeManagement(TimeManagementSimple timeManagement) {
+        this.timeManagement = timeManagement;
+    }
+
+    public void setCreateTime(double createTime) {
+        this.createTime = createTime;
+    }
+
+    public double getPreviousTime() {
+        return previousTime;
+    }
+
+    public void setPreviousTime(double previousTime) {
+        this.previousTime = previousTime;
+    }
 }

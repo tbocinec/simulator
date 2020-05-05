@@ -11,6 +11,7 @@ public class RunManagement {
 
     OneRun actualRun;
     Context context;
+
     RunningHistory runningHistory;
 
     public RunManagement(){
@@ -26,6 +27,7 @@ public class RunManagement {
         startNewRun();
         context.getCarModel().initStartValue();
         context.getTimeController().setMaxTime(0,true);
+        context.getRecognitionHistoryController().removeAll();
     }
 
     public void finish() {
@@ -87,7 +89,7 @@ public class RunManagement {
             context.getCarModel().movie(time*1000,0);
         }
         else{
-            actualRun.setCarState(nearsTag.getCarStateBefore());
+            actualRun.setCarStateClone(nearsTag.getCarStateBefore());
             context.getCarModel().movie(time*1000,nearsTag.getTimeRecognization()*1000);
         }
         this.actualRun.setTime(time*1000);
@@ -102,10 +104,19 @@ public class RunManagement {
         context.getTimeController().setMaxTime(historyRun.getRunTimeSecond(),true);
         new Message("Open old historyRun", MessageType.INFO);
         this.actualRun.setRunState(RunState.stop);
+        context.getRecognitionHistoryController().removeAll();
+        this.actualRun.getRecognitionHistory().showAll();
     }
 
     public RunningHistory getRunningHistory() {
         return runningHistory;
+    }
+    public void setRunningHistory(RunningHistory runningHistory) {
+        context.getRecognitionHistoryController().removeAll();
+        context.getRunHistoryController().removeAll();
+        this.runningHistory = runningHistory;
+        runningHistory.showAlltoGui();
+
     }
     public OneRun getActualRun() {
         return actualRun;
@@ -114,4 +125,5 @@ public class RunManagement {
     public void setActualRun(OneRun actualRun) {
         this.actualRun = actualRun;
     }
+
 }

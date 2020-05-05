@@ -16,10 +16,13 @@ public class RecognitionHistoryController extends VBox implements Contextable {
 
     private void  init(){
         clearButton = new Button("Clear");
-        clearButton.setOnMouseClicked( e -> this.getChildren().remove(1,this.getChildren().size()));
+        clearButton.setOnMouseClicked( e -> removeAll());
         this.getChildren().add(clearButton);
     }
 
+    public void removeAll() {
+        this.getChildren().remove(1,this.getChildren().size());
+    }
 
 
     @Override

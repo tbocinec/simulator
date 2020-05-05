@@ -23,4 +23,8 @@ public class MessageHistory {
     public String toString() {
         return msg.stream().map(e ->  formater.format(e.timestamp) + " " + e.type + " " + e.msg).collect(Collectors.joining("\n"));
     }
+
+    public void removeAll(){
+        this.msg.clear();
+    }
 }

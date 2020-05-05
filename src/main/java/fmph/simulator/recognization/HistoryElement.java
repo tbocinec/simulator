@@ -19,6 +19,10 @@ public class HistoryElement implements Serializable {
 
     SimpleDateFormat formatDate = new SimpleDateFormat("hh:s");
 
+    public HistoryElement(){
+
+    }
+
     public HistoryElement(double timeRecognization, CarState carStateBefore,
                          Segment segment, LaserTag laserTag) {
         this.timeRecognization = timeRecognization;

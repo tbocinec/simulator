@@ -147,7 +147,7 @@ public class ConsoleController extends ScrollPane implements Contextable {
         Platform.runLater( () -> this.setVvalue(40));
     }
 
-    private void removeAllText(){
+    public void removeAllText(){
         box.getChildren().remove(0,box.getChildren().size());
     }
 

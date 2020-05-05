@@ -1,13 +1,12 @@
 package fmph.simulator.vizualization.view;
 
+import fmph.simulator.Running.RunSaver;
+import fmph.simulator.app.MainApp;
 import fmph.simulator.app.context.ContextBuilder;
 import fmph.simulator.app.context.interfaces.Contextable;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
@@ -41,6 +40,18 @@ public class MainController implements Contextable {
     @FXML
     VBox consoleWrapper;
 
+    @FXML
+    MenuItem openHistory;
+
+    @FXML
+    MenuItem saveHistory;
+
+    @FXML
+    MenuItem newApp;
+
+    @FXML
+    MenuItem close;
+
 
     @FXML
     public void initialize(){
@@ -50,6 +61,11 @@ public class MainController implements Contextable {
 
         });
         ContextBuilder.getContext().getCanvasController().resize();
+
+        saveHistory.setOnAction(e -> RunSaver.save());
+        openHistory.setOnAction(e -> RunSaver.load());
+        close.setOnAction(e -> MainApp.close(0));
+        newApp.setOnAction(e -> MainApp.reset());
     }
 
 

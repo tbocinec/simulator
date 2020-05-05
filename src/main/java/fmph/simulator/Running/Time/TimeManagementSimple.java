@@ -1,5 +1,7 @@
 package fmph.simulator.Running.Time;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 
 public class TimeManagementSimple implements TimeManagement {
@@ -18,6 +20,7 @@ public class TimeManagementSimple implements TimeManagement {
 
 
     @Override
+    @JsonIgnore
     synchronized public double getRunTime(){
         if(lastRealTime != 0){
             double snipTime = System.currentTimeMillis();
@@ -35,5 +38,22 @@ public class TimeManagementSimple implements TimeManagement {
     public void setTime(double time){
         actualTime = time;
         lastRealTime = 0;
+    }
+
+    //Geters and Seters for serializable
+    public double getActualTime() {
+        return actualTime;
+    }
+
+    public void setActualTime(double actualTime) {
+        this.actualTime = actualTime;
+    }
+
+    public double getLastRealTime() {
+        return lastRealTime;
+    }
+
+    public void setLastRealTime(double lastRealTime) {
+        this.lastRealTime = lastRealTime;
     }
 }

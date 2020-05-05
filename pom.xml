@@ -1,28 +1,23 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-
 	<groupId>fmph</groupId>
 	<artifactId>simulator</artifactId>
 	<version>0.2</version>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>8</source>
-                    <target>8</target>
-                </configuration>
-            </plugin>
-
-
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>8</source>
+					<target>8</target>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>3.1.1</version>
-
 				<configuration>
 					<descriptorRefs>
 						<descriptorRef>jar-with-dependencies</descriptorRef>
@@ -33,7 +28,6 @@
 						</manifest>
 					</archive>
 				</configuration>
-
 				<executions>
 					<execution>
 						<id>make-assembly</id>
@@ -43,10 +37,8 @@
 						</goals>
 					</execution>
 				</executions>
-
 			</plugin>
-        </plugins>
-
+		</plugins>
 		<resources>
 			<resource>
 				<filtering>false</filtering>
@@ -55,27 +47,19 @@
 					<include>**/*.fxml</include>
 				</includes>
 			</resource>
-
-
 			<resource>
 				<targetPath>${basedir}/target/data</targetPath>
 				<directory>data</directory>
 				<filtering>false</filtering>
 			</resource>
-
-
 		</resources>
-
-    </build>
-    <packaging>jar</packaging>
-
+	</build>
+	<packaging>jar</packaging>
 	<name>simulator</name>
 	<url>http://maven.apache.org</url>
-
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -83,53 +67,47 @@
 			<version>3.8.1</version>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<version>2.9.8</version>
 		</dependency>
-
-
-
 		<dependency>
 			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-controls</artifactId>
 			<version>11.0.2</version>
 		</dependency>
-	
-	
 		<dependency>
 			<groupId>org.openjfx</groupId>
-			<artifactId>javafx-graphics </artifactId>
+			<artifactId>javafx-graphics</artifactId>
 			<version>11</version>
 			<classifier>linux</classifier>
 		</dependency>
-		
 		<dependency>
-    		<groupId>org.apache.commons</groupId>
-    		<artifactId>commons-configuration2</artifactId>
-    		<version>2.6</version>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-configuration2</artifactId>
+			<version>2.6</version>
 		</dependency>
-
 		<dependency>
 			<groupId>com.jfoenix</groupId>
 			<artifactId>jfoenix</artifactId>
 			<version>9.0.8</version>
 		</dependency>
-		
 		<dependency>
-    <groupId>commons-beanutils</groupId>
-    <artifactId>commons-beanutils</artifactId>
-    <version>1.9.4</version>
-</dependency>
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>13.0</version>
-            <scope>compile</scope>
-        </dependency>
-
-
-    </dependencies>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.9.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jetbrains</groupId>
+			<artifactId>annotations</artifactId>
+			<version>13.0</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-xml</artifactId>
+			<version>2.9.8</version>
+		</dependency>
+	</dependencies>
 </project>

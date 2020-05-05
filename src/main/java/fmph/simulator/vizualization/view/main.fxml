@@ -12,14 +12,15 @@
       <menus>
         <Menu mnemonicParsing="false" text="File">
           <items>
-            <MenuItem mnemonicParsing="false" text="New" />
+            <MenuItem fx:id="newApp" mnemonicParsing="false" text="New" />
               <SeparatorMenuItem mnemonicParsing="false" />
             <MenuMapController mnemonicParsing="false" text="Change map ">
             </MenuMapController>
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Running history open" />
+            <MenuItem fx:id="openHistory"  mnemonicParsing="false" text="Open Running history" />
+            <MenuItem fx:id="saveHistory"  mnemonicParsing="false" text="Save Running history" />
               <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Quit" />
+            <MenuItem fx:id="close" mnemonicParsing="false" text="Quit" />
           </items>
         </Menu>
             <Menu mnemonicParsing="false" text="Config">
