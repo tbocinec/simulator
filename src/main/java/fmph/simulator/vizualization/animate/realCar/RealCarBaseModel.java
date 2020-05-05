@@ -62,8 +62,8 @@ public class RealCarBaseModel implements DrawableCar {
 
     private void drawBeamPoint(GraphicsContext gc){
         gc.setFill(Color.web(config.getString("color.car.beamPoint")));
-        gc.fillOval(Function.tx(carModel.Fx)-2,Function.ty(carModel.Fy)-2,4,4);
-        gc.fillOval(Function.tx(carModel.Ex)-2,Function.ty(carModel.Ey)-2,4,4);
+        gc.fillOval(Function.tx(carModel.getCenterOfTurn().getX())-2,Function.ty(carModel.getCenterOfTurn().getY())-2,4,4);
+        gc.fillOval(Function.tx(carModel.getLeftBeen().getX())-2,Function.ty(carModel.getLeftBeen().getY())-2,4,4);
     }
 
     private void drawCarBackPoint(GraphicsContext gc) {
@@ -77,8 +77,8 @@ public class RealCarBaseModel implements DrawableCar {
 
 
     private void drawCarTrajectory(GraphicsContext gc) {
-        double centerX = carModel.getCx();
-        double centerY = carModel.getCy();
+        double centerX = carModel.getCenterOfTurn().getX();
+        double centerY = carModel.getCenterOfTurn().getY();
         double radius_front_wheel = Function.td(carModel.getFront_wheel_radius());
         double radius_back_wheel = Function.td(carModel.getBack_wheel_radius());
 

@@ -75,7 +75,7 @@ public void drawIDText(IdLocation idloc,Double gamma,String tag) {
 
      gc.setLineDashes(0);
      gc.setLineWidth(1);
-     gc.strokeText(tag, 4, -7); //4, -7);
+     gc.strokeText(tag, 5, -5); //4, -7);
     
      //translate and rotate back
      gc.rotate(-gamma);
