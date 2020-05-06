@@ -66,26 +66,29 @@ public class CanvasController extends Canvas implements Contextable {
 
 
         if (ContextBuilder.getContext().config.getBoolean("app.enableScroll")) {
-            this.setOnScroll((ScrollEvent event) -> {
-
-                VisualizeConfig visualizeConfig = VisualizeConfig.GetConfig();
-                double xm = Function.txinv(event.getX()); //- canvas.offsetLeft
-                double ym = Function.tyinv(event.getY());  //- canvas.offsetTop
-                double delta = 1 + 0.1 * Math.max(-1, Math.min(1, (event.getDeltaY())));
-                visualizeConfig.setQ(visualizeConfig.getQ() * delta);
-                double xm2 = Function.txinv(event.getX()); //- canvas.offsetLeft
-                double ym2 = Function.tyinv(event.getY());  //- canvas.offsetTop
-                visualizeConfig.setCar_width_scale_factor(visualizeConfig.getCar_width_scale_factor() * delta);
-                visualizeConfig.setCar_length_scale_factor(visualizeConfig.getCar_length_scale_factor() * delta);
-
-                visualizeConfig.setTranslate_x(visualizeConfig.getTranslate_x() + xm2 - xm);
-                visualizeConfig.setTranslate_y(visualizeConfig.getTranslate_y() + ym2 - ym);
-                Function.rescale_shapes();
-
-            });
+            makeScrolable();
         }
+
     }
 
+    private void makeScrolable() {
+        this.setOnScroll((ScrollEvent event) -> {
+            VisualizeConfig visualizeConfig = VisualizeConfig.GetConfig();
+            double xm = Function.txinv(event.getX()); //- canvas.offsetLeft
+            double ym = Function.tyinv(event.getY());  //- canvas.offsetTop
+            double delta = 1 + 0.1 * Math.max(-1, Math.min(1, (event.getDeltaY())));
+            visualizeConfig.setQ(visualizeConfig.getQ() * delta);
+            double xm2 = Function.txinv(event.getX()); //- canvas.offsetLeft
+            double ym2 = Function.tyinv(event.getY());  //- canvas.offsetTop
+            visualizeConfig.setCar_width_scale_factor(visualizeConfig.getCar_width_scale_factor() * delta);
+            visualizeConfig.setCar_length_scale_factor(visualizeConfig.getCar_length_scale_factor() * delta);
+
+            visualizeConfig.setTranslate_x(visualizeConfig.getTranslate_x() + xm2 - xm);
+            visualizeConfig.setTranslate_y(visualizeConfig.getTranslate_y() + ym2 - ym);
+            Function.rescale_shapes();
+
+        });
+    }
 
 
 
@@ -114,12 +117,13 @@ public class CanvasController extends Canvas implements Contextable {
             CarModel carModel = ContextBuilder.getContext().getCarModel();
             CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
             if(drag) {
-                carState.setPosX(Function.txinv(e.getX()));
-                carState.setPosY(Function.tyinv(e.getY()));
+                carState.getPos().setX(Function.txinv(e.getX()));
+                carState.getPos().setY(Function.tyinv(e.getY()));
                 carModel.computeHelpPoint();
             }
             else if(dragTurn){
                 double d = distanceFromCar(e.getX(),e.getY());
+                double angle = Math.atan2(carState.getPos().getY()-e.getY(),carState.getPos().getX()-e.getX() );//atan2(p1.y - p2.y, p1.x - p2.x)
                 carState.setCarAngle(carState.getCarAngle()+d*1.3);
                 carModel.computeHelpPoint();
             }
@@ -131,7 +135,7 @@ public class CanvasController extends Canvas implements Contextable {
 
     private double distanceFromCar(double x, double y){
         CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
-        return Math.sqrt(  Math.pow(Function.txinv(x)-carState.getPosX(),2) + Math.pow(Function.tyinv(y)-carState.getPosY(),2));
+        return Math.sqrt(  Math.pow(Function.txinv(x)-carState.getPos().getX(),2) + Math.pow(Function.tyinv(y)-carState.getPos().getY(),2));
 
     }
 

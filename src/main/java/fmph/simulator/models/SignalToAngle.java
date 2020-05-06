@@ -3,15 +3,47 @@ package fmph.simulator.models;
 import java.util.HashMap;
 
 public class SignalToAngle {
+    private final HashMap<Integer, Double> mapAngle;
+    private final double angle_for_servo_max =0;
+    private final double SERVO_MAX = 0 ;
 
-
-    public static HashMap<Integer, Double> makeMap() {
-        return customVariant();
+    public SignalToAngle(){
+       mapAngle = customVariant();
     }
 
-    public static void rightVariant(HashMap<Integer, Double> mapAngle) {
-        if(mapAngle != null){return;}
-        mapAngle = new HashMap<Integer, Double>();
+
+    public double transformToAngle(double signal) {
+        return  useSimpleLinear(signal);
+    }
+
+    private double useSimpleLinear(double signal){
+        return -0.051 * signal;
+    }
+    private double analytical(double signal){
+        return  (signal*angle_for_servo_max)/SERVO_MAX;
+    }
+
+    private double fromTable(double signal){
+        Integer pom =  (int) Math.round(signal/10)*10;  //rount to tens
+        Integer pozpom = Math.abs(pom);
+        Double  angle = getNearsAngle(pozpom);
+        if(pom < 0 ){
+            return angle;
+        }
+        return angle*-1;
+    }
+
+    private double getNearsAngle(Integer signal) {
+        if (signal < 0) {
+            return 0;
+        }
+        return mapAngle.getOrDefault(signal, getNearsAngle(signal - 10));
+    }
+
+
+
+    private HashMap<Integer, Double>   rightVariant() {
+        HashMap<Integer, Double> mapAngle = new HashMap<Integer, Double>();
         mapAngle.put(0, 2.0);
         mapAngle.put(10, 2.5);
         mapAngle.put(20, 3.0);
@@ -32,9 +64,10 @@ public class SignalToAngle {
         mapAngle.put(250, 18.0);
         mapAngle.put(260, 18.0);
         mapAngle.put(270, 18.0);
+        return mapAngle;
     }
 
-    public static HashMap<Integer, Double> leftVariant() {
+    public  HashMap<Integer, Double> leftVariant() {
         HashMap<Integer, Double> mapAngle = new HashMap<Integer, Double>();
         mapAngle.put(0, 0.5);
         mapAngle.put(10, 1.5);
@@ -59,7 +92,7 @@ public class SignalToAngle {
         return mapAngle;
     }
 
-    public static HashMap<Integer, Double> customVariant() {
+    public  HashMap<Integer, Double> customVariant() {
         HashMap<Integer, Double> mapAngle = new HashMap<Integer, Double>();
         mapAngle.put(0, 0.3);
         mapAngle.put(10, 1.2);

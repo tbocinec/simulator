@@ -63,7 +63,12 @@ public class Message {
 
 
     @Override
-    public String toString() {
+    /*public String toString() {
         return  formater.format(timestamp) + " " + type + " " + msg;
+    }
+    */
+
+    public String toString() {
+        return   type + " " + msg;
     }
 }

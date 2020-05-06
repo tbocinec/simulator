@@ -43,8 +43,8 @@ public class CarInfoController extends VBox implements Contextable {
             public void run() {
                 CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
                 carSpeed.setText( String.format("Car speed : %f", carState.getCarSpeed()));
-                carPosX.setText(String.format("Car posX : %f m",carState.getPosX()));
-                carPosY.setText(String.format("Car pos y : %f m", carState.getPosY()));
+                carPosX.setText(String.format("Car posX : %f m",carState.getPos().getX()));
+                carPosY.setText(String.format("Car pos y : %f m", carState.getPos().getY()));
                 carAngle.setText(String.format("Car angle : %f deg",  carState.getCarAngle()));
                 carwheelAngle.setText(String.format("Car wheel angle : %f deg", carState.getWheelAngle()));
             }});

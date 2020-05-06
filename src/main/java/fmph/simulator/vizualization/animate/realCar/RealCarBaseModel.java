@@ -42,11 +42,11 @@ public class RealCarBaseModel implements DrawableCar {
     @Override
     public void animateCar(GraphicsContext gc) {
         CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
-        gc.translate(Function.tx(carState.getPosX()), Function.ty(carState.getPosY()));
+        gc.translate(Function.tx(carState.getPos().getX()), Function.ty(carState.getPos().getY()));
         gc.rotate(-carState.getCarAngle()+180);
         draw_car_shape(gc);
         gc.rotate(+carState.getCarAngle()-180);
-        gc.translate(- Function.tx(carState.getPosX()), -Function.ty(carState.getPosY()));
+        gc.translate(- Function.tx(carState.getPos().getX()), -Function.ty(carState.getPos().getY()));
 
         if(config.getBoolean("view.beamPoint")){
             drawBeamPoint(gc);
