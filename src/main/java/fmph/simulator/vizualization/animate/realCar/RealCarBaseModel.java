@@ -33,6 +33,9 @@ public class RealCarBaseModel implements DrawableCar {
         double y = map.getSegments().get(0).getStartPose().getY();
         // Context.getContext().getCarModel().setPosX(x);
         //Context.getContext().getCarModel().setPosY(y);
+        width =  visualizeConfig.getCar_width();
+        height =  visualizeConfig.getCar_length();
+
     }
 
 

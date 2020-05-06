@@ -89,5 +89,9 @@ public class Function {
 	}
 
 
+    public static void rescale_shapes() {
+		visualizeConfig.setCar_width(visualizeConfig.getCar_width()*visualizeConfig.getCar_width_scale_factor());
+		visualizeConfig.setCar_length(visualizeConfig.getCar_length()*visualizeConfig.getCar_length_scale_factor());
 
+    }
 }

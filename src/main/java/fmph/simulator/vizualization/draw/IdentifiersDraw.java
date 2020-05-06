@@ -5,8 +5,12 @@ import fmph.simulator.map.MapSchema;
 import fmph.simulator.map.Segment;
 import fmph.simulator.vizualization.component.Function;
 import fmph.simulator.vizualization.component.IdLocation;
+import fmph.simulator.vizualization.component.VisualizeConfig;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 public class IdentifiersDraw extends AbstractDraw {
 	
@@ -53,8 +57,9 @@ public void draw_identifiers(Segment segment) {
 
 public  void drawIDMark(IdLocation idloc) {
 	gc.beginPath();  
-    gc.setFill(Color.RED);
-    gc.setLineWidth(1);
+    gc.setFill(Color.LIGHTGRAY);
+    gc.setStroke(Color.RED);
+    gc.setLineWidth(1.5);
     
     gc.moveTo(Function.tx(idloc.getPos1()[0]), Function.ty(idloc.getPos1()[1]));
     gc.lineTo(Function.tx(idloc.getPos2()[0]), Function.ty(idloc.getPos2()[1]));
@@ -75,7 +80,26 @@ public void drawIDText(IdLocation idloc,Double gamma,String tag) {
 
      gc.setLineDashes(0);
      gc.setLineWidth(1);
-     gc.strokeText(tag, 5, -5); //4, -7);
+
+    double q =  VisualizeConfig.GetConfig().getQ() ;
+
+
+    if(q <= 180){
+        gc.setFill(Color.BLACK);
+       gc.setTextAlign(TextAlignment.LEFT);
+       gc.setFont(new Font(12));
+       gc.fillText(tag, 4, 7);
+    }
+    else {
+        gc.setFill(Color.GREEN);
+        gc.setTextAlign(TextAlignment.CENTER);
+        double fontSize = 0.045 * q;
+        gc.setFont(new Font(fontSize));
+        gc.fillText(tag, 0, 0); //4, -7);
+    }
+
+
+
     
      //translate and rotate back
      gc.rotate(-gamma);

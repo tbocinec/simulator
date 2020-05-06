@@ -22,8 +22,10 @@ public class VisualizeConfig {
 
 	double anim_speed = 0.1; //0.01;
 
-	double car_length = 70; // cm
-	double car_width = 30; // cm
+
+
+	double car_length =  0.25 ; //70; // cm
+	double car_width = 0.162;; // cm
 
 	// todo
 	double car_image_length = 60;

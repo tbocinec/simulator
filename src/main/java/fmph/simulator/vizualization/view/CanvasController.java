@@ -20,6 +20,7 @@ import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import org.apache.commons.configuration2.PropertiesConfiguration;
 
@@ -40,7 +41,7 @@ public class CanvasController extends Canvas implements Contextable {
         setHeight(h);
     }
 
-    public void initialize(){
+    public void initialize() {
         gc = getGraphicsContext2D();
         map = ContextBuilder.getContext().getMap();
 
@@ -61,7 +62,28 @@ public class CanvasController extends Canvas implements Contextable {
 
         makeDrawableCar();
 
+
+        if (ContextBuilder.getContext().config.getBoolean("app.enableScroll")) {
+            this.setOnScroll((ScrollEvent event) -> {
+
+                VisualizeConfig visualizeConfig = VisualizeConfig.GetConfig();
+                double xm = Function.txinv(event.getX()); //- canvas.offsetLeft
+                double ym = Function.tyinv(event.getY());  //- canvas.offsetTop
+                double delta = 1 + 0.1 * Math.max(-1, Math.min(1, (event.getDeltaY())));
+                visualizeConfig.setQ(visualizeConfig.getQ() * delta);
+                double xm2 = Function.txinv(event.getX()); //- canvas.offsetLeft
+                double ym2 = Function.tyinv(event.getY());  //- canvas.offsetTop
+                visualizeConfig.setCar_width_scale_factor(visualizeConfig.getCar_width_scale_factor() * delta);
+                visualizeConfig.setCar_length_scale_factor(visualizeConfig.getCar_length_scale_factor() * delta);
+
+                visualizeConfig.setTranslate_x(visualizeConfig.getTranslate_x() + xm2 - xm);
+                visualizeConfig.setTranslate_y(visualizeConfig.getTranslate_y() + ym2 - ym);
+                Function.rescale_shapes();
+
+            });
+        }
     }
+
 
 
 
