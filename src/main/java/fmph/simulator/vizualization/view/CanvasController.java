@@ -111,14 +111,17 @@ public class CanvasController extends Canvas implements Contextable {
 
 
         this.setOnMouseDragged(e->{
+            CarModel carModel = ContextBuilder.getContext().getCarModel();
             CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
             if(drag) {
                 carState.setPosX(Function.txinv(e.getX()));
                 carState.setPosY(Function.tyinv(e.getY()));
+                carModel.computeHelpPoint();
             }
             else if(dragTurn){
                 double d = distanceFromCar(e.getX(),e.getY());
                 carState.setCarAngle(carState.getCarAngle()+d*1.3);
+                carModel.computeHelpPoint();
             }
 
         });

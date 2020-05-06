@@ -70,10 +70,15 @@ public class CarModel {
         carState.setCarAngle(config.getDouble("car.initial.carAngle")); //uhol natocenia celeho automobilu  [stupne, 0=sever]
         carState.setWheelAngle(config.getDouble("car.initial.wheelAngle")); //uhol natocenia predneho kolesa voci 0 polohe  [stupne, 0=rovno]
         carState.setCarSpeed(config.getDouble("car.initial.carSpeed")); //aktualna rychlost  [m/s]
+        computeHelpPoint();
 
-        //computeCenterOfTurn();
-        //compute_wheel_radius();
 
+    }
+
+    public void computeHelpPoint(){
+        computeCenterOfTurn();
+        computeBackOfVehlice();
+        compute_wheel_radius();
     }
 
 
