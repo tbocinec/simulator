@@ -22,7 +22,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import org.apache.commons.configuration2.PropertiesConfiguration;
+
 
 
 public class CanvasController extends Canvas implements Contextable {
@@ -212,6 +214,7 @@ public class CanvasController extends Canvas implements Contextable {
 
     public void clearPain(GraphicsContext gc2) {
         gc.clearRect(0, 0, w, h);
+        gc.setFill(Color.WHITE);
         gc.strokeRect(5,5,w-5,h-5);
     }
 

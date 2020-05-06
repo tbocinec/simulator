@@ -5,6 +5,9 @@ import fmph.simulator.map.Segment;
 import fmph.simulator.vizualization.component.Function;
 import fmph.simulator.vizualization.component.SegmentPose;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 
 public class LabelDraw extends AbstractDraw {
 	
@@ -34,9 +37,12 @@ public void draw_segment_label(Segment segment) {
 	 String shape = segment.getSegmentShape().getType();
 	 double h2 = h1;
 	 h2 -= Math.PI / 2;
-	  double[] pos1 = Function.translate(pos, h2, w * 0.5);
+	  double[] pos1 = Function.translate(pos, h2, w * 0.6);
 	    gc.translate(Function.tx(pos1[0]), Function.ty(pos1[1]));
-	    gc.fillText(segment.getSegmentId(), 0, 0);
+	    gc.setFont(new Font(13));
+	    gc.setTextAlign(TextAlignment.CENTER);
+	    gc.setFill(Color.BLACK);
+	    gc.fillText( "["+segment.getSegmentId()+"]", 0, 0);
 	    gc.translate(-Function.tx(pos1[0]), -Function.ty(pos1[1]));
 	    gc.stroke();
 	 

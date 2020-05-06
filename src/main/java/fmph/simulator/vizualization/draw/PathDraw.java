@@ -26,8 +26,8 @@ public void draw_segment_path(Segment segment) {
 		
 		String shape = segment.getSegmentShape().getType();
 		
-		gc.setLineDashes(10);
-		gc.setLineWidth(3);
+		gc.setLineDashes(4);
+		gc.setLineWidth(1.5);
 		gc.setStroke(Color.DARKGREY);
 		if(shape.compareTo("line") == 0 ) {
 			

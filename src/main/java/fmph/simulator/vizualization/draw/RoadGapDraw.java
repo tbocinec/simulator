@@ -4,6 +4,8 @@ import fmph.simulator.map.MapSchema;
 import fmph.simulator.map.Segment;
 import fmph.simulator.vizualization.component.Function;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+
 
 public class RoadGapDraw extends AbstractDraw {
 	
@@ -35,6 +37,7 @@ public void draw_segment_gap_road(Segment segment1,Segment segment2) {
         boolean cw = Function.turn_is_clockwise( segment1.getEndPose().getHeading(), segment2.getStartPose().getHeading());
 	
 		gc.beginPath();
+		gc.setFill(Color.ORANGE);
 		gc.arc(Function.tx(segment1.getEndPose().getX()),
 				Function.ty(segment1.getEndPose().getY()),
 				Function.td(Math.max(segment1.getSegmentWidth(), segment2.getSegmentWidth()) / 2),
@@ -42,6 +45,7 @@ public void draw_segment_gap_road(Segment segment1,Segment segment2) {
 				Math.toDegrees(Function.narc(segment1.getStartPose().getHeading(), cw)),
 				Math.toDegrees(segment1.getSegmentShape().getAttributes().getAngle()));
 		gc.stroke();
+		gc.fill();
 		
     }
 	

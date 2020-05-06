@@ -13,7 +13,7 @@ public class SegmentPose {
 		if(seg.getSegmentShape().getType().compareTo("line")==0) {
 			double[] pompos = {seg.getStartPose().getX(),seg.getStartPose().getY()};
 			pos = Function.translate(pompos, seg.getStartPose().getHeading(), d);
-			gamma  = seg.getStartPose().getHeading(); //abcTODO
+			gamma  = seg.getStartPose().getHeading();
 		}
 		
 		else if(seg.getSegmentShape().getType().compareTo("arc")==0)
