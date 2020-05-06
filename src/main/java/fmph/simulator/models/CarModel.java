@@ -40,6 +40,8 @@ public class CarModel {
     double front_wheel_radius = 0;
     double back_wheel_radius = 0;
 
+    boolean waitAfterRecognization = false;
+
 
 
     private PropertiesConfiguration config;
@@ -185,7 +187,8 @@ public class CarModel {
                             lastRecognizationHistoryElement = new HistoryElement(rTime, SerializationUtils.clone(carState),segment,laserTag);
                             ContextBuilder.getContext().getRunManagement().getActualRun().getRecognitionHistory().addTag(lastRecognizationHistoryElement);
                             if (config.getBoolean("app.waitAfterRecognization"))  {
-                                carState.setCarSpeed(0);
+                                waitAfterRecognization = true;
+                                ContextBuilder.getContext().getRunManagement().pause();
                             }
                             sendRecognizedInfo(segment, laserTag, distanceFromX,time);
 
@@ -333,7 +336,8 @@ public class CarModel {
     }
 
     public void applicateLastSpeed() {
-        ContextBuilder.getContext().getRunManagement().getActualRun().getCarState().setCarSpeed(getLastSpeed());
+        waitAfterRecognization = false;
+        ContextBuilder.getContext().getRunManagement().run();
     }
 
     public double getLastSpeed() {
