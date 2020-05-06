@@ -4,6 +4,9 @@ import fmph.simulator.app.context.interfaces.Contextable;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class ConnectionInfoController extends VBox implements Contextable {
 
     Text url;
@@ -41,5 +44,19 @@ public class ConnectionInfoController extends VBox implements Contextable {
     @Override
     public void registryToContext() {
         context.setConnectionInfoController(this);
+    }
+
+    public void setStatus(String state) {
+        status.setText("Server status "+state);
+    }
+
+    public void setAdditionalInfo(String s) {
+        otherInfo.setText("Other info : "+s);
+    }
+
+    public void setlastComunication(boolean send) {
+        String time  = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss.SSS"));
+        String type = send ? "Send" : "Receive";
+        lastComunincation.setText("Last comunication  " +type + " at "+time);
     }
 }

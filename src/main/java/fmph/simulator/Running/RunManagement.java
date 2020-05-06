@@ -53,6 +53,7 @@ public class RunManagement {
             context.getTimeController().setMaxTime(actualRun.getRunTimeSecond(),true);
         }
         actualRun.setRunState(RunState.run);
+        context.getCarModel().checkIdentifierAll();
     }
 
     public void pause() {
@@ -77,7 +78,7 @@ public class RunManagement {
     public void nextSecondTick() {
         if(actualRun.getRunState() == RunState.run) {
             context.getTimeController().setMaxTime(actualRun.getRunTimeSecond(), true);
-            context.getMainController().setRightStatusText("Actual time of ride "+actualRun.getRunTimeSecond() +"s");
+           // context.getMainController().setRightStatusText("Actual time of ride "+actualRun.getRunTimeSecond() +"s"); this pain is use for next recognization
         }
     }
 

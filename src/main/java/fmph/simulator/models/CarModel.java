@@ -15,7 +15,6 @@ import org.apache.commons.configuration2.PropertiesConfiguration;
 
 import java.util.ArrayList;
 import java.util.TreeMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class CarModel {
 
@@ -146,9 +145,9 @@ public class CarModel {
                // ;
             }
 
-            checkIdentifierIterable();
+            checkIdentifierActual();
             computeBackOfVehlice();
-            compute_wheel_radius();//todo rm
+
             ContextBuilder.getContext().getCarInfoController().changeText();
 
         }
@@ -158,8 +157,7 @@ public class CarModel {
 
 
 
-    public void checkIdentifierIterable() {
-        checkIdentifierAll();
+    public void checkIdentifierActual() {
         CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
         Model model = carManagment.getActual();
 
@@ -209,14 +207,19 @@ public class CarModel {
     }
 
 
-    Boolean only = true;
+
+
+
 
     public void checkIdentifierAll() {
+        if(1 == 1){return;}
+        recolonizationSender.killAllFutureSend();
+        if(ContextBuilder.getContext().getRunManagement().getActualRun().getRunState()!= RunState.run){
+            return;
+        }
 
         double rTime = ContextBuilder.getContext().getRunManagement().getActualRun().getRunTimeSecond();
-        if(!only){return;}
-        only = false;
-        System.out.println("Start identifier");
+
         CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
         Model model = carManagment.getActual();
 
@@ -225,7 +228,6 @@ public class CarModel {
         double r1= Geometric.distance(leftBeen,centerOfTurn);
         double r2= Geometric.distance(rightBeen,centerOfTurn);
 
-       double r3= Geometric.distance(centerBeen,carState.getPos());
 
         TreeMap<Double, RecognizationElement> nextTag = new TreeMap<>();
         for (Segment segment : ContextBuilder.getContext().getMap().getMap().getSegments()) {
@@ -261,6 +263,9 @@ public class CarModel {
         carState.setWheelAngle(angle);
         recolonizationSender.updateRecognization();
         ContextBuilder.getContext().getConsoleController().addMsg("Car change dir to " + angle);
+        computeHelpPoint();
+        checkIdentifierAll();
+        compute_wheel_radius();
     }
 
     public void applicateLastSpeed() {

@@ -124,14 +124,14 @@ public class ConsoleController extends ScrollPane implements Contextable {
     public void addWarning(String msg){
         Text text = new Text(msg);
         text.setFont(new Font(16));
-        text.setFill(Color.YELLOW);
+        text.setFill(Color.ORANGERED);
         addText(text);
     }
 
     public void addError(String msg){
         Text text = new Text(msg);
         text.setFont(new Font(16));
-        text.setFill(Color.RED);
+        text.setFill(Color.DARKRED);
         addText(text);
 
     }
@@ -144,7 +144,7 @@ public class ConsoleController extends ScrollPane implements Contextable {
         String time = formatter.format(date);
         text.setText(time+" "+text.getText());
         Platform.runLater( () -> box.getChildren().addAll(text));
-        Platform.runLater( () -> this.setVvalue(40));
+        Platform.runLater( () -> this.setVvalue(this.getVmax()+10));
     }
 
     public void removeAllText(){

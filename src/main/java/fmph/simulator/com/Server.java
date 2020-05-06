@@ -2,6 +2,8 @@ package fmph.simulator.com;
 
 //A Java program for a Server 
 
+import fmph.simulator.app.context.Context;
+import fmph.simulator.app.context.ContextBuilder;
 import fmph.simulator.vizualization.console.Message;
 import fmph.simulator.vizualization.console.MessageType;
 
@@ -75,6 +77,11 @@ public class Server implements Runnable {
             e.printStackTrace();
         }
         new Message("Server: Client (car) was connecting", MessageType.INFO);
+        ContextBuilder.getContext().getConnectionInfoController().setStatus("Connected");
+
+        ContextBuilder.getContext().getConnectionInfoController().setAdditionalInfo("Client ip" +socket.getRemoteSocketAddress());
+
+
     }
 
     public void sendMsg(String msg){
@@ -87,12 +94,13 @@ public class Server implements Runnable {
         byte[] bytesLength = intToBytes(utf8Bytes.length);
         try {
             if(out == null){
-                System.out.println("chyba"); //todo
+                new Message("Unconnect client, messege not send",MessageType.WARNING);
                 return;}
 
             out.write(bytesLength);
             out.write(utf8Bytes);
             out.flush();
+            ContextBuilder.getContext().getConnectionInfoController().setlastComunication(true);
         } catch (IOException e) {
             throw new RuntimeException("Send message problem",e);
         }
@@ -113,7 +121,7 @@ public class Server implements Runnable {
                 while(addresses.hasMoreElements()) {
                     InetAddress addr = addresses.nextElement();
                     ip = addr.getHostAddress();
-                    System.out.println(iface.getDisplayName() + " " + ip);
+
                 }
             }
         } catch (SocketException e) {
@@ -138,9 +146,12 @@ public class Server implements Runnable {
                 byte[] msgbyte = new byte[byteToInt(len)];
                 in.read(msgbyte,0,byteToInt(len));
                 new MessageParser(new String(msgbyte));
-
+                ContextBuilder.getContext().getConnectionInfoController().setlastComunication(false);
             } catch (IOException e) {
-                e.printStackTrace();
+                new Message("Connection lost,server restart",MessageType.ERROR);
+                ContextBuilder.getContext().getConnectionInfoController().setStatus("unconnect");
+
+                ContextBuilder.getContext().getConnectionInfoController().setAdditionalInfo("");
                 restart(); //todo
                 return;
             }
