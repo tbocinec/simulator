@@ -15,6 +15,7 @@ public class MessageParser {
     public void parseMsg(){
         CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
         if(msg.trim().startsWith("setdir")){
+            System.out.println(msg);
             String dir = msg.split("setdir")[1];
             ContextBuilder.getContext().getCarModel().setWhealAngle(Double.parseDouble(dir));
             ContextBuilder.getContext().getCarModel().applicateLastSpeed();

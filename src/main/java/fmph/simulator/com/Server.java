@@ -11,6 +11,8 @@ import java.io.*;
 import java.net.*;
 import java.util.Enumeration;
 
+import static java.lang.Thread.sleep;
+
 public class Server implements Runnable {
 
     Thread thread;
@@ -49,6 +51,11 @@ public class Server implements Runnable {
 
 
     public void run() {
+        try {
+            sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         acceptClinet();
         readMeesageLoop();
         stop();
@@ -77,9 +84,13 @@ public class Server implements Runnable {
             e.printStackTrace();
         }
         new Message("Server: Client (car) was connecting", MessageType.INFO);
-        ContextBuilder.getContext().getConnectionInfoController().setStatus("Connected");
-
-        ContextBuilder.getContext().getConnectionInfoController().setAdditionalInfo("Client ip" +socket.getRemoteSocketAddress());
+        try {
+            ContextBuilder.getContext().getConnectionInfoController().setStatus("Connected");
+            ContextBuilder.getContext().getConnectionInfoController().setAdditionalInfo("Client ip" + socket.getRemoteSocketAddress());
+        }
+        catch (NullPointerException e){
+            System.out.println("App wos connected before app context load.");
+        }
 
 
     }
@@ -102,7 +113,9 @@ public class Server implements Runnable {
             out.flush();
             ContextBuilder.getContext().getConnectionInfoController().setlastComunication(true);
         } catch (IOException e) {
-            throw new RuntimeException("Send message problem",e);
+            new Message("Broken connection to  client, messege not send",MessageType.ERROR);
+            restart();
+            //throw new RuntimeException("Send message problem",e);
         }
 
     }

@@ -1,6 +1,9 @@
 package fmph.simulator.vizualization.view;
 
 import fmph.simulator.Map;
+import fmph.simulator.Math.Geometric;
+import fmph.simulator.Math.Line;
+import fmph.simulator.Math.Point2d;
 import fmph.simulator.app.context.ContextBuilder;
 import fmph.simulator.app.context.interfaces.Contextable;
 import fmph.simulator.map.LaserTag;

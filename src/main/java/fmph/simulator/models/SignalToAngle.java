@@ -1,5 +1,9 @@
 package fmph.simulator.models;
 
+import fmph.simulator.app.context.ContextBuilder;
+import fmph.simulator.vizualization.console.Message;
+import fmph.simulator.vizualization.console.MessageType;
+
 import java.util.HashMap;
 
 public class SignalToAngle {
@@ -13,11 +17,23 @@ public class SignalToAngle {
 
 
     public double transformToAngle(double signal) {
-        return  useSimpleLinear(signal);
+        Boolean onlyRight  =  ContextBuilder.getContext().config.getBoolean("app.OnlyRightAngle");
+        if(onlyRight && signal < 0){
+            signal *=-1;
+            new Message("Unexpected command, turn left", MessageType.WARNING);
+        }
+        double angle = useSimpleLinear(signal);
+        double maxAngle = ContextBuilder.getContext().getCarModel().getCarManagment().getActual().getMaxWheelAngle();
+
+        if(Math.abs(angle) > maxAngle){
+            new Message("Require angle "+angle +" is bigger then max,Simulator apply max value", MessageType.WARNING);
+            angle  = maxAngle  * ( (angle < 0) ?  -1: 1);
+        }
+        return  angle;
     }
 
     private double useSimpleLinear(double signal){
-        return -0.041 * signal;
+        return -0.0555 * signal;
     }
     private double analytical(double signal){
         return  (signal*angle_for_servo_max)/SERVO_MAX;

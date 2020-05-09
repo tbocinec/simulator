@@ -24,7 +24,7 @@ public class VisualizeConfig {
 
 
 
-	double car_length =  0.25 ; //70; // cm
+	double car_length =  0.35 ; //70; // cm
 	double car_width = 0.162;; // cm
 
 	// todo

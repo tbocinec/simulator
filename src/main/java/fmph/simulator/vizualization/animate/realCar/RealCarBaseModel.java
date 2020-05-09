@@ -25,7 +25,7 @@ public class RealCarBaseModel implements DrawableCar {
     PropertiesConfiguration config = ContextBuilder.getContext().config;
 
     double width = 0.162;
-    double height = 0.25;
+    double height = 0.30;
 
     public RealCarBaseModel(MapSchema map) {
         carModel = ContextBuilder.getContext().getCarModel();
@@ -48,7 +48,7 @@ public class RealCarBaseModel implements DrawableCar {
         gc.rotate(+carState.getCarAngle()-180);
         gc.translate(- Function.tx(carState.getPos().getX()), -Function.ty(carState.getPos().getY()));
 
-        if(config.getBoolean("view.beamPoint")){
+        if(config.getBoolean("view.beam")){
             drawBeamPoint(gc);
         }
 
@@ -65,8 +65,9 @@ public class RealCarBaseModel implements DrawableCar {
 
     private void drawBeamPoint(GraphicsContext gc){
         gc.setFill(Color.web(config.getString("color.car.beamPoint")));
-        gc.fillOval(Function.tx(carModel.getCenterOfTurn().getX())-2,Function.ty(carModel.getCenterOfTurn().getY())-2,4,4);
-        gc.fillOval(Function.tx(carModel.getLeftBeen().getX())-2,Function.ty(carModel.getLeftBeen().getY())-2,4,4);
+        gc.fillOval(Function.tx(carModel.getRightBeen().getX())-3,Function.ty(carModel.getRightBeen().getY())-3,6,6);
+        gc.fillOval(Function.tx(carModel.getLeftBeen().getX())-3,Function.ty(carModel.getLeftBeen().getY())-3,6,6);
+        gc.fillOval(Function.tx(carModel.getCenterBeen().getX())-3,Function.ty(carModel.getCenterBeen().getY())-3,6,6);
     }
 
     private void drawCarBackPoint(GraphicsContext gc) {

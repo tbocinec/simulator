@@ -2,6 +2,7 @@ package fmph.simulator.models;
 
 
 import fmph.simulator.Math.Geometric;
+import fmph.simulator.Math.Line;
 import fmph.simulator.Math.Point2d;
 import fmph.simulator.Running.RunState;
 import fmph.simulator.app.context.ContextBuilder;
@@ -9,10 +10,12 @@ import fmph.simulator.map.LaserTag;
 import fmph.simulator.map.Segment;
 import fmph.simulator.models.car.CarManagment;
 import fmph.simulator.models.car.Model;
+import fmph.simulator.recognization.NeartTag;
 import fmph.simulator.recognization.RecognizationElement;
 import fmph.simulator.recognization.RecognizationSender;
 import org.apache.commons.configuration2.PropertiesConfiguration;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
@@ -51,7 +54,7 @@ public class CarModel {
     public void initStartValue() {
         config = ContextBuilder.getContext().config;
         CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
-        carState.getPos().setX(ContextBuilder.getContext().getMap().getMap().getSegments().get(0).getStartPose().getX() - 0.185);
+        carState.getPos().setX(ContextBuilder.getContext().getMap().getMap().getSegments().get(0).getStartPose().getX() - 0.205);
         carState.getPos().setY(ContextBuilder.getContext().getMap().getMap().getSegments().get(0).getStartPose().getY());
         carState.setCarAngle(config.getDouble("car.initial.carAngle")); //uhol natocenia celeho automobilu  [stupne, 0=sever]
         carState.setWheelAngle(config.getDouble("car.initial.wheelAngle")); //uhol natocenia predneho kolesa voci 0 polohe  [stupne, 0=rovno]
@@ -83,11 +86,13 @@ public class CarModel {
     }
     private void computeBeemPoint(CarState carState, Model model) {
         leftBeen.setX(carState.getPos().getX() -  model.getDISTANCEBETWEENAXLEANDBEAM() * Math.sin(Math.toRadians(carState.getCarAngle()))
-                - model.getBEAMWIDTH()/2 * Math.cos(Math.toRadians(carState.getCarAngle())));
+                + model.getBEAMWIDTH()/2 * Math.cos(Math.toRadians(carState.getCarAngle())));
         leftBeen.setY(carState.getPos().getY() + model.getDISTANCEBETWEENAXLEANDBEAM()  * Math.cos(Math.toRadians(carState.getCarAngle()))
                 + model.getBEAMWIDTH()/2 * Math.sin(Math.toRadians(carState.getCarAngle())));
+
         centerBeen.setX(carState.getPos().getX()  - (model.getDISTANCEBETWEENAXLEANDBEAM() * Math.sin(Math.toRadians(carState.getCarAngle()))));
         centerBeen.setY(carState.getPos().getY() + (model.getDISTANCEBETWEENAXLEANDBEAM() * Math.cos(Math.toRadians(carState.getCarAngle()))));
+
         rightBeen.setX(carState.getPos().getX()  - model.getDISTANCEBETWEENAXLEANDBEAM() * Math.sin(Math.toRadians(carState.getCarAngle()))
                 - model.getBEAMWIDTH() / 2 * Math.cos(Math.toRadians(carState.getCarAngle())));
         rightBeen.setY(carState.getPos().getY()  + model.getDISTANCEBETWEENAXLEANDBEAM() * Math.cos(Math.toRadians(carState.getCarAngle()))
@@ -106,6 +111,7 @@ public class CarModel {
     synchronized  public void  movie(double runTime,double lastRunTime) {
         CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
         Model model = carManagment.getActual();
+
         if (carState.getCarSpeed() == 0) {
             return;
         }
@@ -113,12 +119,14 @@ public class CarModel {
         if (lastRunTime + minimumTimeInterval < runTime) {
             double timeTravel = runTime - lastRunTime;
             double traveledDistance = (timeTravel / 1000) * carState.getCarSpeed();
+            computeBeemPoint(carState, model);
 
             //carState.setCarAngle(carState.getCarAngle()+180);
 
-            if (Math.abs(carState.getWheelAngle()) <= 0.5) { //auto ide rovno
-                carState.getPos().setX(carState.getPos().getX() + (traveledDistance  * Math.sin(Math.toRadians(carState.getCarAngle()))));
-                carState.getPos().setY(carState.getPos().getY() - (traveledDistance  * Math.cos(Math.toRadians(carState.getCarAngle()))));
+            if (Math.abs(carState.getWheelAngle()) <= 0.01) { //auto ide rovno
+                // carState.setWheelAngle(0.02);
+                carState.getPos().setX(carState.getPos().getX() + (traveledDistance * Math.sin(Math.toRadians(carState.getCarAngle()))));
+                carState.getPos().setY(carState.getPos().getY() - (traveledDistance * Math.cos(Math.toRadians(carState.getCarAngle()))));
 
             } else {
                 //double Bx = posX +  (DISTANCEBETWEENAXLES * Math.sin(Math.toRadians(wheelAngle)));
@@ -127,29 +135,31 @@ public class CarModel {
                 //double delta_fi = (interval * carSpeed)/DISTANCEBETWEENAXLES * Math.tan(wheelAngle);
 
                 computeCenterOfTurn();
-                double delta_fi = -((traveledDistance) /  model.getDISTANCEBETWEENAXLES()) * Math.tan(Math.toRadians(carState.getWheelAngle()));
 
+                //double delta_fi = -((traveledDistance) / model.getDISTANCEBETWEENAXLES()) * Math.tan(Math.toRadians(carState.getWheelAngle()));
+                double R  = Geometric.distance(carState.getPos(),centerOfTurn);
+                double delta_fi = (traveledDistance * 180 )/ (Math.PI * R );
 
-                double pomA  =  model.getDISTANCEBETWEENAXLES() * (Math.cos(Math.toRadians(carState.getWheelAngle() + carState.getCarAngle())) /
+                double pomA = model.getDISTANCEBETWEENAXLES() * (Math.cos(Math.toRadians(carState.getWheelAngle() + carState.getCarAngle())) /
                         Math.sin(Math.toRadians(carState.getWheelAngle())));
 
-                double pomB =  model.getDISTANCEBETWEENAXLES() * (Math.sin(Math.toRadians(carState.getWheelAngle() + carState.getCarAngle())) /
-                        Math.sin( Math.toRadians(carState.getWheelAngle())));
+                double pomB = model.getDISTANCEBETWEENAXLES() * (Math.sin(Math.toRadians(carState.getWheelAngle() + carState.getCarAngle())) /
+                        Math.sin(Math.toRadians(carState.getWheelAngle())));
 
 
-
-                carState.getPos().setX(Math.cos(Math.toRadians(delta_fi)) * pomA + (Math.sin(Math.toRadians(delta_fi)) *  pomB) + centerOfTurn.getX());
+                carState.getPos().setX(Math.cos(Math.toRadians(delta_fi)) * pomA + (Math.sin(Math.toRadians(delta_fi)) * pomB) + centerOfTurn.getX());
                 carState.getPos().setY(Math.cos(Math.toRadians(delta_fi)) * pomB - (Math.sin(Math.toRadians(delta_fi)) * pomA) + centerOfTurn.getY());
 
                 carState.setCarAngle((carState.getCarAngle() - delta_fi) % 360);
-               // ;
+                // ;
+
+
+                checkIdentifierActual();
+                computeBackOfVehlice();
+
+                ContextBuilder.getContext().getCarInfoController().changeText();
+
             }
-
-            checkIdentifierActual();
-            computeBackOfVehlice();
-
-            ContextBuilder.getContext().getCarInfoController().changeText();
-
         }
 
 
@@ -157,7 +167,7 @@ public class CarModel {
 
 
 
-    public void checkIdentifierActual() {
+    public void checkIdentifierActual_oldVersion() {
         CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
         Model model = carManagment.getActual();
 
@@ -206,14 +216,50 @@ public class CarModel {
 
     }
 
+    public void checkIdentifierActual() {
+        CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
+        Model model = carManagment.getActual();
 
+        if(ContextBuilder.getContext().getRunManagement().getActualRun().getRunState()!= RunState.run){
+            return;
+        }
+        computeBeemPoint(carState,model);
+        for (Segment segment : ContextBuilder.getContext().getMap().getMap().getSegments()) {
+            for (LaserTag laserTag : segment.getLaserTags()) {
 
+                double x = laserTag.getX();
+                double y = laserTag.getY();
+                Point2d laserPoint = new Point2d(x,y);
 
+                double distance = Geometric.distance(new Line(rightBeen,leftBeen),laserPoint);
 
+                if (Math.abs(distance) < 0.02) {
+                    if (lastSeenTag.contains(laserTag.getType())) {
+                        break;
+                    }
+                    else {
+                        lastSeenTag.add(laserTag.getType());
+                        if (lastSeenTag.size() > 2) { //todo
+                            lastSeenTag.remove(0);
+                        }
+                        double distanceFromX = Math.sqrt((Math.pow(x - centerBeen.getX(), 2) + Math.pow(y - centerBeen.getY(), 2)));
 
+                        recolonizationSender.sendNow(laserTag,segment,distanceFromX);
+                    }
+                }
+            }
+        }
+    }
+
+    boolean onlyOne = false;
     public void checkIdentifierAll() {
-        if(1 == 1){return;}
+        if(onlyOne){
+            return;
+        }
+        onlyOne = true;
+        System.out.println("Start intentifier all");
         recolonizationSender.killAllFutureSend();
+
         if(ContextBuilder.getContext().getRunManagement().getActualRun().getRunState()!= RunState.run){
             return;
         }
@@ -223,13 +269,17 @@ public class CarModel {
         CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
         Model model = carManagment.getActual();
 
+
         computeBeemPoint(carState,model);
         //Radius between
         double r1= Geometric.distance(leftBeen,centerOfTurn);
         double r2= Geometric.distance(rightBeen,centerOfTurn);
+        double R = Geometric.distance(centerOfTurn,carState.getPos());
+        System.out.println("polomer predneho kolesa " +R);
+        NeartTag nextTag = new NeartTag();
 
-
-        TreeMap<Double, RecognizationElement> nextTag = new TreeMap<>();
+        System.out.println("stret otacania + x,y +["+ centerOfTurn.getX()+","+centerOfTurn.getY()+"]");
+        System.out.println("stret luca + x,y +["+ centerBeen.getX()+","+centerBeen.getY()+"]");
         for (Segment segment : ContextBuilder.getContext().getMap().getMap().getSegments()) {
             for (LaserTag laserTag : segment.getLaserTags()) {
                 Point2d tagPoint = new Point2d(laserTag.getX(),laserTag.getY());
@@ -240,12 +290,25 @@ public class CarModel {
                     double distanceFromCenterFrontCar = Geometric.distance(tagPoint,carState.getPos());
                     //is behind car and not between car and beem
                     if(distanceFromCenterBeem < distanceFromCenterFrontCar && distanceFromCenterFrontCar > model.getBEAMWIDTH()*0.9) {
-                        double alfa = Math.toDegrees(Math.acos((Math.pow(Geometric.distance(centerOfTurn, centerBeen), 2) + Math.pow(Geometric.distance(centerOfTurn, tagPoint), 2) - Math.pow(Geometric.distance(centerBeen, tagPoint), 2))
-                                / (2 * Geometric.distance(centerOfTurn, centerBeen) * Geometric.distance(centerOfTurn, tagPoint))));
-                        double t = (Math.PI * alfa * distanceFromCenter) / (180 * carState.getCarSpeed());
+
+
+                        double st =  Geometric.distance(centerOfTurn, centerBeen);
+                        double sb =  Geometric.distance(centerOfTurn, tagPoint);
+                        double tb =  Geometric.distance(centerBeen, tagPoint);
+
+                        double alfa =  Math.acos( ((st*st) + (sb*sb)  -(tb*tb) )/ (2 * st *sb));
+
+
+
+                        alfa = Math.toDegrees(alfa);
+
+                        double t = (Math.PI * alfa *  R ) / (180 * carState.getCarSpeed());
+
+
+
                         double tt = rTime + t;
 
-                        nextTag.put(t, new RecognizationElement(laserTag,segment));
+                        nextTag.add(tt, new RecognizationElement(laserTag,segment,alfa));
                     }
                 }
             }

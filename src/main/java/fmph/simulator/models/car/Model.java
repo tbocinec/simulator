@@ -10,5 +10,7 @@ public interface Model {
     //vzdialenost medzi prednou napravou a lucom [m] real 0.3
     double getDISTANCEBETWEENAXLEANDBEAM();
 
+    double getMaxWheelAngle();
+
     String getName();
 }

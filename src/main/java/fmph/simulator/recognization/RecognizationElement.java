@@ -6,11 +6,14 @@ import fmph.simulator.map.Segment;
 public class RecognizationElement {
     private LaserTag laserTag;
     private Segment segment;
+    private double alfa;
 
-    public RecognizationElement(LaserTag laserTag, Segment segment) {
+    public RecognizationElement(LaserTag laserTag, Segment segment,double alfa) {
         this.laserTag = laserTag;
         this.segment = segment;
+        this.alfa = alfa;
     }
+
 
     public LaserTag getLaserTag() {
         return laserTag;
@@ -26,5 +29,13 @@ public class RecognizationElement {
 
     public void setSegment(Segment segment) {
         this.segment = segment;
+    }
+
+    public double getAlfa() {
+        return alfa;
+    }
+
+    public void setAlfa(double alfa) {
+        this.alfa = alfa;
     }
 }

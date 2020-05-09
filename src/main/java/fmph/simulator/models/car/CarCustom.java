@@ -7,6 +7,7 @@ public class CarCustom implements Model {
     private  double BEAMWIDTH;
     private  double DISTANCEBETWEENAXLES ;
     private  double DISTANCEBETWEENAXLEANDBEAM ;
+    private   double MAXWHEELANGLE;
     private  String name= 	"Car from config";
 
     public CarCustom(){
@@ -14,6 +15,7 @@ public class CarCustom implements Model {
         this.BEAMWIDTH = config.getDouble("CarCustom.BEAMWIDTH");
         this.DISTANCEBETWEENAXLES = config.getDouble("CarCustom.DISTANCEBETWEENAXLES");
         this.DISTANCEBETWEENAXLEANDBEAM = config.getDouble("CarCustom.DISTANCEBETWEENAXLEANDBEAM");
+        this.MAXWHEELANGLE =  config.getDouble("CarCustom.MAXWHEELANGLE");
 
     }
 
@@ -27,6 +29,11 @@ public class CarCustom implements Model {
 
     public double getDISTANCEBETWEENAXLEANDBEAM() {
         return DISTANCEBETWEENAXLEANDBEAM;
+    }
+
+    @Override
+    public double getMaxWheelAngle() {
+        return MAXWHEELANGLE;
     }
 
     @Override

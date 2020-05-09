@@ -94,4 +94,9 @@ public class Function {
 		visualizeConfig.setCar_length(visualizeConfig.getCar_length()*visualizeConfig.getCar_length_scale_factor());
 
     }
+
+	public static double TurnAngle(double carAngle) {
+		//pretoze vypocet auta sa pocita v uhloh proti smere hodiniek a zvysok v smere
+		return (carAngle*-1)%360;
+	}
 }

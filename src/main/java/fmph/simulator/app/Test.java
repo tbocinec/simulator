@@ -13,18 +13,10 @@ public class Test {
 
     public static void main(String[] args) throws InterruptedException {
 
-
-        ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
-
-        ScheduledFuture<?> future = executor.scheduleAtFixedRate(new Runnable() {
-            @Override
-            public void run() {
-
-            }
-        }, 5, 10, TimeUnit.SECONDS);
-
-        future.cancel(true);
-
+        Double alfa = Math.toRadians(90);
+        Double beta = Math.toRadians(95); //old -180
+        double titl = Function.angle_difference(beta, alfa);
+        System.out.println(titl + "   in angle"+Math.toDegrees(titl));
 
 
     }

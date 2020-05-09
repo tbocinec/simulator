@@ -31,13 +31,16 @@ public class RecognizationSender {
 
 
 
-    public  void planSend(TreeMap<Double, RecognizationElement> recognizationElement) {
-        showNearsTagInfo(recognizationElement);
-        int countSend = 1;
+    public  void planSend(NeartTag neartTag) {
+        showNearsTagInfo(neartTag);
+        int countSend = 10;
+        TreeMap<Double, RecognizationElement> recognizationElement = neartTag.getNextTags();
         if(recognizationElement.size() > 1){
         for(double second : recognizationElement.keySet())
             {
-                sendAfter((long) second,recognizationElement.get(second));
+                System.out.println("time "+second+" tag "+recognizationElement.get(second).getLaserTag().getType() +
+                        "uhol  "+recognizationElement.get(second).getAlfa());
+                //sendAfter((long) second,recognizationElement.get(second));
                 countSend-=1;
                 if(countSend <= 0){break;}
             }
@@ -65,6 +68,7 @@ public class RecognizationSender {
 
     public void sendNow(LaserTag laserTag, Segment segment, double distanceFromX) {
         CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
+        //double rTime = System.currentTimeMillis();
         double rTime = ContextBuilder.getContext().getRunManagement().getActualRun().getRunTimeSecond();
         BigDecimal time = new BigDecimal(rTime);
         new fmph.simulator.vizualization.console.Message("Recognized new tag with id " + laserTag.getType()+" at time "+rTime, MessageType.INFO);
@@ -86,10 +90,9 @@ public class RecognizationSender {
 
 
         Double alfa = Math.toRadians(laserTag.getGamma());
-        Double beta = Math.toRadians(carState.getCarAngle() ); //old -180
+        Double beta = Math.toRadians(Function.TurnAngle(carState.getCarAngle()));
         double titl = Function.angle_difference(beta, alfa);
         msg.setTilt(Math.abs(titl));
-        msg.setCenter_x(-distanceFromX);//tododis
         ContextBuilder.getContext().getServer().sendMsg(msg.serialize());
     }
 
@@ -101,8 +104,9 @@ public class RecognizationSender {
             lastRecognizationHistoryElement = null;
         }
     }
-    private void showNearsTagInfo(TreeMap<Double, RecognizationElement> nextTag) {
+    private void showNearsTagInfo(NeartTag nextTagWrapper) {
         AtomicInteger numberVisibleMax = new AtomicInteger(2);
+        TreeMap<Double, RecognizationElement> nextTag = nextTagWrapper.getNextTags();
         if(nextTag.size() >0) {
 
             StringBuffer tagsInfo = new StringBuffer();
