@@ -2,6 +2,8 @@ package fmph.simulator.models;
 
 import fmph.simulator.Math.Point2d;
 import fmph.simulator.app.context.ContextBuilder;
+import fmph.simulator.vizualization.console.Message;
+import fmph.simulator.vizualization.console.MessageType;
 
 
 import java.io.Serializable;
@@ -9,15 +11,18 @@ import java.net.ContentHandler;
 
 public class CarState implements Serializable {
 
-    Point2d pos = new Point2d(0,0);
+    private Point2d pos = new Point2d(0,0);
     //double posX; //car position in x axis front axle
     //double posY; //car position in y axis front axle
-    double carAngle; //uhol natocenia celeho automobilu  [stupne, 0=sever]
-    double wheelAngle; //uhol natocenia predneho kolesa voci 0 polohe  [stupne, 0=rovno] , todo checkovat max
-    double carSpeed; //aktualna rychlost  [m/s]  max speed  25km/h  = 6.9444m/s
+    private double carAngle; //uhol natocenia celeho automobilu  [stupne, 0=sever]
+    private double wheelAngle; //uhol natocenia predneho kolesa voci 0 polohe  [stupne, 0=rovno] , todo checkovat max
 
-    double posXBack; //car position in x axis front axle
-    double posYBack; //car position in y axis front axle
+
+
+    private int gearSpeed=0; //aktualna rychlost  [m/s]  max speed  25km/h  = 6.9444m/s
+
+    private double posXBack; //car position in x axis front axle
+    private double posYBack; //car position in y axis front axle
 
 
 
@@ -45,12 +50,13 @@ public class CarState implements Serializable {
         this.wheelAngle = wheelAngle;
     }
 
-    public double getCarSpeed() {
-        return carSpeed * ContextBuilder.getContext().config.getDouble("app.carSpeedRate");
+    public int getGearSpeed() {
+        return gearSpeed;
     }
 
-    public void setCarSpeed(double carSpeed) {
-        this.carSpeed = carSpeed;
+    public void setGearSpeed(int gearSpeed) {
+        new Message("Geared speed  "+gearSpeed, MessageType.INFO);
+        this.gearSpeed = gearSpeed;
     }
 
     public double getPosXBack() {
@@ -76,7 +82,7 @@ public class CarState implements Serializable {
                 ", posY=" + pos.getY() +
                 ", carAngle=" + carAngle +
                 ", wheelAngle=" + wheelAngle +
-                ", carSpeed=" + carSpeed +
+                ", carGear=" + gearSpeed +
                 ", posXBack=" + posXBack +
                 ", posYBack=" + posYBack +
                 '}';

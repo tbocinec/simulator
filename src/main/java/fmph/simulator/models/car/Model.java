@@ -13,4 +13,6 @@ public interface Model {
     double getMaxWheelAngle();
 
     String getName();
+
+    Double getSpeed(int n);
 }

@@ -65,8 +65,8 @@ public class InComeMessage {
 			new Message(this.errorMsg,MessageType.ERROR);
 		} else {
 			CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
-			carState.setWheelAngle(this.wheelAngle);
-			carState.setCarSpeed(this.carSpeed);
+			//carState.setWheelAngle(this.wheelAngle);
+			//carState.setCarSpeed(this.carSpeed);  //coment after change speed politic to speedgear
 			ContextBuilder.getContext().getCarInfoController().changeText();
 			//log
 			new Message("New Input from car {speed:" + this.carSpeed + ",wheelAngle:" + this.wheelAngle + " }", MessageType.INFO);

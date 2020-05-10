@@ -38,6 +38,7 @@ public class CarModel {
     private PropertiesConfiguration config;
     double  minimumTimeInterval = 40;
 
+
     ArrayList<String> lastSeenTag = new ArrayList<>();
 
 
@@ -56,7 +57,7 @@ public class CarModel {
         carState.getPos().setY(ContextBuilder.getContext().getMap().getMap().getSegments().get(0).getStartPose().getY());
         carState.setCarAngle(config.getDouble("car.initial.carAngle")); //uhol natocenia celeho automobilu  [stupne, 0=sever]
         carState.setWheelAngle(config.getDouble("car.initial.wheelAngle")); //uhol natocenia predneho kolesa voci 0 polohe  [stupne, 0=rovno]
-        carState.setCarSpeed(config.getDouble("car.initial.carSpeed")); //aktualna rychlost  [m/s]
+        carState.setGearSpeed(config.getInt("car.initial.peedGear")); //aktualna rychlost  [m/s]
         computeHelpPoint();
 
 
@@ -110,13 +111,13 @@ public class CarModel {
         CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
         Model model = carManagment.getActual();
 
-        if (carState.getCarSpeed() == 0) {
+        if (getCarSpeed() == 0) {
             return;
         }
 
         if (lastRunTime + minimumTimeInterval < runTime) {
             double timeTravel = runTime - lastRunTime;
-            double traveledDistance = (timeTravel / 1000) * carState.getCarSpeed();
+            double traveledDistance = (timeTravel / 1000) * getCarSpeed();
             computeBeemPoint(carState, model);
 
             //carState.setCarAngle(carState.getCarAngle()+180);
@@ -160,6 +161,13 @@ public class CarModel {
             }
         }
 
+
+    }
+
+    private double getCarSpeed() {
+        CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
+        Model model = ContextBuilder.getContext().getCarModel().getCarManagment().getActual();
+        return  model.getSpeed(carState.getGearSpeed());
 
     }
 
@@ -252,7 +260,7 @@ public class CarModel {
 
                         alfa = Math.toDegrees(alfa);
 
-                        double t = (Math.PI * alfa *  R ) / (180 * carState.getCarSpeed());
+                        double t = (Math.PI * alfa *  R ) / (180 * getCarSpeed());
 
 
 
@@ -344,6 +352,5 @@ public class CarModel {
     public void setRecognizationSender(RecognizationSender recognizationSender) {
         this.recognizationSender = recognizationSender;
     }
-
 
 }
