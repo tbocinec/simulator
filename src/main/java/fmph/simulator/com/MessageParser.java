@@ -15,7 +15,6 @@ public class MessageParser {
     public void parseMsg(){
         CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
         if(msg.trim().startsWith("setdir")){
-            System.out.println(msg);
             String dir = msg.split("setdir")[1];
             ContextBuilder.getContext().getCarModel().setWhealAngle(Double.parseDouble(dir));
             ContextBuilder.getContext().getCarModel().applicateLastSpeed();
@@ -28,7 +27,7 @@ public class MessageParser {
         };
         if(msg.trim().startsWith("setpower")){
             String speed = msg.split("setpower")[1];
-            carState.setCarSpeed(Double.parseDouble(speed) * 1.3);
+            carState.setCarSpeed(Double.parseDouble(speed) * 0.03);
             ContextBuilder.getContext().getConsoleController().addMsg("Set speed " + speed);
             return;
         };

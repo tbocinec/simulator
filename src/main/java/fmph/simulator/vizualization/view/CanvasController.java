@@ -160,7 +160,7 @@ public class CanvasController extends Canvas implements Contextable {
 
         double ratioY =  diffCanvasY  /diffMapY * 100;
 
-        //System.out.println( "diff y" +diffMapY + " diff canvas "+ diffCanvasY +" ration" + ratioY );    //todo log
+
         VisualizeConfig.GetConfig().setQ(ratioY);
     }
 

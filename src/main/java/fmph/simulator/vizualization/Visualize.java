@@ -54,12 +54,12 @@ public class Visualize  {
 				if (run) {
 					ContextBuilder.getContext().getRunManagement().nextTick();
 					plocha.paint();
-					if(c % 10 ==0){
+					if(c % 5 ==0){
 						ContextBuilder.getContext().getRunManagement().nextSecondTick();
 					}
 				}
 				c++;
-				Thread.sleep(100);
+				Thread.sleep(50);
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();

@@ -41,6 +41,7 @@ public class RunManagement {
         else {
            throw new RuntimeException("duplicit save Run");
         }
+        context.getCarModel().getRecognizationSender().killAllFutureSend();
         new Message("Successfully save previous run",MessageType.INFO);
 
     }
@@ -65,6 +66,7 @@ public class RunManagement {
             Warning.newWarning("A simulation that has not been started cannot be stopped","illegal operation","");
             return;
         }
+        context.getCarModel().getRecognizationSender().killAllFutureSend();
         actualRun.setRunState(RunState.stop);
     }
 

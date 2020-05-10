@@ -1,10 +1,11 @@
 package fmph.simulator.recognization;
 
+import fmph.simulator.Math.Geometric;
+import fmph.simulator.Math.Point2d;
 import fmph.simulator.app.context.ContextBuilder;
 import fmph.simulator.com.Message;
 import fmph.simulator.map.LaserTag;
 import fmph.simulator.map.Segment;
-import fmph.simulator.models.CarModel;
 import fmph.simulator.models.CarState;
 import fmph.simulator.vizualization.component.Function;
 import fmph.simulator.vizualization.console.MessageType;
@@ -31,30 +32,28 @@ public class RecognizationSender {
 
 
 
-    public  void planSend(NeartTag neartTag) {
+    public  void planSend(NeartTags neartTag) {
         showNearsTagInfo(neartTag);
-        int countSend = 10;
+        int countSend = 1;
         TreeMap<Double, RecognizationElement> recognizationElement = neartTag.getNextTags();
         if(recognizationElement.size() > 1){
-        for(double second : recognizationElement.keySet())
+        for(Double second : recognizationElement.keySet())
             {
-                System.out.println("time "+second+" tag "+recognizationElement.get(second).getLaserTag().getType() +
-                        "uhol  "+recognizationElement.get(second).getAlfa());
-                //sendAfter((long) second,recognizationElement.get(second));
+                sendAfter((long)(second*1000),recognizationElement.get(second));
                 countSend-=1;
                 if(countSend <= 0){break;}
             }
         }
     }
 
-    private void sendAfter(long second,RecognizationElement recognizationElement){
-
+    private void sendAfter(long miliseconds,RecognizationElement recognizationElement){
         ScheduledFuture<?> future = executor.schedule(() -> {
+            NeartTags.addSend(recognizationElement.getLaserTag().getType());
             if(enableSend.get()){
-                sendNow(recognizationElement.getLaserTag(),recognizationElement.getSegment(),0); //todoDistanceFromX
+                sendNow(recognizationElement.getLaserTag(),recognizationElement.getSegment(),null); //todoDistanceFromX
             }
 
-        }, second,  TimeUnit.SECONDS);
+        }, miliseconds,  TimeUnit.MILLISECONDS);
         futureTask.add(future);
     }
 
@@ -66,10 +65,10 @@ public class RecognizationSender {
     }
 
 
-    public void sendNow(LaserTag laserTag, Segment segment, double distanceFromX) {
+    public void sendNow(LaserTag laserTag, Segment segment, Double distanceFromX) {
         CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
-        //double rTime = System.currentTimeMillis();
-        double rTime = ContextBuilder.getContext().getRunManagement().getActualRun().getRunTimeSecond();
+        double rTime = System.currentTimeMillis();
+        //double rTime = ContextBuilder.getContext().getRunManagement().getActualRun().getRunTimeSecond();
         BigDecimal time = new BigDecimal(rTime);
         new fmph.simulator.vizualization.console.Message("Recognized new tag with id " + laserTag.getType()+" at time "+rTime, MessageType.INFO);
 
@@ -77,12 +76,18 @@ public class RecognizationSender {
             waitAfterRecognization = true;
             ContextBuilder.getContext().getRunManagement().pause();
         }
+
+
         sendRecognizedInfo(segment, laserTag, distanceFromX,time);
         lastRecognizationHistoryElement = new HistoryElement(rTime, SerializationUtils.clone(carState),segment,laserTag);
         ContextBuilder.getContext().getRunManagement().getActualRun().getRecognitionHistory().addTag(lastRecognizationHistoryElement);
     }
 
-    private void sendRecognizedInfo(Segment segment, LaserTag laserTag, double distanceFromX,BigDecimal time) {
+    private void sendRecognizedInfo(Segment segment, LaserTag laserTag, Double distanceFromX,BigDecimal time) {
+        if(null == distanceFromX){
+            Point2d centerBeen = ContextBuilder.getContext().getCarModel().getCenterBeen();
+            distanceFromX = Geometric.distance(new Point2d(laserTag.getX(),laserTag.getY()),centerBeen);
+        }
         CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
         Message msg = new Message();
         msg.setTime_stamp(time.toPlainString());
@@ -92,7 +97,10 @@ public class RecognizationSender {
         Double alfa = Math.toRadians(laserTag.getGamma());
         Double beta = Math.toRadians(Function.TurnAngle(carState.getCarAngle()));
         double titl = Function.angle_difference(beta, alfa);
-        msg.setTilt(Math.abs(titl));
+        //zmenit smer titl
+        msg.setTilt(Math.toDegrees(titl));
+        msg.setCenter_x(distanceFromX);
+        System.out.println("vzdialensot od stredu "+distanceFromX);
         ContextBuilder.getContext().getServer().sendMsg(msg.serialize());
     }
 
@@ -104,7 +112,7 @@ public class RecognizationSender {
             lastRecognizationHistoryElement = null;
         }
     }
-    private void showNearsTagInfo(NeartTag nextTagWrapper) {
+    private void showNearsTagInfo(NeartTags nextTagWrapper) {
         AtomicInteger numberVisibleMax = new AtomicInteger(2);
         TreeMap<Double, RecognizationElement> nextTag = nextTagWrapper.getNextTags();
         if(nextTag.size() >0) {

@@ -10,20 +10,18 @@ import fmph.simulator.map.LaserTag;
 import fmph.simulator.map.Segment;
 import fmph.simulator.models.car.CarManagment;
 import fmph.simulator.models.car.Model;
-import fmph.simulator.recognization.NeartTag;
+import fmph.simulator.recognization.NeartTags;
 import fmph.simulator.recognization.RecognizationElement;
 import fmph.simulator.recognization.RecognizationSender;
 import org.apache.commons.configuration2.PropertiesConfiguration;
 
-import java.awt.*;
 import java.util.ArrayList;
-import java.util.TreeMap;
 
 public class CarModel {
 
     CarManagment carManagment;
     SignalToAngle signalToAngle;
-    RecognizationSender recolonizationSender;
+    RecognizationSender recognizationSender;
 
     //Body na luci
     Point2d leftBeen= new Point2d(0,0);
@@ -47,14 +45,14 @@ public class CarModel {
     public CarModel() {
         carManagment = new CarManagment();
         signalToAngle = new SignalToAngle();
-        recolonizationSender = new RecognizationSender();
+        recognizationSender = new RecognizationSender();
         initStartValue();
     }
 
     public void initStartValue() {
         config = ContextBuilder.getContext().config;
         CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
-        carState.getPos().setX(ContextBuilder.getContext().getMap().getMap().getSegments().get(0).getStartPose().getX() - 0.205);
+        carState.getPos().setX(ContextBuilder.getContext().getMap().getMap().getSegments().get(0).getStartPose().getX() - 0.225);
         carState.getPos().setY(ContextBuilder.getContext().getMap().getMap().getSegments().get(0).getStartPose().getY());
         carState.setCarAngle(config.getDouble("car.initial.carAngle")); //uhol natocenia celeho automobilu  [stupne, 0=sever]
         carState.setWheelAngle(config.getDouble("car.initial.wheelAngle")); //uhol natocenia predneho kolesa voci 0 polohe  [stupne, 0=rovno]
@@ -151,12 +149,12 @@ public class CarModel {
                 carState.getPos().setY(Math.cos(Math.toRadians(delta_fi)) * pomB - (Math.sin(Math.toRadians(delta_fi)) * pomA) + centerOfTurn.getY());
 
                 carState.setCarAngle((carState.getCarAngle() - delta_fi) % 360);
-                // ;
 
-
-                checkIdentifierActual();
+                if(config.getBoolean("app.computeIdentifierEveryPosition")){
+                    checkIdentifierActual();
+                }
                 computeBackOfVehlice();
-
+                computeBeemPoint(carState,model);
                 ContextBuilder.getContext().getCarInfoController().changeText();
 
             }
@@ -165,9 +163,7 @@ public class CarModel {
 
     }
 
-
-
-    public void checkIdentifierActual_oldVersion() {
+    public synchronized void checkIdentifierActual() {
         CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
         Model model = carManagment.getActual();
 
@@ -175,57 +171,14 @@ public class CarModel {
             return;
         }
         computeBeemPoint(carState,model);
-
-        //Smerove vektory
-        double svx =rightBeen.getX() - centerBeen.getX();
-        double svy = rightBeen.getY() - centerBeen.getY();
-
-        double A = svx;
-        double B = -svy;
-        double C = -((B * centerBeen.getX()) + (A * centerBeen.getY()));
-
-
         for (Segment segment : ContextBuilder.getContext().getMap().getMap().getSegments()) {
             for (LaserTag laserTag : segment.getLaserTags()) {
-
-
-                double x = laserTag.getX();
-                double y = laserTag.getY();
-
-
-                double distance = ((B * x) + (A * y) + C) / Math.sqrt((Math.pow(A, 2) + Math.pow(B, 2)));
-
-                if (Math.abs(distance) < 0.006) {
-                    double distanceFromX = Math.sqrt((Math.pow(x - centerBeen.getX(), 2) + Math.pow(y - centerBeen.getY(), 2)));
-                    if (Math.abs(distanceFromX) < model.getBEAMWIDTH() / 2) {
-                        if (lastSeenTag.contains(laserTag.getType())) {
-                            break;
-                        } else {
-                            lastSeenTag.add(laserTag.getType());
-                            if (lastSeenTag.size() > 4) { //todo
-                                lastSeenTag.remove(0);
-                            }
-                            recolonizationSender.sendNow(laserTag,segment,distanceFromX);
-
-
-                        }
-                    }
+                if( null != laserTag.getDisabled() && laserTag.getDisabled()){
+                    continue;
                 }
-            }
-        }
-
-    }
-
-    public void checkIdentifierActual() {
-        CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
-        Model model = carManagment.getActual();
-
-        if(ContextBuilder.getContext().getRunManagement().getActualRun().getRunState()!= RunState.run){
-            return;
-        }
-        computeBeemPoint(carState,model);
-        for (Segment segment : ContextBuilder.getContext().getMap().getMap().getSegments()) {
-            for (LaserTag laserTag : segment.getLaserTags()) {
+                if( null != laserTag.getExternal() && laserTag.getExternal()){
+                    continue;
+                }
 
                 double x = laserTag.getX();
                 double y = laserTag.getY();
@@ -235,30 +188,28 @@ public class CarModel {
 
                 if (Math.abs(distance) < 0.02) {
                     if (lastSeenTag.contains(laserTag.getType())) {
-                        break;
+                        continue;
                     }
                     else {
                         lastSeenTag.add(laserTag.getType());
-                        if (lastSeenTag.size() > 2) { //todo
+                        if (lastSeenTag.size() > 3) {
                             lastSeenTag.remove(0);
                         }
                         double distanceFromX = Math.sqrt((Math.pow(x - centerBeen.getX(), 2) + Math.pow(y - centerBeen.getY(), 2)));
-
-                        recolonizationSender.sendNow(laserTag,segment,distanceFromX);
+                        recognizationSender.sendNow(laserTag,segment,distanceFromX);
                     }
                 }
             }
         }
     }
 
-    boolean onlyOne = false;
+
     public void checkIdentifierAll() {
-        if(onlyOne){
-            return;
+        if(  config.getBoolean("app.computeIdentifierEveryPosition")){
+          return;
         }
-        onlyOne = true;
-        System.out.println("Start intentifier all");
-        recolonizationSender.killAllFutureSend();
+        System.out.println("tu niesom");
+        recognizationSender.killAllFutureSend();
 
         if(ContextBuilder.getContext().getRunManagement().getActualRun().getRunState()!= RunState.run){
             return;
@@ -275,11 +226,10 @@ public class CarModel {
         double r1= Geometric.distance(leftBeen,centerOfTurn);
         double r2= Geometric.distance(rightBeen,centerOfTurn);
         double R = Geometric.distance(centerOfTurn,carState.getPos());
-        System.out.println("polomer predneho kolesa " +R);
-        NeartTag nextTag = new NeartTag();
 
-        System.out.println("stret otacania + x,y +["+ centerOfTurn.getX()+","+centerOfTurn.getY()+"]");
-        System.out.println("stret luca + x,y +["+ centerBeen.getX()+","+centerBeen.getY()+"]");
+        NeartTags nextTag = new NeartTags();
+
+
         for (Segment segment : ContextBuilder.getContext().getMap().getMap().getSegments()) {
             for (LaserTag laserTag : segment.getLaserTags()) {
                 Point2d tagPoint = new Point2d(laserTag.getX(),laserTag.getY());
@@ -306,14 +256,14 @@ public class CarModel {
 
 
 
-                        double tt = rTime + t;
+                       // double tt = rTime + t;
 
-                        nextTag.add(tt, new RecognizationElement(laserTag,segment,alfa));
+                        nextTag.add(t, new RecognizationElement(laserTag,segment,alfa));
                     }
                 }
             }
         }
-        recolonizationSender.planSend(nextTag);
+        recognizationSender.planSend(nextTag);
 
 
     }
@@ -324,7 +274,7 @@ public class CarModel {
         CarState carState = ContextBuilder.getContext().getRunManagement().getActualRun().getCarState();
         double angle = signalToAngle.transformToAngle(signal);
         carState.setWheelAngle(angle);
-        recolonizationSender.updateRecognization();
+        recognizationSender.updateRecognization();
         ContextBuilder.getContext().getConsoleController().addMsg("Car change dir to " + angle);
         computeHelpPoint();
         checkIdentifierAll();
@@ -386,6 +336,13 @@ public class CarModel {
 
     public void setRightBeen(Point2d rightBeen) {
         this.rightBeen = rightBeen;
+    }
+    public RecognizationSender getRecognizationSender() {
+        return recognizationSender;
+    }
+
+    public void setRecognizationSender(RecognizationSender recognizationSender) {
+        this.recognizationSender = recognizationSender;
     }
 
 
