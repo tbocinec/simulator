@@ -98,9 +98,8 @@ public class RecognizationSender {
         Double beta = Math.toRadians(Function.TurnAngle(carState.getCarAngle()));
         double titl = Function.angle_difference(beta, alfa);
         //zmenit smer titl
-        msg.setTilt(Math.toDegrees(titl));
-        msg.setCenter_x(distanceFromX);
-        System.out.println("vzdialensot od stredu "+distanceFromX);
+        msg.setTilt(Math.abs(titl));
+        msg.setCenter_x(distanceFromX*1000) ;//m to  mm;
         ContextBuilder.getContext().getServer().sendMsg(msg.serialize());
     }
 

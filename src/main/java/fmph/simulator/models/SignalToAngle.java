@@ -33,7 +33,7 @@ public class SignalToAngle {
     }
 
     private double useSimpleLinear(double signal){
-        return -0.0555 * signal;
+        return -0.0485 * signal;
     }
     private double analytical(double signal){
         return  (signal*angle_for_servo_max)/SERVO_MAX;
