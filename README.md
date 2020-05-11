@@ -1,18 +1,21 @@
-**ATS**
 
-USAGE:
-requirement:
- Java jre(jdk) version 8 or news.
- OS with support javaFX components.
- Open port for socket comunication.(Standart is open)
- More then 1.5 gb free memory.
- 
+
+## **ATS**
+
+**USAGE:**
+*requirement:* 
+
+ - Java jre(jdk) version 8 or news.
+ - OS with support javaFX components.
+ - Open port for socket comunication.(Standart is open)
+ -  More then 1.5 gb free memory. - 
+  
 
  1. Git clone
  2. update config release/data/app.properties
  3. run app release/runLast.sh for linux, release/runLast.bat for Windows
  
-Build:
+**Build:**
 requirement:
  Java jre(jdk) version 8 or news.
  Maven 3.5 or news (https://maven.apache.org/download.cgi) 
