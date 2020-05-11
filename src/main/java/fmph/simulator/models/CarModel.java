@@ -216,7 +216,7 @@ public class CarModel {
         if(  config.getBoolean("app.computeIdentifierEveryPosition")){
           return;
         }
-        System.out.println("tu niesom");
+
         recognizationSender.killAllFutureSend();
 
         if(ContextBuilder.getContext().getRunManagement().getActualRun().getRunState()!= RunState.run){
