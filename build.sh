@@ -4,4 +4,8 @@ else
   echo "JAva home is not set"
   exit 1
 fi
-builder/apache-maven-3.6.3/bin/mvn.cmd clean package
+if ! [ -x "$(mvn -v )" ]; then
+  echo 'Error: maven is not install.' >&2
+  exit 1
+fi
+mvn clean package

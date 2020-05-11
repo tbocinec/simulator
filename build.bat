@@ -29,10 +29,10 @@
     ) else (
         echo JAVA_HOME="%javaDir%"
         echo JAVA_VERSION="%javaVersion%"
+        mvn clean package
+
     )
 
-
-    builder\apache-maven-3.6.3\bin\mvn.cmd clean package
-
+ 
     endlocal
     pause
