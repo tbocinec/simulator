@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fmph.simulator.map.LaserTag;
 import fmph.simulator.map.MapSchema;
 import fmph.simulator.map.Segment;
-import fmph.simulator.vizualization.component.IdLocation;
+import fmph.simulator.visualization.component.IdLocation;
 
 import java.io.File;
 import java.io.IOException;

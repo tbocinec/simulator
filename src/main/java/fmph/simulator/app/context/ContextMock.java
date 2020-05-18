@@ -4,10 +4,9 @@ import fmph.simulator.Map;
 import fmph.simulator.Running.RunManagement;
 import fmph.simulator.app.context.interfaces.Context;
 import fmph.simulator.com.Server;
-import fmph.simulator.models.CarModel;
-import fmph.simulator.recognization.RecognitionHistory;
-import fmph.simulator.vizualization.Visualize;
-import fmph.simulator.vizualization.view.*;
+import fmph.simulator.car.CarManagement;
+import fmph.simulator.visualization.Visualize;
+import fmph.simulator.visualization.view.*;
 import javafx.stage.Stage;
 
 public class ContextMock implements Context {
@@ -55,7 +54,7 @@ public class ContextMock implements Context {
     }
 
     @Override
-    public CarModel getCarModel() {
+    public CarManagement getCarManagement() {
         return null;
     }
 

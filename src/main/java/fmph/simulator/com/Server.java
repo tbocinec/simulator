@@ -2,10 +2,9 @@ package fmph.simulator.com;
 
 //A Java program for a Server 
 
-import fmph.simulator.app.context.Context;
 import fmph.simulator.app.context.ContextBuilder;
-import fmph.simulator.vizualization.console.Message;
-import fmph.simulator.vizualization.console.MessageType;
+import fmph.simulator.visualization.console.Message;
+import fmph.simulator.visualization.console.MessageType;
 
 import java.io.*;
 import java.net.*;

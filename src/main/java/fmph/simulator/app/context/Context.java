@@ -5,10 +5,10 @@ import fmph.simulator.Map;
 import fmph.simulator.Running.RunManagement;
 import fmph.simulator.app.context.exceptions.ContextException;
 import fmph.simulator.com.Server;
-import fmph.simulator.models.CarModel;
+import fmph.simulator.car.CarManagement;
 
-import fmph.simulator.vizualization.Visualize;
-import fmph.simulator.vizualization.view.*;
+import fmph.simulator.visualization.Visualize;
+import fmph.simulator.visualization.view.*;
 import javafx.stage.Stage;
 import org.apache.commons.configuration2.PropertiesConfiguration;
 
@@ -19,7 +19,7 @@ public class Context implements fmph.simulator.app.context.interfaces.Context {
     //Component
     Visualize visualize;
     Server server;
-    CarModel carModel;
+    CarManagement carManagement;
     //RecognitionHistory recognitionHistory;
     RunManagement runManagement;
 
@@ -116,11 +116,11 @@ public class Context implements fmph.simulator.app.context.interfaces.Context {
         this.primaryStage = primaryStage;
     }
 
-    public CarModel getCarModel() {
-        if(carModel == null){
-            carModel = new CarModel();
+    public CarManagement getCarManagement() {
+        if(carManagement == null){
+            carManagement = new CarManagement();
         }
-        return carModel;
+        return carManagement;
     }
 
     public CarInfoController getCarInfoController() {

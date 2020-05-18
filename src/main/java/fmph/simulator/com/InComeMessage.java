@@ -1,10 +1,9 @@
 package fmph.simulator.com;
 
 import fmph.simulator.app.context.ContextBuilder;
-import fmph.simulator.models.CarModel;
-import fmph.simulator.models.CarState;
-import fmph.simulator.vizualization.console.Message;
-import fmph.simulator.vizualization.console.MessageType;
+import fmph.simulator.car.CarState;
+import fmph.simulator.visualization.console.Message;
+import fmph.simulator.visualization.console.MessageType;
 
 import java.util.regex.PatternSyntaxException;
 

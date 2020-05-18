@@ -1,13 +1,6 @@
 package fmph.simulator.app;
 
-import fmph.simulator.Math.Circle;
-import fmph.simulator.Math.Geometric;
-import fmph.simulator.Math.Point2d;
-import fmph.simulator.vizualization.component.Function;
-
-import java.util.LinkedList;
-import java.util.ListIterator;
-import java.util.concurrent.*;
+import fmph.simulator.visualization.component.Function;
 
 public class Test {
 

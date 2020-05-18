@@ -2,12 +2,13 @@ package fmph.simulator.Running;
 
 import fmph.simulator.app.context.ContextBuilder;
 import fmph.simulator.app.context.interfaces.Context;
-import fmph.simulator.recognization.HistoryElement;
-import fmph.simulator.vizualization.console.Message;
-import fmph.simulator.vizualization.console.MessageType;
-import fmph.simulator.vizualization.popup.Warning;
+import fmph.simulator.car.recognization.HistoryElement;
+import fmph.simulator.visualization.Tickable;
+import fmph.simulator.visualization.console.Message;
+import fmph.simulator.visualization.console.MessageType;
+import fmph.simulator.visualization.popup.Warning;
 
-public class RunManagement {
+public class RunManagement implements Tickable {
 
     OneRun actualRun;
     Context context;
@@ -25,7 +26,7 @@ public class RunManagement {
             return;
         }
         startNewRun();
-        context.getCarModel().initStartValue();
+        context.getCarManagement().initStartValue();
         context.getTimeController().setMaxTime(0,true);
         context.getRecognitionHistoryController().removeAll();
     }
@@ -41,7 +42,7 @@ public class RunManagement {
         else {
            throw new RuntimeException("duplicit save Run");
         }
-        context.getCarModel().getRecognizationSender().killAllFutureSend();
+        context.getCarManagement().getRecognizationSender().killAllFutureSend();
         new Message("Successfully save previous run",MessageType.INFO);
 
     }
@@ -54,7 +55,7 @@ public class RunManagement {
             context.getTimeController().setMaxTime(actualRun.getRunTimeSecond(),true);
         }
         actualRun.setRunState(RunState.run);
-        context.getCarModel().checkIdentifierAll();
+        context.getCarManagement().checkIdentifierAll();
     }
 
     public void pause() {
@@ -66,7 +67,7 @@ public class RunManagement {
             Warning.newWarning("A simulation that has not been started cannot be stopped","illegal operation","");
             return;
         }
-        context.getCarModel().getRecognizationSender().killAllFutureSend();
+        context.getCarManagement().getRecognizationSender().killAllFutureSend();
         actualRun.setRunState(RunState.stop);
     }
 
@@ -88,12 +89,12 @@ public class RunManagement {
         actualRun.setRunState(RunState.stop);
         HistoryElement nearsTag = context.getRunManagement().getActualRun().getRecognitionHistory().getNearst(time);
         if(nearsTag == null ){
-            context.getCarModel().initStartValue();
-            context.getCarModel().movie(time*1000,0);
+            context.getCarManagement().initStartValue();
+            context.getCarManagement().movie(time*1000,0);
         }
         else{
             actualRun.setCarStateClone(nearsTag.getCarStateBefore());
-            context.getCarModel().movie(time*1000,nearsTag.getTimeRecognization()*1000);
+            context.getCarManagement().movie(time*1000,nearsTag.getTimeRecognization()*1000);
         }
         this.actualRun.setTime(time*1000);
 
@@ -129,4 +130,13 @@ public class RunManagement {
         this.actualRun = actualRun;
     }
 
+    @Override
+    public void tickSecond() {
+        nextSecondTick();
+    }
+
+    @Override
+    public void tick() {
+        nextTick();
+    }
 }

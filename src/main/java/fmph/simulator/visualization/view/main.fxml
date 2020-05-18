@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import fmph.simulator.visualization.view.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+<VBox prefHeight="800.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fmph.simulator.visualization.view.MainController">
+  <children>
+    <MenuBar VBox.vgrow="NEVER">
+      <menus>
+        <Menu mnemonicParsing="false" text="File">
+          <items>
+            <MenuItem fx:id="newApp" mnemonicParsing="false" text="New" />
+              <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuMapController mnemonicParsing="false" text="Change map ">
+            </MenuMapController>
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem fx:id="openHistory"  mnemonicParsing="false" text="Open Running history" />
+            <MenuItem fx:id="saveHistory"  mnemonicParsing="false" text="Save Running history" />
+              <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem fx:id="close" mnemonicParsing="false" text="Quit" />
+          </items>
+        </Menu>
+            <Menu mnemonicParsing="false" text="Config">
+               <items>
+                  <MenuItem fx:id="configViewAll"  mnemonicParsing="false" text="View all properties" />
+                   <ModelMenuController mnemonicParsing="false" text="Change model ">
+                   </ModelMenuController>
+               </items>
+            </Menu>
+            <MenuViewController mnemonicParsing="false" text="View" />
+       <Menu mnemonicParsing="false" text="Help">
+         <items>
+           <MenuItem mnemonicParsing="false" onAction="#aboutPopup" text="About ATS" />
+         </items>
+       </Menu>
+     </menus>
+   </MenuBar>
+   <SplitPane dividerPositions="0.2505567928730512" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+     <items>
+           <Accordion>
+             <panes>
+               <TitledPane animated="false" text="CarInfo">
+                 <content>
+                   <CarInfoController minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                 </content>
+               </TitledPane>
+               <TitledPane animated="false" text="App">
+                 <content>
+                   <AppPanelController minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                 </content>
+               </TitledPane>
+               <TitledPane animated="false" text="Recognized history">
+                 <content>
+                   <RecognitionHistoryController minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                 </content>
+               </TitledPane>
+                 <TitledPane animated="false" text="Connection info">
+                     <content>
+                         <ConnectionInfoController minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                     </content>
+                 </TitledPane>
+                 <TitledPane animated="false" text="Running history">
+                    <content>
+                        <RunHistoryController minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                    </content>
+                 </TitledPane>
+                 <TitledPane animated="false" text="Noise config">
+                    <content>
+                       <NoiseController minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                    </content>
+                 </TitledPane>
+
+             </panes>
+           </Accordion>
+           <VBox>
+              <children>
+                 <Pane prefHeight="900.0">
+                     <CanvasController />
+                 </Pane>
+                 <Pane maxHeight="50.0" minHeight="50.0" prefHeight="50.0">
+                    <children>
+                        <HBox>
+                           <children>
+                             <TimeController >
+
+                             </TimeController>
+                              <RunAppController>
+
+                              </RunAppController>
+                           </children>
+                        </HBox>
+                    </children>
+                    <VBox.margin>
+                       <Insets />
+                    </VBox.margin>
+                    <padding>
+                       <Insets left="10.0" top="5.0" />
+                    </padding>
+                 </Pane>
+              </children>
+           </VBox>
+     </items>
+   </SplitPane>
+     <VBox fx:id="consoleWrapper" maxHeight="0.0" prefHeight="200.0" prefWidth="100.0">
+        <children>
+           <HBox maxHeight="30.0" prefHeight="100.0" prefWidth="200.0">
+              <children>
+                 <Pane prefHeight="0.0" prefWidth="600.0">
+                    <children>
+                       <Label text="Console :">
+                          <padding>
+                             <Insets left="10.0" />
+                          </padding>
+                       </Label>
+                    </children>
+                 </Pane>
+                 <ButtonBar maxHeight="25.0" nodeOrientation="RIGHT_TO_LEFT">
+                   <buttons>
+                       <Button fx:id="consoleDownload" mnemonicParsing="false" text="Download" />
+                       <Button fx:id="consoleClear" mnemonicParsing="false" text="Clear" />
+                       <ToggleButton fx:id="consoleHide" mnemonicParsing="false" text="Hide" />
+                       <ToggleButton fx:id="consoleFull" mnemonicParsing="false" text="Full" />
+                   </buttons>
+                 </ButtonBar>
+              </children>
+           </HBox>
+           <ConsoleController fx:id="consolePane" minHeight="150.0" />
+        </children>
+     </VBox>
+   <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0" VBox.vgrow="NEVER">
+     <children>
+       <Label fx:id="leftStatus" maxHeight="17.0" maxWidth="-1.0" text="Left status" HBox.hgrow="ALWAYS">
+         <font>
+           <Font size="11.0" fx:id="x3" />
+         </font>
+         <textFill>
+           <Color blue="0.625" green="0.625" red="0.625" fx:id="x4" />
+         </textFill>
+       </Label>
+       <Pane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS" />
+       <Label fx:id="rightStatus" font="$x3" maxWidth="-1.0" text="wait for client" textFill="$x4" HBox.hgrow="NEVER" />
+     </children>
+     <padding>
+       <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+     </padding>
+   </HBox>
+ </children>
+</VBox>

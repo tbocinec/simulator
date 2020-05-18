@@ -2,8 +2,8 @@ package fmph.simulator.app;
 
 import fmph.simulator.app.context.ContextBuilder;
 import fmph.simulator.app.context.interfaces.Context;
-import fmph.simulator.vizualization.console.Message;
-import fmph.simulator.vizualization.console.MessageType;
+import fmph.simulator.visualization.console.Message;
+import fmph.simulator.visualization.console.MessageType;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;

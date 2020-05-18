@@ -1,8 +1,7 @@
 package fmph.simulator.com;
 
-import fmph.simulator.app.context.Context;
 import fmph.simulator.app.context.ContextBuilder;
-import fmph.simulator.models.CarState;
+import fmph.simulator.car.CarState;
 import org.apache.commons.configuration2.PropertiesConfiguration;
 
 public class MessageParser {
@@ -20,8 +19,8 @@ public class MessageParser {
 
         if(msg.trim().startsWith("setdir")){
             String dir = msg.split("setdir")[1];
-            ContextBuilder.getContext().getCarModel().setWhealAngle(Double.parseDouble(dir));
-            ContextBuilder.getContext().getCarModel().applicateLastSpeed();
+            ContextBuilder.getContext().getCarManagement().setWhealAngle(Double.parseDouble(dir));
+            ContextBuilder.getContext().getCarManagement().applicateLastSpeed();
             return;
         };
         if(msg.trim().startsWith("stop")){

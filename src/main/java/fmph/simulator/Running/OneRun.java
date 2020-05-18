@@ -1,11 +1,10 @@
 package fmph.simulator.Running;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import fmph.simulator.Running.Time.TimeManagement;
 import fmph.simulator.Running.Time.TimeManagementSimple;
 import fmph.simulator.app.context.ContextBuilder;
-import fmph.simulator.models.CarState;
-import fmph.simulator.recognization.RecognitionHistory;
+import fmph.simulator.car.CarState;
+import fmph.simulator.car.recognization.RecognitionHistory;
 import org.apache.commons.lang3.SerializationUtils;
 
 import java.io.Serializable;
@@ -31,7 +30,7 @@ public class  OneRun implements Serializable {
     public void nextTick() {
         if(runState == RunState.run) {
             double actualTime = timeManagement.getRunTime();
-            ContextBuilder.getContext().getCarModel().movie(actualTime,previousTime);
+            ContextBuilder.getContext().getCarManagement().movie(actualTime,previousTime);
             previousTime = actualTime;
         }
     }
