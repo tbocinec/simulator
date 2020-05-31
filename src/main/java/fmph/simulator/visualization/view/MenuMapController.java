@@ -26,7 +26,13 @@ public class MenuMapController extends Menu implements Contextable {
 
              walk.filter(Files::isRegularFile).forEach(e-> {
                  MenuItem mapItem = new MenuItem(e.getFileName().toString());
-                 mapItem.setOnAction(event -> {Map.mapPath =  e.toAbsolutePath().toString(); map.loadMap(); this.loadMap();} );
+                 mapItem.setOnAction(event -> {
+                     Map.mapPath =  e.toAbsolutePath().toString();
+                     map.loadMap();
+                     this.loadMap();
+                     context.getCanvasController().initCar();
+
+                 } );
                  if(Map.mapPath.contains(e.getFileName().toString())){
                      mapItem.setDisable(true);
                  }

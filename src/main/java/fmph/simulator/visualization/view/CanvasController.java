@@ -46,13 +46,8 @@ public class CanvasController extends Canvas implements Contextable, Tickable {
 
     public void initialize() {
         gc = getGraphicsContext2D();
-        map = ContextBuilder.getContext().getMap();
 
-        state.setAnim_seg(map.getMap().getSegments().get(0)); //default value
-        idealCar = new IdealCar(map.getMap());
-        realCarModel = new RealCarBaseModel(map.getMap());
-
-
+        initCar();
         this.setOnMouseClicked(event -> {
             printClickInfo(event);
         });
@@ -70,6 +65,14 @@ public class CanvasController extends Canvas implements Contextable, Tickable {
             makeScrolable();
         }
 
+    }
+
+    public void initCar() {
+        map = ContextBuilder.getContext().getMap();
+
+        state.setAnim_seg(map.getMap().getSegments().get(0)); //default value
+        idealCar = new IdealCar(map.getMap());
+        realCarModel = new RealCarBaseModel(map.getMap());
     }
 
     private void makeScrolable() {

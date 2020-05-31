@@ -1,6 +1,7 @@
 package fmph.simulator.Running.Time;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import fmph.simulator.app.context.ContextBuilder;
 
 import java.io.Serializable;
 
@@ -24,7 +25,7 @@ public class TimeManagementSimple implements TimeManagement {
     synchronized public double getRunTime(){
         if(lastRealTime != 0){
             double snipTime = System.currentTimeMillis();
-            actualTime += snipTime - lastRealTime;
+            actualTime += (snipTime - lastRealTime)* ContextBuilder.getContext().config.getDouble("app.carSpeedRate");
             this.lastRealTime = snipTime;
         }
         return  actualTime;

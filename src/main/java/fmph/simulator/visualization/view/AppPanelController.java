@@ -16,6 +16,7 @@ public class AppPanelController extends VBox implements Contextable {
 
     CheckBox showIdealCar;
     CheckBox waitAfterRecognization;
+    CheckBox computeIdentifierEveryPosition;
 
     public AppPanelController(){
         registryToContext();
@@ -58,11 +59,15 @@ public class AppPanelController extends VBox implements Contextable {
         waitAfterRecognization.setSelected(context.config.getBoolean("app.waitAfterRecognization"));
         waitAfterRecognization.setOnAction(e -> context.config.setProperty("app.waitAfterRecognization",waitAfterRecognization.isSelected()));
 
+        computeIdentifierEveryPosition = new CheckBox();
+        computeIdentifierEveryPosition.setSelected(context.config.getBoolean("app.computeIdentifierEveryPosition"));
+        computeIdentifierEveryPosition.setOnAction(e -> context.config.setProperty("app.computeIdentifierEveryPosition",computeIdentifierEveryPosition.isSelected()));
 
         this.getChildren().add(new MenuLabelComponent("Pause app",pauseRun));
         this.getChildren().add(new MenuLabelComponent("Reset car",resetButton));
         this.getChildren().add(new MenuLabelComponent("Show ideal car",showIdealCar));
         this.getChildren().add(new MenuLabelComponent("Wait After Recognizayation",waitAfterRecognization));
+        this.getChildren().add(new MenuLabelComponent("Compute identifier every position",computeIdentifierEveryPosition));
 
         this.getChildren().addAll(timeshiftLabel,slideTimeShift);
 
