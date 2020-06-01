@@ -6,6 +6,10 @@ public class Point2d implements Serializable {
     private double x;
     private double y;
 
+    public Point2d() {
+
+    }
+
     public Point2d(double x, double y) {
         this.x = x;
         this.y = y;
