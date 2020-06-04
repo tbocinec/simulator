@@ -46,7 +46,7 @@ public class RunManagement implements Tickable {
         new Message("Successfully save previous run",MessageType.INFO);
 
     }
-    public void run() {
+    public synchronized void run() {
         if(actualRun.getRunState() == RunState.finish){
             reset();
         }

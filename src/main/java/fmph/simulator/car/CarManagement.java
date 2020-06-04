@@ -305,8 +305,8 @@ public class CarManagement {
         computeWheelRadius();
     }
 
-    public void applicateLastSpeed() {
-        waitAfterRecognization = false;
+    public synchronized void applicateLastSpeed() {
+        //waitAfterRecognization = false;
         ContextBuilder.getContext().getRunManagement().run();
     }
 
