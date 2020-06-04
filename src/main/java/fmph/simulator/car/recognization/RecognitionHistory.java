@@ -10,28 +10,29 @@ import java.util.stream.Collectors;
 
 public class RecognitionHistory implements Serializable {
 
-    private LinkedList<HistoryElement> history = new LinkedList<HistoryElement>();
+    private  LinkedList<HistoryElement> history = new LinkedList<HistoryElement>();
 
-    public void addTag(HistoryElement historyElement ){
-        history.add(historyElement);
+    public synchronized void addTag(HistoryElement historyElement ){
+        getHistory().add(historyElement);
         addTagToGui(historyElement);
 
 
     }
 
-    private void addTagToGui(HistoryElement historyElement){
+    private synchronized void addTagToGui(HistoryElement historyElement){
+        if(1==1){return;}
         Platform.runLater(
                 () -> {
-                    ContextBuilder.getContext().getRecognitionHistoryController().addElement(historyElement.toString());
+                    ContextBuilder.getContext().getRecognitionHistoryController().addElement(getHistory().toString());
                 }
         );
     }
 
-    public HistoryElement getNearst(double time){
+    public synchronized HistoryElement  getNearst(double time){
         if(history == null || history.size() == 0){
             return null;
         }
-        ListIterator<HistoryElement> it = history.listIterator(0);
+        ListIterator<HistoryElement> it = getHistory().listIterator(0);
         HistoryElement nearst = null;
         while (it.hasNext()){
             HistoryElement he =  it.next();
@@ -42,20 +43,20 @@ public class RecognitionHistory implements Serializable {
         }
         return nearst;
     }
-    public void showAll() {
+    public synchronized void showAll() {
         Platform.runLater( () ->  ContextBuilder.getContext().getRecognitionHistoryController().removeAll());
-        this.history.stream().forEach(e -> addTagToGui(e));
+        this.getHistory().stream().forEach(e -> addTagToGui(e));
     }
 
-    public void removeNews(double runTimeSecond) {
-        history =  history.stream().filter(e -> e.getTimeRecognization() > runTimeSecond).collect(Collectors.toCollection(LinkedList::new));
+    public synchronized void removeNews(double runTimeSecond) {
+        setHistory(getHistory().stream().filter(e -> e.getTimeRecognization() > runTimeSecond).collect(Collectors.toCollection(LinkedList::new)));
     }
 
-    public LinkedList<HistoryElement> getHistory() {
+    public synchronized LinkedList<HistoryElement> getHistory() {
         return history;
     }
 
-    public void setHistory(LinkedList<HistoryElement> history) {
+    public synchronized void  setHistory(LinkedList<HistoryElement> history) {
         this.history = history;
     }
 
