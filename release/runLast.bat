@@ -32,7 +32,7 @@
     )
 
 
-    java -jar simulator-1.5-jar-with-dependencies.jar
+    java -jar simulator-1.6-jar-with-dependencies.jar
 
     endlocal
     pause
